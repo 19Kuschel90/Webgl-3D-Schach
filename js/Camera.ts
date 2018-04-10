@@ -17,7 +17,7 @@ class C_Camera{
 		this.mode = 1;			//Set what sort of control mode to use.
 	}
 
-	panX(v:any):any{
+	panX(v:any):void{
 		if(this.mode == 1) return; // Panning on the X Axis is only allowed when in free mode
 		this.updateViewMatrix();
 		this.transform.position.x += this.transform.right[0] * v;
@@ -25,7 +25,7 @@ class C_Camera{
 		this.transform.position.z += this.transform.right[2] * v; 
 	}
 
-	panY(v:any):any{
+	panY(v:any):void{
 		this.updateViewMatrix();
 		this.transform.position.y += this.transform.up[1] * v;
 		if(this.mode == 1) return; //Can only move up and down the y axix in orbit mode
@@ -33,7 +33,7 @@ class C_Camera{
 		this.transform.position.z += this.transform.up[2] * v; 
 	}
 
-	panZ(v:any):any{
+	panZ(v:any):void{
 		this.updateViewMatrix();
 		if(this.mode == 1){
 			this.transform.position.z += v; //orbit mode does translate after rotate, so only need to set Z, the rotate will handle the rest.
@@ -46,7 +46,7 @@ class C_Camera{
 	}
 
 	//To have different modes of movements, this function handles the view matrix update for the transform object.
-	updateViewMatrix():any{
+	updateViewMatrix():this{
 		//Optimize camera transform update, no need for scale nor rotateZ
 		if(this.mode == 0){
 			this.transform.matView.reset()
