@@ -2,6 +2,13 @@
 
 
 class C_Resources{
+	static gl:any;
+	static onComplete:any = null;
+	static Queue:any = [];
+	static Images:any = [];
+	static Videos:any = [];
+	static queueData:any;
+	static tagName:any;
 	//Setup resource object
 	static setup(gl:any,completeHandler:any){
 		C_Resources.gl = gl;
@@ -77,13 +84,13 @@ class C_Resources{
    // tagName:any;
 	// Event Handlers
 	static onDownloadSuccess(){
-        console.log("too do");
+        console.log(this);
 		//Its an image, lets load it up as a texture in gl.
-		// if( this instanceof Image || this.tagName == "VIDEO"){
-		// 	var dat = this.queueData;
-		// 	C_Resources.gl.fLoadTexture(dat.name,this);
-		// }
-		// C_Resources.loadNextItem();
+		if( this instanceof Image || this.tagName == "VIDEO"){
+			var dat:any = this.queueData;
+			C_Resources.gl.fLoadTexture(dat.name,this);
+		}
+		C_Resources.loadNextItem();
 	}
 
 	static onDownloadError(){
@@ -93,9 +100,9 @@ class C_Resources{
 }
 
 
-var C_Resources.Queue = [];
-C_Resources.onComplete = null;
-C_Resources.gl = null;
+// var C_Resources.Queue = [];
+// C_Resources.onComplete = null;
+// C_Resources.gl = null;
 
-C_Resources.Images = [];
-C_Resources.Videos = [];
+// C_Resources.Images = [];
+// C_Resources.Videos = [];

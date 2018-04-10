@@ -72,23 +72,27 @@ var C_Resources = /** @class */ (function () {
     // tagName:any;
     // Event Handlers
     C_Resources.onDownloadSuccess = function () {
-        console.log("too do");
+        console.log(this);
         //Its an image, lets load it up as a texture in gl.
-        // if( this instanceof Image || this.tagName == "VIDEO"){
-        // 	var dat = this.queueData;
-        // 	C_Resources.gl.fLoadTexture(dat.name,this);
-        // }
-        // C_Resources.loadNextItem();
+        if (this instanceof Image || this.tagName == "VIDEO") {
+            var dat = this.queueData;
+            C_Resources.gl.fLoadTexture(dat.name, this);
+        }
+        C_Resources.loadNextItem();
     };
     C_Resources.onDownloadError = function () {
         console.log("Error getting ", this);
         C_Resources.loadNextItem();
     };
+    C_Resources.onComplete = null;
+    C_Resources.Queue = [];
+    C_Resources.Images = [];
+    C_Resources.Videos = [];
     return C_Resources;
 }());
-var C_Resources, Queue = [];
-C_Resources.onComplete = null;
-C_Resources.gl = null;
-C_Resources.Images = [];
-C_Resources.Videos = [];
+// var C_Resources.Queue = [];
+// C_Resources.onComplete = null;
+// C_Resources.gl = null;
+// C_Resources.Images = [];
+// C_Resources.Videos = [];
 //# sourceMappingURL=Resources.js.map
