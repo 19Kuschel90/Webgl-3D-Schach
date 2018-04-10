@@ -24,31 +24,69 @@ class C_ShaderBuilder{
 		}
 	}
 
+	mapFix(name:any, type:any, uAltas:any,altas:any, uPMatrix:any, PM:any):any
+	{
+		{//prepareUniforms
+
+			let loc:any = 0;
+			for(var i=0; i < name.length; i++){
+				loc = gl.getUniformLocation(this.program,name[i]);
+				if(loc != null) this.mUniformList[name[i]] = {loc:loc,type:type[i]};
+			}
+		}
+		{//prepareTextures
+
+			let loc = 0,tex = "";
+
+				tex = this.gl.mTextureCache[altas];
+				if(tex === undefined){ console.log("Texture not found in cache " ); }
+				
+				loc = gl.getUniformLocation(this.program,uAltas);
+				if(loc != null) this.mTextureList.push({loc:loc,tex:tex});
+			
+		}
+		{//setUniforms
+			let name:any = "no name";
+	
+				
+				this.gl.uniformMatrix4fv(this.mUniformList[uPMatrix].loc,false,PM); 
+	
+			}
+			return this;
+
+	}
+
+	setUniformsFix(uPMatrix:any, PM:any){
+		console.log("setUniformsFix");
+		this.gl.uniformMatrix4fv(this.mUniformList[uPMatrix].loc,false,PM); 
+		return this;
+	}
+
 	//---------------------------------------------------
 	// Methods For Shader Prep.
 	//---------------------------------------------------
 	//Takes in unlimited arguments. Its grouped by two so for example (UniformName,UniformType): "uColors","3fv"
-	prepareUniforms(){
-		if(arguments.length % 2 != 0 ){ console.log("prepareUniforms needs arguments to be in pairs."); return this; }
+	prepareUniforms(name:any, type:any){
+		// if(arguments.length % 2 != 0 ){ console.log("prepareUniforms needs arguments to be in pairs."); return this; }
 		
 		var loc = 0;
-		for(var i=0; i < arguments.length; i+=2){
-			loc = gl.getUniformLocation(this.program,arguments[i]);
-			if(loc != null) this.mUniformList[arguments[i]] = {loc:loc,type:arguments[i+1]};
+		for(var i=0; i < name.length; i++){
+			loc = gl.getUniformLocation(this.program,name[i]);
+			if(loc != null) this.mUniformList[name[i]] = {loc:loc,type:type[i]};
 		}
 		return this;
 	}
 
 	//Takes in unlimited arguments. Its grouped by two so for example (UniformName,CacheTextureName): "uMask01","tex001";
-	prepareTextures(){
-		if(arguments.length % 2 != 0){ console.log("prepareTextures needs arguments to be in pairs."); return this; }
+	prepareTextures(name:any, type:any){
+		// if(arguments.length % 2 != 0){ console.log("prepareTextures needs arguments to be in pairs."); return this; }
 		
 		var loc = 0,tex = "";
-		for(var i=0; i < arguments.length; i+=2){
-			tex = this.gl.mTextureCache[arguments[i+1]];
-			if(tex === undefined){ console.log("Texture not found in cache " + arguments[i+1]); continue; }
+		for(var i=0; i < arguments.length; i){
+			tex = this.gl.mTextureCache[type[i]];
+			if(tex === undefined){ console.log("Texture not found in cache " + type[i]); continue; }
 
-			loc = gl.getUniformLocation(this.program,arguments[i]);
+			loc = gl.getUniformLocation(this.program,name[i]);
 			if(loc != null) this.mTextureList.push({loc:loc,tex:tex});
 		}
 		return this;
@@ -61,7 +99,7 @@ class C_ShaderBuilder{
 	setUniforms(Name:any,type:any){
 		// if(arguments.length % 2 != 0){ console.log("setUniforms needs arguments to be in pairs."); return this; }
 
-		var name;
+		var name:any = "no name";
 		for(var i:number=0; i < Name.length; i++){
 			name = Name[i];
 			if(this.mUniformList[name] === undefined){ console.log("uniform not found " + name); return this; }
@@ -95,7 +133,7 @@ class C_ShaderBuilder{
 		this.gl.useProgram(this.program); //Save a function call and just activate this shader program on preRender
 
 		//If passing in arguments, then lets push that to setUniforms for handling. Make less line needed in the main program by having preRender handle Uniforms
-		if(arguments.length > 0) this.setUniforms.apply(this,arguments);
+		if(arguments.length > 0) this.setUniformsFix.apply(this,arguments);
 
 		//..........................................
 		//Prepare textures that might be loaded up.
@@ -114,7 +152,7 @@ class C_ShaderBuilder{
 	}
 	//Handle rendering a modal
 	renderModel(model:any, doShaderClose:any):any{
-		this.setUniforms("uMVMatrix",model.transform.getViewMatrix());
+		this.setUniformsFix("uMVMatrix",model.transform.getViewMatrix());
 		this.gl.bindVertexArray(model.mesh.vao);
 
 		if(model.mesh.noCulling || this.noCulling) this.gl.disable(this.gl.CULL_FACE);
