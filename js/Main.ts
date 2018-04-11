@@ -12,8 +12,8 @@ var RLoop:any;
 var gGridFloor:any;
 var gRLoop:any;
 var Resources:any;
-var gCubes:any = [];
-var texMap:any = [
+var gCubes:any[] = [];
+var texMap:any[] = [
 	[3,0, 3,0, 3,0, 2,0, 3,0, 2,9],			//GrassDirt
 	[4,1, 4,1, 4,1, 5,1, 4,1, 5,1],			//Log
 	[11,1, 10,1, 10,1, 9,1, 10,1, 9,1],		//Chest
@@ -47,7 +47,7 @@ function main(vertex_shader:string,fragment_shader:string):void
 
 	//==================================================
 			//When Main System is setup and all resources are downloaded.
-			function onReady(){
+			function onReady():void{
 				//Setup Test Shader, Modal, Meshes
 				gShader = new C_ShaderBuilder(gl,gvertex_shader,gfragment_shader)
 				.mapFix(["uPMatrix","uMVMatrix","uCameraMatrix","uFaces"],["mat4","mat4","mat4","2fv" ],
