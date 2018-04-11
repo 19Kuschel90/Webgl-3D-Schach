@@ -3,14 +3,14 @@ window.addEventListener("load",function(){
 });
 var gl:any;
 var gModal:any;
-var gCamera:any;
-var gCameraCtrl:any;
+var gCamera:C_Camera;
+var gCameraCtrl:C_CameraController;
 var gShader:any;
 var gGridShader:any;
 var gGridModal:any;
 var RLoop:any;
-var gGridFloor:any;
-var gRLoop:any;
+var gGridFloor:C_GridFloor;
+var gRLoop:C_RenderLoop;
 var Resources:any;
 var gCubes:any[] = [];
 var texMap:any[] = [
@@ -60,9 +60,9 @@ function main(vertex_shader:string,fragment_shader:string):void
 				//gModel = Primatives.Cube.createModal(gl,"Cube",true)
 				//		.setPosition(0,0.6,0);//.setScale(0.7,0.7,0.7);
 
-				var cubemesh = Primatives.Cube.createMesh(gl,"Cube",1,1,1,0,0,0,false);
+				var cubemesh:any = Primatives.Cube.createMesh(gl,"Cube",1,1,1,0,0,0,false);
 				for(var i=0; i < 6; i++){
-					var model = new C_Modal(cubemesh).setPosition( (i%3)*2 , 0.6 , Math.floor(i/3) * -2);
+					var model:C_Modal = new C_Modal(cubemesh).setPosition( (i%3)*2 , 0.6 , Math.floor(i/3) * -2);
 					gCubes.push(model);
 				}
 
