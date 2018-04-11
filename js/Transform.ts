@@ -1,12 +1,12 @@
 class C_Transform{
-    position:any;
-    scale:any;
-    rotation:any;
-    matView:any;
-    matNormal:any;
-    forward:any;
-    up:any;
-    right:any;
+    position:C_Vector3;
+    scale:C_Vector3;
+    rotation:C_Vector3;
+    matView:C_Matrix4;
+    matNormal:Float32Array;
+    forward:Float32Array;
+    up:Float32Array;
+    right:Float32Array;
     deg2Rad:number = Math.PI/180;
 	constructor(){
 		//C_Transform vectors
@@ -39,6 +39,7 @@ class C_Transform{
 		C_Matrix4.transformVec4(this.forward,	[0,0,1,0],this.matView.raw); //Z
 		C_Matrix4.transformVec4(this.up,		[0,1,0,0],this.matView.raw); //Y
 		C_Matrix4.transformVec4(this.right,	[1,0,0,0],this.matView.raw); //X
+		console.log(this.matView.raw);
 
 		return this.matView.raw;
 	}
