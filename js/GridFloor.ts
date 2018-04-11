@@ -14,7 +14,7 @@ class C_GridFloor{
 		this.createShader();
 	}
 
-	createShader(){
+	createShader():void{
 		var vShader:string = '#version 300 es\n' +
 			'in vec3 a_position;' +
 			'layout(location=4) in float a_color;' +
@@ -47,7 +47,7 @@ class C_GridFloor{
 		this.gl.useProgram(null);
 	}
 
-	render(camera:any):any{
+	render(camera:any):void{
 		//Update Transform Matrix (Modal View)
 		this.transform.updateMatrix();
 
@@ -71,13 +71,13 @@ class C_GridFloor{
 
 	createMesh(gl:any,incAxis:any):any{
 		//Dynamiclly create a grid
-		var verts = [],
-			size = 2,			// W/H of the outer box of the grid, from origin we can only go 1 unit in each direction, so from left to right is 2 units max
-			div = 10.0,			// How to divide up the grid
-			step = size / div,	// Steps between each line, just a number we increment by for each line in the grid.
-			half = size / 2;	// From origin the starting position is half the size.
+		var verts:any[] = [],
+			size:number = 2,			// W/H of the outer box of the grid, from origin we can only go 1 unit in each direction, so from left to right is 2 units max
+			div:number = 10.0,			// How to divide up the grid
+			step:number = size / div,	// Steps between each line, just a number we increment by for each line in the grid.
+			half:number = size / 2;	// From origin the starting position is half the size.
 
-		var p;	//Temp variable for position value.
+		var p:number;	//Temp variable for position value.
 		for(var i=0; i <= div; i++){
 			//Vertical line
 			p = -half + (i * step);
