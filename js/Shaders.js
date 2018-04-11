@@ -26,61 +26,48 @@ var C_ShaderBuilder = /** @class */ (function () {
             this.doBlending = false; //If true, allows alpha to work.
         }
     }
-    C_ShaderBuilder.prototype.mapFix = function (name, type, uAltas, altas, uPMatrix, PM) {
-        {
-            var loc = 0;
-            for (var i = 0; i < name.length; i++) {
-                loc = gl.getUniformLocation(this.program, name[i]);
-                if (loc != null)
-                    this.mUniformList[name[i]] = { loc: loc, type: type[i] };
-            }
-        }
-        {
-            var loc = 0, tex = "";
-            tex = this.gl.mTextureCache[altas];
-            if (tex === undefined) {
-                console.log("Texture not found in cache ");
-            }
-            loc = gl.getUniformLocation(this.program, uAltas);
-            if (loc != null)
-                this.mTextureList.push({ loc: loc, tex: tex });
-        }
-        {
-            var name_1 = "no name";
-            this.gl.uniformMatrix4fv(this.mUniformList[uPMatrix].loc, false, PM);
-        }
-        return this;
-    };
-    C_ShaderBuilder.prototype.setUniformsFix = function (uPMatrix, PM) {
-        console.log("setUniformsFix");
-        this.gl.uniformMatrix4fv(this.mUniformList[uPMatrix].loc, false, PM);
-        return this;
-    };
     //---------------------------------------------------
     // Methods For Shader Prep.
     //---------------------------------------------------
     //Takes in unlimited arguments. Its grouped by two so for example (UniformName,UniformType): "uColors","3fv"
-    C_ShaderBuilder.prototype.prepareUniforms = function (name, type) {
-        // if(arguments.length % 2 != 0 ){ console.log("prepareUniforms needs arguments to be in pairs."); return this; }
+    C_ShaderBuilder.prototype.prepareUniforms = function () {
+        // console.log(this.mUniformList);
+        // console.log("prepareUniforms: " +myargument);
+        var myargument = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            myargument[_i] = arguments[_i];
+        }
+        if (myargument.length % 2 != 0) {
+            console.log("prepareUniforms needs arguments to be in pairs.");
+            return this;
+        }
         var loc = 0;
-        for (var i = 0; i < name.length; i++) {
-            loc = gl.getUniformLocation(this.program, name[i]);
+        for (var i = 0; i < myargument.length; i += 2) {
+            loc = gl.getUniformLocation(this.program, myargument[i]);
             if (loc != null)
-                this.mUniformList[name[i]] = { loc: loc, type: type[i] };
+                this.mUniformList[myargument[i]] = { loc: loc, type: myargument[i + 1] };
         }
         return this;
     };
     //Takes in unlimited arguments. Its grouped by two so for example (UniformName,CacheTextureName): "uMask01","tex001";
-    C_ShaderBuilder.prototype.prepareTextures = function (name, type) {
-        // if(arguments.length % 2 != 0){ console.log("prepareTextures needs arguments to be in pairs."); return this; }
+    C_ShaderBuilder.prototype.prepareTextures = function () {
+        // console.log("prepareTextures: " +myargument);
+        var myargument = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            myargument[_i] = arguments[_i];
+        }
+        if (myargument.length % 2 != 0) {
+            console.log("prepareTextures needs arguments to be in pairs.");
+            return this;
+        }
         var loc = 0, tex = "";
-        for (var i = 0; i < arguments.length; i) {
-            tex = this.gl.mTextureCache[type[i]];
+        for (var i = 0; i < myargument.length; i += 2) {
+            tex = this.gl.mTextureCache[myargument[i + 1]];
             if (tex === undefined) {
-                console.log("Texture not found in cache " + type[i]);
+                console.log("Texture not found in cache " + myargument[i + 1]);
                 continue;
             }
-            loc = gl.getUniformLocation(this.program, name[i]);
+            loc = gl.getUniformLocation(this.program, myargument[i]);
             if (loc != null)
                 this.mTextureList.push({ loc: loc, tex: tex });
         }
@@ -90,27 +77,40 @@ var C_ShaderBuilder = /** @class */ (function () {
     // Setters Getters
     //---------------------------------------------------
     //Uses a 2 item group argument array. Uniform_Name, Uniform_Value;
-    C_ShaderBuilder.prototype.setUniforms = function (Name, type) {
-        // if(arguments.length % 2 != 0){ console.log("setUniforms needs arguments to be in pairs."); return this; }
-        var name = "no name";
-        for (var i = 0; i < Name.length; i++) {
-            name = Name[i];
+    C_ShaderBuilder.prototype.setUniforms = function () {
+        var myargument = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            myargument[_i] = arguments[_i];
+        }
+        // console.log("setUniforms: " +myargument);
+        if (myargument.length % 2 != 0) {
+            console.log("setUniforms needs myargument to be in pairs.");
+            return this;
+        }
+        var name;
+        for (var i = 0; i < myargument.length; i += 2) {
+            name = myargument[i];
             if (this.mUniformList[name] === undefined) {
                 console.log("uniform not found " + name);
                 return this;
             }
-            switch (type[i]) {
+            else {
+                // console.log("Number: " + i + " " + this.mUniformList[name].type);
+                // console.log("Number: " + i + " " + this.mUniformList[name]);
+            }
+            // console.log(myargument[i + 1]);
+            switch (this.mUniformList[name].type) {
                 case "2fv":
-                    this.gl.uniform2fv(this.mUniformList[name].loc, new Float32Array(arguments[i + 1]));
+                    this.gl.uniform2fv(this.mUniformList[name].loc, new Float32Array(myargument[i + 1]));
                     break;
                 case "3fv":
-                    this.gl.uniform3fv(this.mUniformList[name].loc, new Float32Array(arguments[i + 1]));
+                    this.gl.uniform3fv(this.mUniformList[name].loc, new Float32Array(myargument[i + 1]));
                     break;
                 case "4fv":
-                    this.gl.uniform4fv(this.mUniformList[name].loc, new Float32Array(arguments[i + 1]));
+                    this.gl.uniform4fv(this.mUniformList[name].loc, new Float32Array(myargument[i + 1]));
                     break;
                 case "mat4":
-                    this.gl.uniformMatrix4fv(this.mUniformList[name].loc, false, arguments[i + 1]);
+                    this.gl.uniformMatrix4fv(this.mUniformList[name].loc, false, myargument[i + 1]);
                     break;
                 default:
                     console.log("unknown uniform type for " + name);
@@ -135,7 +135,7 @@ var C_ShaderBuilder = /** @class */ (function () {
         this.gl.useProgram(this.program); //Save a function call and just activate this shader program on preRender
         //If passing in arguments, then lets push that to setUniforms for handling. Make less line needed in the main program by having preRender handle Uniforms
         if (arguments.length > 0)
-            this.setUniformsFix.apply(this, arguments);
+            this.setUniforms.apply(this, arguments);
         //..........................................
         //Prepare textures that might be loaded up.
         //TODO, After done rendering need to deactivate the texture slots
@@ -152,28 +152,52 @@ var C_ShaderBuilder = /** @class */ (function () {
     };
     //Handle rendering a modal
     C_ShaderBuilder.prototype.renderModel = function (model, doShaderClose) {
-        this.setUniformsFix("uMVMatrix", model.transform.getViewMatrix());
+        if (doShaderClose === void 0) { doShaderClose = false; }
+        this.setUniforms("uMVMatrix", model.transform.getViewMatrix());
+        // console.log(model.mesh.vao);
         this.gl.bindVertexArray(model.mesh.vao);
-        if (model.mesh.noCulling || this.noCulling)
+        if (model.mesh.noCulling || this.noCulling) {
             this.gl.disable(this.gl.CULL_FACE);
-        if (model.mesh.doBlending || this.doBlending)
+        }
+        else {
+        }
+        if (model.mesh.doBlending || this.doBlending) {
             this.gl.enable(this.gl.BLEND);
-        if (model.mesh.indexCount)
+        }
+        else {
+        }
+        if (model.mesh.indexCount) {
+            console.log("ok");
+            console.log(model.mesh.drawMode);
+            console.log(model.mesh.indexCount);
+            console.log(gl.UNSIGNED_SHORT);
             this.gl.drawElements(model.mesh.drawMode, model.mesh.indexCount, gl.UNSIGNED_SHORT, 0);
-        else
+        }
+        else {
             this.gl.drawArrays(model.mesh.drawMode, 0, model.mesh.vertexCount);
+            console.log("no");
+        }
         //Cleanup
         this.gl.bindVertexArray(null);
         if (model.mesh.noCulling || this.noCulling)
             this.gl.enable(this.gl.CULL_FACE);
         if (model.mesh.doBlending || this.doBlending)
             this.gl.disable(this.gl.BLEND);
-        if (doShaderClose)
+        if (doShaderClose) {
             this.gl.useProgram(null);
+        }
+        else {
+            // console.log(doShaderClose);
+            // console.log("renderModel doShaderClose | 1142018190842");
+        }
         return this;
     };
     return C_ShaderBuilder;
 }());
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 var C_Shader = /** @class */ (function () {
     function C_Shader(gl, vertShaderSrc, fragShaderSrc) {
         this.program = C_ShaderUtil.createProgramFromText(gl, vertShaderSrc, fragShaderSrc, true);
@@ -217,6 +241,10 @@ var C_Shader = /** @class */ (function () {
     };
     return C_Shader;
 }());
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 var C_TestShader = /** @class */ (function (_super) {
     __extends(C_TestShader, _super);
     function C_TestShader(gl, aryColor, vertSrc, fragSrc) {
@@ -229,6 +257,10 @@ var C_TestShader = /** @class */ (function (_super) {
     }
     return C_TestShader;
 }(C_Shader));
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 var C_GridAxisShader = /** @class */ (function (_super) {
     __extends(C_GridAxisShader, _super);
     function C_GridAxisShader(gl, pMatrix) {
