@@ -15,7 +15,7 @@ class C_GridFloor{
 	}
 
 	createShader(){
-		var vShader = '#version 300 es\n' +
+		var vShader:string = '#version 300 es\n' +
 			'in vec3 a_position;' +
 			'layout(location=4) in float a_color;' +
 			'uniform mat4 uPMatrix;' +
@@ -27,7 +27,7 @@ class C_GridFloor{
 				'color = vec4(uColorAry[ int(a_color) ],1.0);' +
 				'gl_Position = uPMatrix * uCameraMatrix * uMVMatrix * vec4(a_position, 1.0);' +
 			'}';
-		var fShader = '#version 300 es\n' +
+		var fShader:string = '#version 300 es\n' +
 			'precision mediump float;' +
 			'in vec4 color;' +
 			'out vec4 finalColor;' +

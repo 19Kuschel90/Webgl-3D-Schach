@@ -1,9 +1,9 @@
- const ATTR_POSITION_NAME:any	= "a_position";
-const ATTR_POSITION_LOC:any		= 0;
-const ATTR_NORMAL_NAME:any		= "a_norm";
-const ATTR_NORMAL_LOC:any		= 1;
-const ATTR_UV_NAME:any			= "a_uv";
-const ATTR_UV_LOC:any			= 2;
+ const ATTR_POSITION_NAME:string	= "a_position";
+const ATTR_POSITION_LOC:number		= 0;
+const ATTR_NORMAL_NAME:string		= "a_norm";
+const ATTR_NORMAL_LOC:number	= 1;
+const ATTR_UV_NAME:string			= "a_uv";
+const ATTR_UV_LOC:number			= 2;
 
 function GLInstance(canvasID:string):any{
 	var canvas:any = document.getElementById(canvasID);
@@ -133,7 +133,7 @@ function GLInstance(canvasID:string):any{
 
     //imgAry must be 6 elements long and images placed in the right order
     //RIGHT,LEFT,TOP,BOTTOM,BACK,FRONT
-    gl.fLoadCubeMap = function(name:any, imgAry:any) {
+    gl.fLoadCubeMap = function(name:any, imgAry:any):any {
         if (imgAry.length != 6) return null;
 
         //Cube Constants values increment, so easy to start with right and just add 1 in a loop
