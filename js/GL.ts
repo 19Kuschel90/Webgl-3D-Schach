@@ -84,13 +84,22 @@ function GLInstance(canvasID:string):any{
 
 		//.......................................................
 		//Setup Index.
-		if(aryInd !== undefined && aryInd != null){
-			rtn.bufIndex = this.createBuffer();
-			rtn.indexCount = aryInd.length;
-			this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, rtn.bufIndex);
-			this.bufferData(this.ELEMENT_ARRAY_BUFFER, new Uint16Array(aryInd), this.STATIC_DRAW);
-			this.bindBuffer(this.ELEMENT_ARRAY_BUFFER,null);
-		}
+		// old
+		// if(aryInd !== undefined && aryInd != null){
+		// 	rtn.bufIndex = this.createBuffer();
+		// 	rtn.indexCount = aryInd.length;
+		// 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, rtn.bufIndex);
+		// 	this.bufferData(this.ELEMENT_ARRAY_BUFFER, new Uint16Array(aryInd), this.STATIC_DRAW);
+		// 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER,null);
+		// }
+		if (aryInd !== undefined && aryInd != null) {
+            rtn.bufIndex = this.createBuffer();
+            rtn.indexCount = aryInd.length;
+            this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, rtn.bufIndex);
+            this.bufferData(this.ELEMENT_ARRAY_BUFFER, new Uint16Array(aryInd), this.STATIC_DRAW);
+            //this.bindBuffer(this.ELEMENT_ARRAY_BUFFER,null); //TODO REMOVE THIS AND ADD TO CLEANUP
+        }
+
 
 		//Clean up
 		this.bindVertexArray(null);					//Unbind the VAO, very Important. always unbind when your done using one.
@@ -191,6 +200,7 @@ function GLInstance(canvasID:string):any{
 //--------------------------------------------------
 // Util  Class 
 //--------------------------------------------------
+// wird grade nicht verwendet
 class C_GlUtil {
 
     //Convert Hex colors to float arrays, can batch process a list into one big array.

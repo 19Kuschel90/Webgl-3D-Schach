@@ -73,12 +73,20 @@ function GLInstance(canvasID) {
         }
         //.......................................................
         //Setup Index.
+        // old
+        // if(aryInd !== undefined && aryInd != null){
+        // 	rtn.bufIndex = this.createBuffer();
+        // 	rtn.indexCount = aryInd.length;
+        // 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, rtn.bufIndex);
+        // 	this.bufferData(this.ELEMENT_ARRAY_BUFFER, new Uint16Array(aryInd), this.STATIC_DRAW);
+        // 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER,null);
+        // }
         if (aryInd !== undefined && aryInd != null) {
             rtn.bufIndex = this.createBuffer();
             rtn.indexCount = aryInd.length;
             this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, rtn.bufIndex);
             this.bufferData(this.ELEMENT_ARRAY_BUFFER, new Uint16Array(aryInd), this.STATIC_DRAW);
-            this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, null);
+            //this.bindBuffer(this.ELEMENT_ARRAY_BUFFER,null); //TODO REMOVE THIS AND ADD TO CLEANUP
         }
         //Clean up
         this.bindVertexArray(null); //Unbind the VAO, very Important. always unbind when your done using one.
@@ -162,6 +170,7 @@ function GLInstance(canvasID) {
 //--------------------------------------------------
 // Util  Class 
 //--------------------------------------------------
+// wird grade nicht verwendet
 var C_GlUtil = /** @class */ (function () {
     function C_GlUtil() {
     }
