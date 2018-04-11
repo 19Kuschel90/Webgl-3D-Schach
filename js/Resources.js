@@ -16,6 +16,16 @@ var C_Resources = /** @class */ (function () {
         }
     };
     //===================================================
+    // // Loading
+    // static loadTexture(name:any,src:any,...myarguments:any[]):any{
+    // 	console.log("hallo");
+    // 	console.log(myarguments);
+    // 	for(var i=0; i < myarguments.length; i+=2){
+    // 		C_Resources.Queue.push({type:"img",name:myarguments[i],src:myarguments[i+1]});
+    // 	}
+    // 	return this;
+    // }
+    //===================================================
     // Loading
     C_Resources.loadTexture = function (name, src) {
         for (var i = 0; i < arguments.length; i += 2) {
@@ -23,9 +33,15 @@ var C_Resources = /** @class */ (function () {
         }
         return this;
     };
+    // too do
     C_Resources.loadVideoTexture = function (name, src) {
-        for (var i = 0; i < arguments.length; i += 2) {
-            C_Resources.Queue.push({ type: "vid", name: arguments[i], src: arguments[i + 1] });
+        var myarguments = [];
+        for (var _i = 2; _i < arguments.length; _i++) {
+            myarguments[_i - 2] = arguments[_i];
+        }
+        console.log("too do");
+        for (var i = 0; i < myarguments.length; i += 2) {
+            C_Resources.Queue.push({ type: "vid", name: myarguments[i], src: myarguments[i + 1] });
         }
         return this;
     };

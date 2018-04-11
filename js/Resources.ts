@@ -4,9 +4,9 @@
 class C_Resources{
 	static gl:any;
 	static onComplete:any = null;
-	static Queue:any = [];
-	static Images:any = [];
-	static Videos:any = [];
+	static Queue:any[] = [];
+	static Images:any[] = [];
+	static Videos:any[] = [];
 	static queueData:any;
 	static tagName:any;
 	//Setup resource object
@@ -24,16 +24,30 @@ class C_Resources{
 	}}
 
 	//===================================================
+	// // Loading
+	// static loadTexture(name:any,src:any,...myarguments:any[]):any{
+	// 	console.log("hallo");
+	// 	console.log(myarguments);
+	// 	for(var i=0; i < myarguments.length; i+=2){
+	// 		C_Resources.Queue.push({type:"img",name:myarguments[i],src:myarguments[i+1]});
+	// 	}
+	// 	return this;
+	// }
+
+		//===================================================
 	// Loading
-	static loadTexture(name:any,src:any):any{
+	static loadTexture(name:any,src:any){
 		for(var i=0; i < arguments.length; i+=2){
 			C_Resources.Queue.push({type:"img",name:arguments[i],src:arguments[i+1]});
 		}
 		return this;
 	}
-	static loadVideoTexture(name:any,src:any):any{
-		for(var i=0; i < arguments.length; i+=2){
-			C_Resources.Queue.push({type:"vid",name:arguments[i],src:arguments[i+1]});
+
+	// too do
+	static loadVideoTexture(name:any,src:any,...myarguments:any[]):any{
+		console.log("too do");
+		for(var i=0; i < myarguments.length; i+=2){
+			C_Resources.Queue.push({type:"vid",name:myarguments[i],src:myarguments[i+1]});
 		}
 		return this;
 	}
