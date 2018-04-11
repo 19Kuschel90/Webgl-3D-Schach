@@ -1,7 +1,7 @@
 class C_Camera{
-    projectionMatrix:any;
-    viewMatrix:any;
-    mode:any;
+    projectionMatrix:Float32Array;
+    viewMatrix:Float32Array;
+    mode:number;
     Camera:number = 1;
     transform:C_Transform;
   
@@ -46,7 +46,7 @@ class C_Camera{
 	}
 
 	//To have different modes of movements, this function handles the view matrix update for the transform object.
-	updateViewMatrix():this{
+	updateViewMatrix():Float32Array{
 		//Optimize camera transform update, no need for scale nor rotateZ
 		if(this.mode == 0){
 			this.transform.matView.reset()
