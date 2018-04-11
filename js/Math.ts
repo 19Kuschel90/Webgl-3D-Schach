@@ -1,18 +1,18 @@
 class C_MathUtil {
     //Normalize x value to x range, then normalize to lerp the z range.
-    static Map(x:any, xMin:any, xMax:any, zMin:any, zMax:any):any { return (x - xMin) / (xMax - xMin) * (zMax - zMin) + zMin; }
+    static Map(x:number, xMin:number, xMax:number, zMin:number, zMax:number):number { return (x - xMin) / (xMax - xMin) * (zMax - zMin) + zMin; }
 }
 
 
 //###########################################################################################
 class C_Vector3{
-    x:any;
-    y:any;
-    z:any;
+    x:number;
+    y:number;
+    z:number;
 
-    constructor(x:any,y:any,z:any){	this.x = x || 0.0;	this.y = y || 0.0;	this.z = z || 0.0; }
+    constructor(x:number,y:number,z:number){	this.x = x || 0.0;	this.y = y || 0.0;	this.z = z || 0.0; }
 
-	magnitude(v:any = undefined):any{
+	magnitude(v:any = undefined):number{
 		//Only get the magnitude of this vector
 		if(v === undefined) return Math.sqrt( this.x*this.x + this.y*this.y + this.z*this.z );
 
@@ -24,15 +24,15 @@ class C_Vector3{
 		return Math.sqrt( x*x + y*y + z*z );
 	}
 
-	normalize():any{ var mag = this.magnitude(); this.x /= mag; this.y /= mag; this.z /= mag; return this;}
+	normalize():this{ var mag = this.magnitude(); this.x /= mag; this.y /= mag; this.z /= mag; return this;}
 
-	set(x:any,y:any,z:any):any{ this.x = x; this.y = y; this.z = z;	return this; }
+	set(x:any,y:any,z:any):this{ this.x = x; this.y = y; this.z = z;	return this; }
 
-	multiScalar(v:any):any{ this.x *= v; this.y *= v; this.z *= v; return this; }
+	multiScalar(v:any):this{ this.x *= v; this.y *= v; this.z *= v; return this; }
 
 	getArray():any{ return [this.x,this.y,this.z]; }
-	getFloatArray():any{ return new Float32Array([this.x,this.y,this.z]);}
-	clone():any{ return new C_Vector3(this.x,this.y,this.z); }
+	getFloatArray():Float32Array{ return new Float32Array([this.x,this.y,this.z]);}
+	clone():C_Vector3{ return new C_Vector3(this.x,this.y,this.z); }
 }
 
 
@@ -43,22 +43,22 @@ class C_Matrix4{
 
 	//....................................................................
 	//Transformations Methods
-	vtranslate(v:any):any{		C_Matrix4.translate(this.raw,v.x,v.y,v.z); return this; }
-	translate(x:any,y:any,z:any):any{	C_Matrix4.translate(this.raw,x,y,z); return this;}
+	vtranslate(v:any):this{		C_Matrix4.translate(this.raw,v.x,v.y,v.z); return this; }
+	translate(x:any,y:any,z:any):this{	C_Matrix4.translate(this.raw,x,y,z); return this;}
 
-	rotateY(rad:any):any{		C_Matrix4.rotateY(this.raw,rad); return this; }
-	rotateX(rad:any):any{		C_Matrix4.rotateX(this.raw,rad); return this; }
-	rotateZ(rad:any):any{		C_Matrix4.rotateZ(this.raw,rad); return this; }
+	rotateY(rad:any):this{		C_Matrix4.rotateY(this.raw,rad); return this; }
+	rotateX(rad:any):this{		C_Matrix4.rotateX(this.raw,rad); return this; }
+	rotateZ(rad:any):this{		C_Matrix4.rotateZ(this.raw,rad); return this; }
 	
-	vscale(vec3:any):any{		C_Matrix4.scale(this.raw,vec3.x,vec3.y,vec3.z); return this; }
-	scale(x:any,y:any,z:any):any{		C_Matrix4.scale(this.raw,x,y,z); return this; }
+	vscale(vec3:any):this{		C_Matrix4.scale(this.raw,vec3.x,vec3.y,vec3.z); return this; }
+	scale(x:any,y:any,z:any):this{		C_Matrix4.scale(this.raw,x,y,z); return this; }
 	
-	invert():any{			C_Matrix4.invert(this.raw); return this; }
+	invert():this{			C_Matrix4.invert(this.raw); return this; }
 
 	//....................................................................
 	//Methods
 	//Bring is back to identity without changing the transform values.
-	resetRotation():any{	
+	resetRotation():this{	
 		for(var i=0; i < this.raw.length; i++){
 			if(i >= 12 && i <= 14) continue;
 			this.raw[i] = (i % 5 == 0)? 1 : 0;  //only positions 0,5,10,15 need to be 1 else 0.
@@ -68,15 +68,15 @@ class C_Matrix4{
 	}
 
 	//reset data back to identity.
-	reset():any{ 
+	reset():this{ 
 		for(var i=0; i < this.raw.length; i++) this.raw[i] = (i % 5 == 0)? 1 : 0; //only positions 0,5,10,15 need to be 1 else 0.
 		return this;
 	}
 
 	//....................................................................
 	//Static Data Methods
-	static identity():any{
-		var a = new Float32Array(16);
+	static identity():Float32Array{
+		var a:Float32Array = new Float32Array(16);
 		a[0] = a[5] = a[10] = a[15] = 1;
 		return a;
 	}
@@ -408,7 +408,7 @@ class C_Matrix4{
 		out[11] = a03 * b20 + a13 * b21 + a23 * b22;
 	}
 
-	static invert(out:any = null,mat:any= null):any {
+	static invert(out:any = null,mat:any= null):boolean {
 		if(mat === undefined) mat = out; //If input isn't sent, then output is also input
 
 	    var a00 = mat[0], a01 = mat[1], a02 = mat[2], a03 = mat[3],

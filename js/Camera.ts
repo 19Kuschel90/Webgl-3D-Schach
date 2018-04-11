@@ -118,7 +118,7 @@ class C_CameraController{
 	getMouseVec2(e:any):any{ return {x:e.pageX - this.offsetX, y:e.pageY - this.offsetY}; }
 
 	//Begin listening for dragging movement
-	onMouseDown(e:any):any{
+	onMouseDown(e:any):void{
 		this.initX = this.prevX = e.pageX - this.offsetX;
 		this.initY = this.prevY = e.pageY - this.offsetY;
 
@@ -127,17 +127,17 @@ class C_CameraController{
 	}
 
 	//End listening for dragging movement
-	onMouseUp(e:any):any{
+	onMouseUp(e:any):void{
 		this.canvas.removeEventListener("mouseup",this.onUpHandler);
 		this.canvas.removeEventListener("mousemove",this.onMoveHandler);
 	}
 
-	onMouseWheel(e:any):any{
+	onMouseWheel(e:any):void{
 		var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail))); //Try to map wheel movement to a number between -1 and 1
 		this.camera.panZ(delta * (this.zoomRate / this.canvas.height));		//Keep the movement speed the same, no matter the height diff
 	}
 
-	onMouseMove(e:any):any{
+	onMouseMove(e:any):void{
 		var x = e.pageX - this.offsetX,	//Get X,y where the canvas's position is origin.
 			y = e.pageY - this.offsetY,
 			dx = x - this.prevX,		//Difference since last mouse move
