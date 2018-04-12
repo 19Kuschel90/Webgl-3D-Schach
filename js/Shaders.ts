@@ -152,10 +152,10 @@ class C_ShaderBuilder{
 		
 		if(model.mesh.indexCount) 
 		{
-			console.log("ok");
-			console.log(model.mesh.drawMode);
-			console.log(model.mesh.indexCount);
-			console.log(gl.UNSIGNED_SHORT);
+			// console.log("ok");
+			// console.log(model.mesh.drawMode);
+			// console.log(model.mesh.indexCount);
+			// console.log(gl.UNSIGNED_SHORT);
 			this.gl.drawElements(model.mesh.drawMode, model.mesh.indexCount, gl.UNSIGNED_SHORT, 0); 
 		}else{ this.gl.drawArrays(model.mesh.drawMode, 0, model.mesh.vertexCount);
 			console.log("no");
@@ -227,7 +227,7 @@ class C_Shader{
 
 	//Handle rendering a modal
 	renderModal(modal:any):any{
-		console.log(modal);
+		// console.log(modal);
 		this.setModalMatrix(modal.transform.getViewMatrix());	//Set the transform, so the shader knows where the modal exists in 3d space
 		this.gl.bindVertexArray(modal.mesh.vao);				//Enable VAO, this will set all the predefined attributes for the shader
 		

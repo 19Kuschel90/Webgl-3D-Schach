@@ -167,10 +167,10 @@ var C_ShaderBuilder = /** @class */ (function () {
         else {
         }
         if (model.mesh.indexCount) {
-            console.log("ok");
-            console.log(model.mesh.drawMode);
-            console.log(model.mesh.indexCount);
-            console.log(gl.UNSIGNED_SHORT);
+            // console.log("ok");
+            // console.log(model.mesh.drawMode);
+            // console.log(model.mesh.indexCount);
+            // console.log(gl.UNSIGNED_SHORT);
             this.gl.drawElements(model.mesh.drawMode, model.mesh.indexCount, gl.UNSIGNED_SHORT, 0);
         }
         else {
@@ -229,7 +229,7 @@ var C_Shader = /** @class */ (function () {
     C_Shader.prototype.preRender = function () { }; //abstract method, extended object may need need to do some things before rendering.
     //Handle rendering a modal
     C_Shader.prototype.renderModal = function (modal) {
-        console.log(modal);
+        // console.log(modal);
         this.setModalMatrix(modal.transform.getViewMatrix()); //Set the transform, so the shader knows where the modal exists in 3d space
         this.gl.bindVertexArray(modal.mesh.vao); //Enable VAO, this will set all the predefined attributes for the shader
         if (modal.mesh.indexCount)
