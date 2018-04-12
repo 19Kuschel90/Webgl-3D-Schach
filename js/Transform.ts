@@ -39,7 +39,7 @@ class C_Transform{
 		C_Matrix4.transformVec4(this.forward,	[0,0,1,0],this.matView.raw); //Z
 		C_Matrix4.transformVec4(this.up,		[0,1,0,0],this.matView.raw); //Y
 		C_Matrix4.transformVec4(this.right,	[1,0,0,0],this.matView.raw); //X
-		console.log(this.matView.raw);
+		// console.log(this.matView.raw);
 
 		return this.matView.raw;
 	}
