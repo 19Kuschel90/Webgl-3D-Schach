@@ -42,7 +42,7 @@ function GLInstance(canvasID:string):any{
 	}
 
 	//Turns arrays into GL buffers, then setup a VAO that will predefine the buffers to standard shader attributes.
-	gl.fCreateMeshVAO = function(name:any,aryInd:any,aryVert:any,aryNorm:any,aryUV:any):any{
+	gl.fCreateMeshVAO = function(name:any,aryInd:any,aryVert:any,aryNorm:any,aryUV:any,vertLen:any ):any{
 		var rtn:any = { drawMode:this.TRIANGLES };
 
 		//Create and bind vao
@@ -51,17 +51,28 @@ function GLInstance(canvasID:string):any{
 
 		//.......................................................
 		//Set up vertices
-		if(aryVert !== undefined && aryVert != null){
-			rtn.bufVertices = this.createBuffer();													//Create buffer...
-			rtn.vertexComponentLen = 3;																//How many floats make up a vertex
-			rtn.vertexCount = aryVert.length / rtn.vertexComponentLen;								//How many vertices in the array
+		// old
+		// if(aryVert !== undefined && aryVert != null){
+		// 	rtn.bufVertices = this.createBuffer();													//Create buffer...
+		// 	rtn.vertexComponentLen = 3;																//How many floats make up a vertex
+		// 	rtn.vertexCount = aryVert.length / rtn.vertexComponentLen;								//How many vertices in the array
 
-			this.bindBuffer(this.ARRAY_BUFFER, rtn.bufVertices);
-			this.bufferData(this.ARRAY_BUFFER, new Float32Array(aryVert), this.STATIC_DRAW);		//then push array into it.
-			this.enableVertexAttribArray(ATTR_POSITION_LOC);										//Enable Attribute location
-			this.vertexAttribPointer(ATTR_POSITION_LOC,3,this.FLOAT,false,0,0);						//Put buffer at location of the vao
-		}
+		// 	this.bindBuffer(this.ARRAY_BUFFER, rtn.bufVertices);
+		// 	this.bufferData(this.ARRAY_BUFFER, new Float32Array(aryVert), this.STATIC_DRAW);		//then push array into it.
+		// 	this.enableVertexAttribArray(ATTR_POSITION_LOC);										//Enable Attribute location
+		// 	this.vertexAttribPointer(ATTR_POSITION_LOC,3,this.FLOAT,false,0,0);						//Put buffer at location of the vao
+		// }
+		if (aryVert !== undefined && aryVert != null) {
+            rtn.bufVertices = this.createBuffer(); //Create buffer...
+            rtn.vertexComponentLen = vertLen || 3; //How many floats make up a vertex
+            rtn.vertexCount = aryVert.length / rtn.vertexComponentLen; //How many vertices in the array
 
+            this.bindBuffer(this.ARRAY_BUFFER, rtn.bufVertices);
+            this.bufferData(this.ARRAY_BUFFER, new Float32Array(aryVert), this.STATIC_DRAW); //then push array into it.
+            this.enableVertexAttribArray(ATTR_POSITION_LOC); //Enable Attribute location
+            //this.vertexAttribPointer(ATTR_POSITION_LOC,3,this.FLOAT,false,0,0);						//Put buffer at location of the vao\
+            this.vertexAttribPointer(ATTR_POSITION_LOC, rtn.vertexComponentLen, this.FLOAT, false, 0, 0); //Put buffer at location of the vao
+        }
 		//.......................................................
 		//Setup normals
 		if(aryNorm !== undefined && aryNorm != null){
@@ -102,11 +113,12 @@ function GLInstance(canvasID:string):any{
 
 
 		//Clean up
-		this.bindVertexArray(null);					//Unbind the VAO, very Important. always unbind when your done using one.
-		this.bindBuffer(this.ARRAY_BUFFER,null);	//Unbind any buffers that might be set
+		this.bindVertexArray(null); //Unbind the VAO, very Important. always unbind when your done using one.
+        this.bindBuffer(this.ARRAY_BUFFER, null); //Unbind any buffers that might be set
+        if (aryInd != null && aryInd !== undefined) this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, null);
 
-		this.mMeshCache[name] = rtn;
-		return rtn;
+        this.mMeshCache[name] = rtn;
+        return rtn;
 	}
 
     gl.fLoadTexture = function(name:any, img:any, doYFlip:any, noMips:any) {
