@@ -78,15 +78,15 @@ class C_Camera{
 class C_CameraController{
     canvas:any;
     camera:any;
-    rotateRate:any;
-    panRate:any;
-    zoomRate:any;
-    offsetX:any;
-    offsetY:any;
-    initX:any;
-    initY:any;
-    prevX:any;
-    prevY:any;
+    rotateRate:number;
+    panRate:number;
+    zoomRate:number;
+    offsetX:number;
+    offsetY:number;
+    initX:number;
+    initY:number;
+    prevX:number;
+    prevY:number;
     onUpHandler:any;
     onMoveHandler:any;
 	constructor(gl:any,camera:any){
