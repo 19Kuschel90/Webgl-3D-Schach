@@ -14,7 +14,7 @@ var gRLoop:C_RenderLoop;
 var Resources:any;
 var gCubes:C_Modal[] = [];
 var texMap:any[] = [
-	[3,0, 3,0, 3,0, 2,0, 3,0, 2,9],			//GrassDirt
+	[15,15, 1,0, 1,0, 1,0, 1,0, 1,0],			//GrassDirt
 	[4,1, 4,1, 4,1, 5,1, 4,1, 5,1],			//Log
 	[11,1, 10,1, 10,1, 9,1, 10,1, 9,1],		//Chest
 	[7,7, 6,7, 6,7, 6,7, 6,7, 6,6],			//Pumpkin
@@ -48,7 +48,7 @@ function main(vertex_shader:string,fragment_shader:string):void
 			//==================================================
 			//When Main System is setup and all resources are downloaded.
 			function onReady():void{
-				console.log("onReady()");
+				// console.log("onReady()");
 				//Setup Test Shader, Modal, Meshes
 				gShader = new C_ShaderBuilder(gl,gvertex_shader,gfragment_shader)
 				.prepareUniforms("uPMatrix","mat4"
@@ -61,8 +61,8 @@ function main(vertex_shader:string,fragment_shader:string):void
 				//		.setPosition(0,0.6,0);//.setScale(0.7,0.7,0.7);
 
 				var cubemesh:any = Primatives.Cube.createMesh(gl,"Cube",1,1,1,0,0,0,false);
-				for(var i=0; i < 6; i++){
-					var model:C_Modal = new C_Modal(cubemesh).setPosition( (i%3)*2 , 0.6 , Math.floor(i/3) * -2);
+				for(var i=0; i < 128; i++){
+					var model:C_Modal = new C_Modal(cubemesh).setPosition( (i%16 ) , 2.0 , Math.floor(i/16) );
 					gCubes.push(model);
 				}
 
@@ -72,7 +72,7 @@ function main(vertex_shader:string,fragment_shader:string):void
 			}
 
 
-function onRender(dt:any):void{
+function onRender(dt:number):void{
 	// console.log("run");
 	//................................
 				//Main Elements to draw to the frame
@@ -86,7 +86,7 @@ function onRender(dt:any):void{
 					//.renderModel(gModel.preRender(),false);
 // console.log(gCubes);
 				for(var i:number=0; i < gCubes.length; i++){
-					gShader.setUniforms("uFaces",texMap[i]).renderModel( gCubes[i].preRender() );
+					gShader.setUniforms("uFaces",texMap[0]).renderModel( gCubes[i].preRender() );
 				}
 
 }

@@ -15,7 +15,7 @@ var gRLoop;
 var Resources;
 var gCubes = [];
 var texMap = [
-    [3, 0, 3, 0, 3, 0, 2, 0, 3, 0, 2, 9],
+    [15, 15, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
     [4, 1, 4, 1, 4, 1, 5, 1, 4, 1, 5, 1],
     [11, 1, 10, 1, 10, 1, 9, 1, 10, 1, 9, 1],
     [7, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 6],
@@ -42,7 +42,7 @@ function main(vertex_shader, fragment_shader) {
 //==================================================
 //When Main System is setup and all resources are downloaded.
 function onReady() {
-    console.log("onReady()");
+    // console.log("onReady()");
     //Setup Test Shader, Modal, Meshes
     gShader = new C_ShaderBuilder(gl, gvertex_shader, gfragment_shader)
         .prepareUniforms("uPMatrix", "mat4", "uMVMatrix", "mat4", "uCameraMatrix", "mat4", "uFaces", "2fv")
@@ -51,8 +51,8 @@ function onReady() {
     //gModel = Primatives.Cube.createModal(gl,"Cube",true)
     //		.setPosition(0,0.6,0);//.setScale(0.7,0.7,0.7);
     var cubemesh = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
-    for (var i = 0; i < 6; i++) {
-        var model = new C_Modal(cubemesh).setPosition((i % 3) * 2, 0.6, Math.floor(i / 3) * -2);
+    for (var i = 0; i < 128; i++) {
+        var model = new C_Modal(cubemesh).setPosition((i % 16), 2.0, Math.floor(i / 16));
         gCubes.push(model);
     }
     //....................................
@@ -72,7 +72,7 @@ function onRender(dt) {
     //.renderModel(gModel.preRender(),false);
     // console.log(gCubes);
     for (var i = 0; i < gCubes.length; i++) {
-        gShader.setUniforms("uFaces", texMap[i]).renderModel(gCubes[i].preRender());
+        gShader.setUniforms("uFaces", texMap[0]).renderModel(gCubes[i].preRender());
     }
 }
 //# sourceMappingURL=Main.js.map
