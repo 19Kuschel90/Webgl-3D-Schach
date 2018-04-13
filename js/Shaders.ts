@@ -78,7 +78,10 @@ class C_ShaderBuilder{
             }
 // console.log(myargument[i + 1]);
             switch (this.mUniformList[name].type) {
-                case "2fv":
+				case "fv":
+					this.gl.uniform1f(this.mUniformList[name].loc, myargument[i+1]);
+				break;
+				case "2fv":
                     this.gl.uniform2fv(this.mUniformList[name].loc, new Float32Array(myargument[i + 1]));
                     break;
                 case "3fv":
