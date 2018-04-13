@@ -42,7 +42,9 @@ function main(vertex_shader:string,fragment_shader:string):void
 
 				//....................................
 				//Load up resources
-				C_Resources.setup(gl,onReady).loadTexture("atlas","../image/atlas_mindcraft.png").start();
+		//		C_Resources.setup(gl,onReady).loadTexture("atlas","../image/Pony.png").start();
+				C_Resources.setup(gl,onReady).loadTexture("atlas","../image/c62bb9b27329447cb2b937fe6213889a.jpg").start();
+			//	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/atlas_mindcraft.png").start();
 			}
 			
 			//==================================================
@@ -54,15 +56,17 @@ function main(vertex_shader:string,fragment_shader:string):void
 				.prepareUniforms("uPMatrix","mat4"
 				,"uMVMatrix","mat4"
 				,"uCameraMatrix","mat4"
-				,"uFaces","2fv")
+				,"uFaces","2fv",
+				"uPositonX","fv"
+				,"uPositonY","fv")
 				.prepareTextures("uAltas","atlas")
 				.setUniforms("uPMatrix",gCamera.projectionMatrix);
 				//gModel = Primatives.Cube.createModal(gl,"Cube",true)
 				//		.setPosition(0,0.6,0);//.setScale(0.7,0.7,0.7);
 
 				var cubemesh:any = Primatives.Cube.createMesh(gl,"Cube",1,1,1,0,0,0,false);
-				for(var i=0; i < 128; i++){
-					var model:C_Modal = new C_Modal(cubemesh).setPosition( (i%16 ) , 2.0 , Math.floor(i/16) );
+				for(var i=0; i < 256; i++){
+					var model:C_Modal = new C_Modal(cubemesh).setPosition( (i%16 ) , 2.0 , -Math.floor(i/16) );
 					gCubes.push(model);
 				}
 
@@ -85,8 +89,27 @@ function onRender(dt:number):void{
 				gShader.preRender("uCameraMatrix",gCamera.viewMatrix);
 					//.renderModel(gModel.preRender(),false);
 // console.log(gCubes);
+				uPositonX = 0;
+				uPositonY = 0;
+				temp = 15;
 				for(var i:number=0; i < gCubes.length; i++){
-					gShader.setUniforms("uFaces",texMap[0]).renderModel( gCubes[i].preRender() );
+					gShader.setUniforms("uPositonX",uPositonX).setUniforms("uPositonY",uPositonY).renderModel( gCubes[i].preRender() );
+					getPositioninTexture(i);
 				}
 
+}
+
+var uPositonX:number = 0;
+var uPositonY:number = 0;
+var temp:number = 15;
+function getPositioninTexture(i:number):void{
+	if(i >= temp)
+	{
+		temp += 16;
+		uPositonY++; 
+		uPositonX = 0;
+	}else
+	{
+		uPositonX++;
+	}
 }
