@@ -24,6 +24,10 @@ var texMap = [
 ];
 var gvertex_shader;
 var gfragment_shader;
+var uPositonX = 0;
+var uPositonY = 0;
+var temp = 15;
+var moveBot;
 function main(vertex_shader, fragment_shader) {
     gvertex_shader = vertex_shader;
     gfragment_shader = fragment_shader;
@@ -31,7 +35,8 @@ function main(vertex_shader, fragment_shader) {
     //System Setup
     gl = GLInstance("webglCanvas").fFitScreen(0.95, 0.9).fClear();
     gCamera = new C_Camera(gl);
-    gCamera.transform.position.set(0, 1, 3);
+    gCamera.transform.position.set(8, -8, 15);
+    gCamera.transform.rotation.set(90, 0, 0);
     gCameraCtrl = new C_CameraController(gl, gCamera);
     gGridFloor = new C_GridFloor(gl);
     gRLoop = new C_RenderLoop(onRender, 30);
@@ -57,10 +62,15 @@ function onReady() {
         var model = new C_Modal(cubemesh).setPosition((i % 16), 2.0, -Math.floor(i / 16));
         gCubes.push(model);
     }
+    moveBot = new C_MoveBot(gCubes[0].transform);
+    moveBot.SetPosition(new C_Vector3(0, 0, 0));
     //....................................
     gRLoop.start();
     //onRender(0);
 }
+var tesft;
+var fsds;
+var dds = "wweqwe";
 function onRender(dt) {
     // console.log("run");
     //................................
@@ -80,10 +90,10 @@ function onRender(dt) {
         gShader.setUniforms("uPositonX", uPositonX).setUniforms("uPositonY", uPositonY).renderModel(gCubes[i].preRender());
         getPositioninTexture(i);
     }
+    document.getElementById('PosX').innerText = String(moveBot.GetMyObjectTransform().position.x);
+    document.getElementById('PosY').innerText = String(moveBot.GetMyObjectTransform().position.y);
+    //fsds = tesft.innerText;
 }
-var uPositonX = 0;
-var uPositonY = 0;
-var temp = 15;
 function getPositioninTexture(i) {
     if (i >= temp) {
         temp += 16;

@@ -24,6 +24,10 @@ var texMap:any[] = [
 
 var gvertex_shader:string;
 var gfragment_shader:string;
+var uPositonX:number = 0;
+var uPositonY:number = 0;
+var temp:number = 15;
+var moveBot:C_MoveBot;
 
 function main(vertex_shader:string,fragment_shader:string):void
 {
@@ -34,7 +38,8 @@ function main(vertex_shader:string,fragment_shader:string):void
 				gl = GLInstance("webglCanvas").fFitScreen(0.95,0.9).fClear();
 				
 				gCamera = new C_Camera(gl);
-				gCamera.transform.position.set(0,1,3);
+				gCamera.transform.position.set(8,-8,15);
+				gCamera.transform.rotation.set(90,0,0);
 				gCameraCtrl = new C_CameraController(gl,gCamera);
 
 				gGridFloor = new C_GridFloor(gl);
@@ -69,13 +74,16 @@ function main(vertex_shader:string,fragment_shader:string):void
 					var model:C_Modal = new C_Modal(cubemesh).setPosition( (i%16 ) , 2.0 , -Math.floor(i/16) );
 					gCubes.push(model);
 				}
-
+				moveBot = new C_MoveBot(gCubes[0].transform);
+				moveBot.SetPosition(new C_Vector3(0,0,0))
 				//....................................
 				gRLoop.start();
 				//onRender(0);
 			}
 
-
+			var tesft:HTMLElement  | null;
+			var fsds:string ;
+			var dds:string | null = "wweqwe";
 function onRender(dt:number):void{
 	// console.log("run");
 	//................................
@@ -96,12 +104,12 @@ function onRender(dt:number):void{
 					gShader.setUniforms("uPositonX",uPositonX).setUniforms("uPositonY",uPositonY).renderModel( gCubes[i].preRender() );
 					getPositioninTexture(i);
 				}
-
+			 	(<HTMLElement>document.getElementById('PosX')).innerText = String(moveBot.GetMyObjectTransform().position.x);
+				(<HTMLElement>document.getElementById('PosY')).innerText = String(moveBot.GetMyObjectTransform().position.y);
+				//fsds = tesft.innerText;
+		  
 }
 
-var uPositonX:number = 0;
-var uPositonY:number = 0;
-var temp:number = 15;
 function getPositioninTexture(i:number):void{
 	if(i >= temp)
 	{
