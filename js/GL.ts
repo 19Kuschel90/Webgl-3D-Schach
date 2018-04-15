@@ -189,18 +189,18 @@ function GLInstance(canvasID:string):any{
     gl.fSetSize = function(
         w:number // width
         ,h:number, // height 
-        Unit:String // %, px, .....
+        Unit:String = "px" // %, px, .....
     ):any
     {
 		//set the size of the canvas, on chrome we need to set it 3 ways to make it work perfectly.
-		this.canvas.style.width = String(w) + Unit;
-		this.canvas.style.height = String(h) + Unit;
-		this.canvas.width = w;
-		this.canvas.height = h;
+		this.canvas.style.width = String(1024) + Unit;
+		this.canvas.style.height = String(1024) + Unit;
+		this.canvas.width = 1024;
+		this.canvas.height = 1024;
 
 		//when updating the canvas size, must reset the viewport of the canvas 
 		//else the resolution webgl renders at will not change
-		this.viewport(0,0,w,h);
+		this.viewport(0,0,1024,1024);
 		return this;
 	}
 
