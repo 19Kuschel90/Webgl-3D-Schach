@@ -27,7 +27,9 @@ var gfragment_shader:string;
 var uPositonX:number = 0;
 var uPositonY:number = 0;
 var temp:number = 15;
-var moveBot:C_MoveBot;
+var moveBot:C_MoveBot[] = [];
+// var tesft:HTMLElement  | null;
+// var fsds:string ;
 
 function main(vertex_shader:string,fragment_shader:string):void
 {
@@ -73,17 +75,17 @@ function main(vertex_shader:string,fragment_shader:string):void
 				for(var i=0; i < 256; i++){
 					var model:C_Modal = new C_Modal(cubemesh).setPosition( (i%16 ) , 2.0 , -Math.floor(i/16) );
 					gCubes.push(model);
+					moveBot.push( new C_MoveBot(model.transform,
+						model.transform.position
+						));
+					moveBot[i].SetPosition(new C_Vector3(0,0,0));
+					moveBot[i].SetSpeed(0.005);
 				}
-				moveBot = new C_MoveBot(gCubes[0].transform);
-				moveBot.SetPosition(new C_Vector3(0,0,0))
 				//....................................
 				gRLoop.start();
 				//onRender(0);
 			}
 
-			var tesft:HTMLElement  | null;
-			var fsds:string ;
-			var dds:string | null = "wweqwe";
 function onRender(dt:number):void{
 	// console.log("run");
 	//................................
@@ -103,9 +105,10 @@ function onRender(dt:number):void{
 				for(var i:number=0; i < gCubes.length; i++){
 					gShader.setUniforms("uPositonX",uPositonX).setUniforms("uPositonY",uPositonY).renderModel( gCubes[i].preRender() );
 					getPositioninTexture(i);
+					moveBot[i].Update();
 				}
-			 	(<HTMLElement>document.getElementById('PosX')).innerText = String(moveBot.GetMyObjectTransform().position.x);
-				(<HTMLElement>document.getElementById('PosY')).innerText = String(moveBot.GetMyObjectTransform().position.y);
+			 	// (<HTMLElement>document.getElementById('PosX')).innerText = String(moveBot.GetMyObjectTransform().position.x);
+				// (<HTMLElement>document.getElementById('PosY')).innerText = String(moveBot.GetMyObjectTransform().position.y);
 				//fsds = tesft.innerText;
 		  
 }
