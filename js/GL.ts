@@ -6,7 +6,7 @@ const ATTR_UV_NAME:string			= "a_uv";
 const ATTR_UV_LOC:number			= 2;
 
 function GLInstance(canvasID:string):any{
-	var canvas:any = document.getElementById(canvasID);
+    var canvas:any = document.getElementById(canvasID);
 	var	gl:any = canvas.getContext("webgl2");
 
 	if(!gl){ console.error("WebGL context is not available."); return null; }
@@ -193,8 +193,8 @@ function GLInstance(canvasID:string):any{
     ):any
     {
 		//set the size of the canvas, on chrome we need to set it 3 ways to make it work perfectly.
-		this.canvas.style.width = String(1024) + Unit;
-		this.canvas.style.height = String(1024) + Unit;
+		this.canvas.style.width = String(64) + Unit;
+		this.canvas.style.height = String(48) + Unit;
 		this.canvas.width = 1024;
 		this.canvas.height = 1024;
 
