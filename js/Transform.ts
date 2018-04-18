@@ -1,13 +1,13 @@
 class C_Transform{
-    position:C_Vector3;
-    scale:C_Vector3;
-    rotation:C_Vector3;
-    matView:C_Matrix4;
-    matNormal:Float32Array;
-    forward:Float32Array;
-    up:Float32Array;
-    right:Float32Array;
-    deg2Rad:number = Math.PI/180;
+	public position:C_Vector3;
+	public scale:C_Vector3;
+	public rotation:C_Vector3;
+	public matView:C_Matrix4;
+	public  matNormal:Float32Array;
+	public  forward:Float32Array;
+	public  up:Float32Array;
+	public  right:Float32Array;
+	public  deg2Rad:number = Math.PI/180;
 	constructor(){
 		//C_Transform vectors
 		this.position	= new C_Vector3(0,0,0);	//Traditional X,Y,Z 3d position
@@ -24,7 +24,7 @@ class C_Transform{
 
 	//--------------------------------------------------------------------------
 	//Methods
-	updateMatrix(){
+	public updateMatrix(){
 		this.matView.reset() //Order is very important!!
 			.vtranslate(this.position)
 			.rotateX(this.rotation.x * this.deg2Rad)
@@ -44,17 +44,17 @@ class C_Transform{
 		return this.matView.raw;
 	}
 
-	updateDirection(){
+	public updateDirection(){
 		C_Matrix4.transformVec4(this.forward,	[0,0,1,0],this.matView.raw);
 		C_Matrix4.transformVec4(this.up,		[0,1,0,0],this.matView.raw);
 		C_Matrix4.transformVec4(this.right,	[1,0,0,0],this.matView.raw);
 		return this;
 	}
 
-	getViewMatrix(){	return this.matView.raw; }
-	getNormalMatrix(){	return this.matNormal; }
+	public getViewMatrix(){	return this.matView.raw; }
+	public getNormalMatrix(){	return this.matNormal; }
 
-	reset(){
+	public reset(){
 		this.position.set(0,0,0);
 		this.scale.set(1,1,1);
 		this.rotation.set(0,0,0);

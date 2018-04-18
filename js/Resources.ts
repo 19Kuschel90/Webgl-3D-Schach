@@ -2,22 +2,22 @@
 
 
 class C_Resources{
-	static gl:any;
-	static onComplete:any = null;
-	static Queue:any[] = [];
-	static Images:any[] = [];
-	static Videos:any[] = [];
-	static queueData:any;
-	static tagName:any;
+	public	static gl:any;
+	public	static onComplete:any = null;
+	public static Queue:any[] = [];
+	public static Images:any[] = [];
+	public static Videos:any[] = [];
+	public static queueData:any;
+	public static tagName:any;
 	//Setup resource object
-	static setup(gl:any,completeHandler:any){
+	public static setup(gl:any,completeHandler:any){
 		C_Resources.gl = gl;
 		C_Resources.onComplete = completeHandler;
 		return this;
 	}
 
 	//Start the download queue
-	static start(){
+	public static start(){
         if(C_Resources.Queue.length > 0) 
         {
             C_Resources.loadNextItem();
@@ -36,7 +36,7 @@ class C_Resources{
 
 		//===================================================
 	// Loading
-	static loadTexture(name:any,src:any){
+	public static loadTexture(name:any,src:any){
 		for(var i=0; i < arguments.length; i+=2){
 			C_Resources.Queue.push({type:"img",name:arguments[i],src:arguments[i+1]});
 		}
@@ -44,7 +44,7 @@ class C_Resources{
 	}
 
 	// too do
-	static loadVideoTexture(name:any,src:any,...myarguments:any[]):any{
+	public static loadVideoTexture(name:any,src:any,...myarguments:any[]):any{
 		console.log("too do");
 		for(var i=0; i < myarguments.length; i+=2){
 			C_Resources.Queue.push({type:"vid",name:myarguments[i],src:myarguments[i+1]});
@@ -54,7 +54,7 @@ class C_Resources{
 
 	//===================================================
 	// Manage Queue
-	static loadNextItem():any{
+	public static loadNextItem():any{
 		//.......................................
 		if(C_Resources.Queue.length == 0){
 			if(C_Resources.onComplete != null) C_Resources.onComplete();
@@ -97,7 +97,7 @@ class C_Resources{
 	//===================================================
    // tagName:any;
 	// Event Handlers
-	static onDownloadSuccess(){
+	public static onDownloadSuccess(){
         console.log(this);
 		//Its an image, lets load it up as a texture in gl.
 		if( this instanceof Image || this.tagName == "VIDEO"){
@@ -107,7 +107,7 @@ class C_Resources{
 		C_Resources.loadNextItem();
 	}
 
-	static onDownloadError(){
+	public static onDownloadError(){
 		console.log("Error getting ",this);
 		C_Resources.loadNextItem();
 	}

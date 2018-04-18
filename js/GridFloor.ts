@@ -1,12 +1,12 @@
 class C_GridFloor{
-    gl:any;
-    transform:C_Transform;
-    mShader:any;
-    mUniformColor:any;
-    mUniformProj:any;
-    mUniformCamera:any;
-    mUniformModelV:any;
-    mesh:any;
+   public gl:any;
+   public  transform:C_Transform;
+   public mShader:any;
+   public  mUniformColor:any;
+   public   mUniformProj:any;
+   public  mUniformCamera:any;
+   public  mUniformModelV:any;
+   public  mesh:any;
 	constructor(gl:any,incAxis:any = false){
 		this.transform = new C_Transform();
 		this.gl = gl;
@@ -14,7 +14,7 @@ class C_GridFloor{
 		this.createShader();
 	}
 
-	createShader():void{
+	public createShader():void{
 		var vShader:string = '#version 300 es\n' +
 			'in vec3 a_position;' +
 			'layout(location=4) in float a_color;' +
@@ -47,7 +47,7 @@ class C_GridFloor{
 		this.gl.useProgram(null);
 	}
 
-	render(camera:any):void{
+	public render(camera:C_Camera):void{
 		//Update Transform Matrix (Modal View)
 		this.transform.updateMatrix();
 
@@ -69,7 +69,7 @@ class C_GridFloor{
 		this.gl.useProgram(null);
 	}
 
-	createMesh(gl:any,incAxis:any):any{
+	public createMesh(gl:any,incAxis:any):void{
 		//Dynamiclly create a grid
 		var verts:any[] = [],
 			size:number = 2,			// W/H of the outer box of the grid, from origin we can only go 1 unit in each direction, so from left to right is 2 units max

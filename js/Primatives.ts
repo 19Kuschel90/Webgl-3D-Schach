@@ -2,8 +2,8 @@ var Primatives:any = {};
 
 
 Primatives.CubeBad = class {
-	static createModal(gl:any):any{ return new C_Modal(Primatives.CubeBad.createMesh(gl)); }
-	static createMesh(gl:any):any{
+	public static createModal(gl:any):any{ return new C_Modal(Primatives.CubeBad.createMesh(gl)); }
+	public static createMesh(gl:any):any{
 		var aVert = [
 				-0.5,0.5,0,0, -0.5,-0.5,0,0, 0.5,-0.5,0,0, 0.5,0.5,0,0,			//Front
 				0.5,0.5,-1,1, 0.5,-0.5,-1,1, -0.5,-0.5,-1,1, -0.5,0.5,-1,1		//Back
@@ -24,8 +24,8 @@ Primatives.CubeBad = class {
 }
 
 Primatives.Quad = class {
-	static createModal(gl:any){ return new C_Modal(Primatives.Quad.createMesh(gl)); }
-	static createMesh(gl:any){
+	public static createModal(gl:any){ return new C_Modal(Primatives.Quad.createMesh(gl)); }
+	public static createMesh(gl:any){
 		var aVert = [ -0.5,0.5,0, -0.5,-0.5,0, 0.5,-0.5,0, 0.5,0.5,0 ],
 			aUV = [ 0,0, 0,1, 1,1, 1,0 ],
 			aIndex = [ 0,1,2, 2,3,0 ];
@@ -37,8 +37,8 @@ Primatives.Quad = class {
 }
 
 Primatives.MultiQuad = class {
-	static createModal(gl:any){ return new C_Modal(Primatives.MultiQuad.createMesh(gl)); }
-	static createMesh(gl:any){
+	public static createModal(gl:any){ return new C_Modal(Primatives.MultiQuad.createMesh(gl)); }
+	public static createMesh(gl:any){
 		var	aIndex = [ ], //0,1,2, 2,3,0
 			aUV = [ ], //0,0, 0,1, 1,1, 1,0 
 			aVert = [];		
@@ -74,8 +74,8 @@ Primatives.MultiQuad = class {
 
 
 Primatives.Cube = class {
-	static createModal(gl:any,name:any,keepRawData:any):any{ return new C_Modal(Primatives.Cube.createMesh(gl,name||"Cube",1,1,1,0,0,0,keepRawData)); }
-	static createMesh(gl:any,name:any,width:any,height:any,depth:any,x:any,y:any,z:any,keepRawData:any):any{
+	public static createModal(gl:any,name:any,keepRawData:any):any{ return new C_Modal(Primatives.Cube.createMesh(gl,name||"Cube",1,1,1,0,0,0,keepRawData)); }
+	public static createMesh(gl:any,name:any,width:any,height:any,depth:any,x:any,y:any,z:any,keepRawData:any):any{
 		var w = width*0.5, h = height*0.5, d = depth*0.5;
 		var x0 = x-w, x1 = x+w, y0 = y-h, y1 = y+h, z0 = z-d, z1 = z+d;
 

@@ -6,9 +6,9 @@ class C_MathUtil {
 
 //###########################################################################################
 class C_Vector3{
-    x:number;
-    y:number;
-    z:number;
+    public x:number;
+	public y:number;
+	public z:number;
 
     constructor(x:number,y:number,z:number){	this.x = x || 0.0;	this.y = y || 0.0;	this.z = z || 0.0; }
 
@@ -38,7 +38,7 @@ class C_Vector3{
 
 //###########################################################################################
 class C_Matrix4{
-    raw:any;
+	public raw:any;
 	constructor(){ this.raw = C_Matrix4.identity(); }
 
 	//....................................................................
@@ -58,7 +58,7 @@ class C_Matrix4{
 	//....................................................................
 	//Methods
 	//Bring is back to identity without changing the transform values.
-	resetRotation():this{	
+	public	resetRotation():this{	
 		for(var i=0; i < this.raw.length; i++){
 			if(i >= 12 && i <= 14) continue;
 			this.raw[i] = (i % 5 == 0)? 1 : 0;  //only positions 0,5,10,15 need to be 1 else 0.
@@ -68,21 +68,21 @@ class C_Matrix4{
 	}
 
 	//reset data back to identity.
-	reset():this{ 
+	public	reset():this{ 
 		for(var i=0; i < this.raw.length; i++) this.raw[i] = (i % 5 == 0)? 1 : 0; //only positions 0,5,10,15 need to be 1 else 0.
 		return this;
 	}
 
 	//....................................................................
 	//Static Data Methods
-	static identity():Float32Array{
+	public static identity():Float32Array{
 		var a:Float32Array = new Float32Array(16);
 		a[0] = a[5] = a[10] = a[15] = 1;
 		return a;
 	}
 
 	//from glMatrix
-	static perspective(out:any, fovy:any, aspect:any, near:any, far:any):any{
+	public static perspective(out:any, fovy:any, aspect:any, near:any, far:any):any{
 		var f = 1.0 / Math.tan(fovy / 2),
 			nf = 1 / (near - far);
 	    out[0] = f / aspect;
@@ -104,7 +104,7 @@ class C_Matrix4{
 	}
 
 
-	static ortho(out:any, left:any, right:any, bottom:any, top:any, near:any, far:any):any {
+	public static ortho(out:any, left:any, right:any, bottom:any, top:any, near:any, far:any):any {
 		var lr = 1 / (left - right),
 			bt = 1 / (bottom - top),
 			nf = 1 / (near - far);
@@ -129,7 +129,7 @@ class C_Matrix4{
 
 	//https://github.com/toji/gl-matrix/blob/master/src/gl-matrix/mat4.js
 	//make the rows into the columns
-	static transpose(out:any, a:any):any{
+	public static transpose(out:any, a:any):any{
 		//If we are transposing ourselves we can skip a few steps but have to cache some values
 		if (out === a) {
 			var a01 = a[1], a02 = a[2], a03 = a[3], a12 = a[6], a13 = a[7], a23 = a[11];
@@ -168,7 +168,7 @@ class C_Matrix4{
 	}
 
 	//Calculates a 3x3 normal matrix (transpose inverse) from the 4x4 matrix
-	static normalMat3(out:any,a:any):any{
+	public static normalMat3(out:any,a:any):any{
 		var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3],
 			a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7],
 			a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11],
@@ -212,7 +212,7 @@ class C_Matrix4{
 	//Static Operation
 
 	//https://github.com/gregtatum/mdn-model-view-projection/blob/master/shared/matrices.js
-	static multiplyVector(mat4:any, v:any):any {
+	public static multiplyVector(mat4:any, v:any):any {
 		var x = v[0], y = v[1], z = v[2], w = v[3];
 		var c1r1 = mat4[ 0], c2r1 = mat4[ 1], c3r1 = mat4[ 2], c4r1 = mat4[ 3],
 			c1r2 = mat4[ 4], c2r2 = mat4[ 5], c3r2 = mat4[ 6], c4r2 = mat4[ 7],
@@ -228,7 +228,7 @@ class C_Matrix4{
 	}
 
 	//https://github.com/toji/gl-matrix/blob/master/src/gl-matrix/vec4.js, vec4.transformMat4
-	static transformVec4(out:any, v:any, m:any):any{
+	public static transformVec4(out:any, v:any, m:any):any{
 		out[0] = m[0] * v[0] + m[4] * v[1] + m[8]	* v[2] + m[12] * v[3];
 		out[1] = m[1] * v[0] + m[5] * v[1] + m[9]	* v[2] + m[13] * v[3];
 		out[2] = m[2] * v[0] + m[6] * v[1] + m[10]	* v[2] + m[14] * v[3];
@@ -238,7 +238,7 @@ class C_Matrix4{
 
 	//From glMatrix
 	//Multiple two mat4 together
-	static mult(out:any, a:any, b:any):any{ 
+	public static mult(out:any, a:any, b:any):any{ 
 	    var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3],
 	        a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7],
 	        a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11],
@@ -274,7 +274,7 @@ class C_Matrix4{
 
 	//....................................................................
 	//Static Transformation
-	static scale(out:any,x:any,y:any,z:any):any{
+	public static scale(out:any,x:any,y:any,z:any):any{
 	    out[0] *= x;
 	    out[1] *= x;
 	    out[2] *= x;
@@ -290,7 +290,7 @@ class C_Matrix4{
 	    return out;
 	};
 
-	static rotateY(out:any,rad:any):any {
+	public static rotateY(out:any,rad:any):any {
 		var s = Math.sin(rad),
 			c = Math.cos(rad),
 			a00 = out[0],
@@ -314,7 +314,7 @@ class C_Matrix4{
 		return out;
 	}
 
-	static rotateX(out:any,rad:any):any {
+	public static rotateX(out:any,rad:any):any {
 	    var s = Math.sin(rad),
 	        c = Math.cos(rad),
 	        a10 = out[4],
@@ -338,7 +338,7 @@ class C_Matrix4{
 	    return out;
 	}
 
-	static rotateZ(out:any,rad:any):any{
+	public static rotateZ(out:any,rad:any):any{
 	    var s = Math.sin(rad),
 	        c = Math.cos(rad),
 	        a00 = out[0],
@@ -362,7 +362,7 @@ class C_Matrix4{
 	    return out;
 	}
 
-	static rotate(out:any, rad:any, axis:any):any{
+	public static rotate(out:any, rad:any, axis:any):any{
 		var x = axis[0], y = axis[1], z = axis[2],
 			len = Math.sqrt(x * x + y * y + z * z),
 			s, c, t,
@@ -408,7 +408,7 @@ class C_Matrix4{
 		out[11] = a03 * b20 + a13 * b21 + a23 * b22;
 	}
 
-	static invert(out:any = null,mat:any= null):boolean {
+	public static invert(out:any = null,mat:any= null):boolean {
 		if(mat === undefined) mat = out; //If input isn't sent, then output is also input
 
 	    var a00 = mat[0], a01 = mat[1], a02 = mat[2], a03 = mat[3],
@@ -456,7 +456,7 @@ class C_Matrix4{
 	}
 
 	//https://github.com/toji/gl-matrix/blob/master/src/gl-matrix/mat4.js  mat4.scalar.translate = function (out, a, v) {
-	static translate(out:any,x:any,y:any,z:any):any{
+		public static translate(out:any,x:any,y:any,z:any):any{
 		out[12] = out[0] * x + out[4] * y + out[8]	* z + out[12];
 		out[13] = out[1] * x + out[5] * y + out[9]	* z + out[13];
 		out[14] = out[2] * x + out[6] * y + out[10]	* z + out[14];

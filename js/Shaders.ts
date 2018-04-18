@@ -1,12 +1,12 @@
 
 
 class C_ShaderBuilder{
-	program:any;
-	gl:any;
-	mUniformList:any;
-	mTextureList:any;
-	noCulling:any;
-	doBlending:any;
+	public	program:any;
+	public	gl:any;
+	public mUniformList:any;
+	public mTextureList:any;
+	public noCulling:any;
+	public doBlending:any;
 	constructor(gl:any,vertShader:string,fragShader:string){
 		
 		//If the text is small, then its most likely DOM names (very hack) else its actual Source.
@@ -29,7 +29,7 @@ class C_ShaderBuilder{
     // Methods For Shader Prep.
     //---------------------------------------------------
     //Takes in unlimited arguments. Its grouped by two so for example (UniformName,UniformType): "uColors","3fv"
-    prepareUniforms(...myargument:any[]) {
+	public  prepareUniforms(...myargument:any[]) {
 		// console.log(this.mUniformList);
 		// console.log("prepareUniforms: " +myargument);
 		
@@ -44,7 +44,7 @@ class C_ShaderBuilder{
     }
 
     //Takes in unlimited arguments. Its grouped by two so for example (UniformName,CacheTextureName): "uMask01","tex001";
-    prepareTextures(...myargument:any[]) {
+	public prepareTextures(...myargument:any[]) {
 		// console.log("prepareTextures: " +myargument);
 		
         if (myargument.length % 2 != 0) { console.log("prepareTextures needs arguments to be in pairs."); return this; }
@@ -65,7 +65,7 @@ class C_ShaderBuilder{
     // Setters Getters
     //---------------------------------------------------
     //Uses a 2 item group argument array. Uniform_Name, Uniform_Value;
-    setUniforms(...myargument:any[]) {
+    public setUniforms(...myargument:any[]) {
 		// console.log("setUniforms: " +myargument);
         if (myargument.length % 2 != 0) { console.log("setUniforms needs myargument to be in pairs."); return this; }
 
@@ -105,17 +105,17 @@ class C_ShaderBuilder{
 	//---------------------------------------------------
 	// Methods
 	//---------------------------------------------------
-	activate(){ this.gl.useProgram(this.program); return this; }
-	deactivate(){ this.gl.useProgram(null); return this; }
+	public activate(){ this.gl.useProgram(this.program); return this; }
+	public	deactivate(){ this.gl.useProgram(null); return this; }
 
 	//function helps clean up resources when shader is no longer needed.
-	dispose(){
+	public dispose(){
 		//unbind the program if its currently active
 		if(this.gl.getParameter(this.gl.CURRENT_PROGRAM) === this.program) this.gl.useProgram(null);
 		this.gl.deleteProgram(this.program);
 	}
 
-	preRender(){
+	public preRender(){
 		this.gl.useProgram(this.program); //Save a function call and just activate this shader program on preRender
 
 		//If passing in arguments, then lets push that to setUniforms for handling. Make less line needed in the main program by having preRender handle Uniforms
@@ -137,7 +137,7 @@ class C_ShaderBuilder{
 		return this;
 	}
 	//Handle rendering a modal
-	renderModel(model:C_Modal, doShaderClose:boolean = false):any{
+	public renderModel(model:C_Modal, doShaderClose:boolean = false):any{
 		this.setUniforms("uMVMatrix",model.transform.getViewMatrix());
 		// console.log(model.mesh.vao);
 		this.gl.bindVertexArray(model.mesh.vao);
@@ -190,10 +190,10 @@ class C_ShaderBuilder{
 //////////////////////////////////////////////////////////////////////////////
 
 class C_Shader{
-	gl:any;
-	program:any;
-	uniformLoc:any;
-	attribLoc:any;
+	public	gl:any;
+	public	program:any;
+	public	uniformLoc:any;
+	public	attribLoc:any;
 	constructor(gl:any,vertShaderSrc:any,fragShaderSrc:any){
 		this.program = C_ShaderUtil.createProgramFromText(gl,vertShaderSrc,fragShaderSrc,true);
 
@@ -209,14 +209,14 @@ class C_Shader{
 
 	//...................................................
 	//Methods
-	activate(){ this.gl.useProgram(this.program); return this; }
-	deactivate(){ this.gl.useProgram(null); return this; }
+	public activate(){ this.gl.useProgram(this.program); return this; }
+	public 	deactivate(){ this.gl.useProgram(null); return this; }
 
-	setPerspective(matData:any):any{	this.gl.uniformMatrix4fv(this.uniformLoc.perspective, false, matData); return this; }
-	setModalMatrix(matData:any):any{	this.gl.uniformMatrix4fv(this.uniformLoc.modalMatrix, false, matData); return this; }
-	setCameraMatrix(matData:any):any{	this.gl.uniformMatrix4fv(this.uniformLoc.cameraMatrix, false, matData); return this; }
+	public setPerspective(matData:any):any{	this.gl.uniformMatrix4fv(this.uniformLoc.perspective, false, matData); return this; }
+	public setModalMatrix(matData:any):any{	this.gl.uniformMatrix4fv(this.uniformLoc.modalMatrix, false, matData); return this; }
+	public setCameraMatrix(matData:any):any{	this.gl.uniformMatrix4fv(this.uniformLoc.cameraMatrix, false, matData); return this; }
 	//function helps clean up resources when shader is no longer needed.
-	dispose(){
+	public dispose(){
 		//unbind the program if its currently active
 		if(this.gl.getParameter(this.gl.CURRENT_PROGRAM) === this.program) this.gl.useProgram(null);
 		this.gl.deleteProgram(this.program);
@@ -226,10 +226,10 @@ class C_Shader{
 	//RENDER RELATED METHODS
 
 	//Setup custom properties
-	preRender(){} //abstract method, extended object may need need to do some things before rendering.
+	public preRender(){} //abstract method, extended object may need need to do some things before rendering.
 
 	//Handle rendering a modal
-	renderModal(modal:any):any{
+	public renderModal(modal:any):any{
 		// console.log(modal);
 		this.setModalMatrix(modal.transform.getViewMatrix());	//Set the transform, so the shader knows where the modal exists in 3d space
 		this.gl.bindVertexArray(modal.mesh.vao);				//Enable VAO, this will set all the predefined attributes for the shader
@@ -264,7 +264,7 @@ class C_TestShader extends C_Shader{
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 class C_GridAxisShader extends C_Shader{
-	program:any;
+	public	program:any;
 	constructor(gl:any,pMatrix:any){
 		var vertSrc = '#version 300 es\n' +
 			'in vec3 a_position;' +
@@ -300,14 +300,14 @@ class C_GridAxisShader extends C_Shader{
 
 class C_ShaderUtil{
 	// load Shader text
-	static domShaderSrc(elmID:string){
+	public static domShaderSrc(elmID:string){
 		var elm:any = document.getElementById(elmID);
 		if(!elm || elm.text == ""){ console.log(elmID + " shader not found or no text."); return null; }
 		
 		return elm.text;
 	}
 
-	static createShader(gl:any,src:string,type:any){
+	public static createShader(gl:any,src:string,type:any){
 		var shader = gl.createShader(type);
 		gl.shaderSource(shader,src);
 		gl.compileShader(shader);
@@ -322,7 +322,7 @@ class C_ShaderUtil{
 		return shader;
 	}
 
-	static createProgram(gl:any,vShader:any,fShader:any,doValidate:any){
+	public static createProgram(gl:any,vShader:any,fShader:any,doValidate:any){
 		//Link shaders together
 		var prog = gl.createProgram();
 		gl.attachShader(prog,vShader);
@@ -359,7 +359,7 @@ class C_ShaderUtil{
 		return prog;
 	}
 
-	static domShaderProgram(gl:any,vectID:any,fragID:any,doValidate:any):any{
+	public static domShaderProgram(gl:any,vectID:any,fragID:any,doValidate:any):any{
 		var vShaderTxt	= C_ShaderUtil.domShaderSrc(vectID);								if(!vShaderTxt)	return null;
 		var fShaderTxt	= C_ShaderUtil.domShaderSrc(fragID);								if(!fShaderTxt)	return null;
 		var vShader		= C_ShaderUtil.createShader(gl,vShaderTxt,gl.VERTEX_SHADER);		if(!vShader)	return null;
@@ -382,7 +382,7 @@ class C_ShaderUtil{
 		// }
 
 //??????
-	static createProgramFromText(gl:any,vShaderTxt:any,fShaderTxt:any,doValidate:any){
+public static createProgramFromText(gl:any,vShaderTxt:any,fShaderTxt:any,doValidate:any){
 		var vShader		= C_ShaderUtil.createShader(gl,vShaderTxt,gl.VERTEX_SHADER);		if(!vShader)	return null;
 		var fShader		= C_ShaderUtil.createShader(gl,fShaderTxt,gl.FRAGMENT_SHADER);	if(!fShader){	gl.deleteShader(vShader); return null; }
 		
@@ -390,7 +390,7 @@ class C_ShaderUtil{
 	}
 
 			//Get the locations of standard Attributes that we will mostly be using. Location will = -1 if attribute is not found.
-	static getStandardAttribLocations(gl:any,program:any){
+			public static getStandardAttribLocations(gl:any,program:any){
 		return {
 			position:	gl.getAttribLocation(program,ATTR_POSITION_NAME),
 			norm:		gl.getAttribLocation(program,ATTR_NORMAL_NAME),
@@ -398,7 +398,7 @@ class C_ShaderUtil{
 		};
 	}
 
-	static getStandardUniformLocations(gl:any,program:any){
+	public static getStandardUniformLocations(gl:any,program:any){
 		return {
 			perspective:	gl.getUniformLocation(program,"uPMatrix"),
 			modalMatrix:	gl.getUniformLocation(program,"uMVMatrix"),
