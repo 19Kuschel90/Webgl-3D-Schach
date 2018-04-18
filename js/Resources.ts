@@ -98,7 +98,6 @@ class C_Resources{
    // tagName:any;
 	// Event Handlers
 	public static onDownloadSuccess(){
-        console.log(this);
 		//Its an image, lets load it up as a texture in gl.
 		if( this instanceof Image || this.tagName == "VIDEO"){
 			var dat:any = this.queueData;
