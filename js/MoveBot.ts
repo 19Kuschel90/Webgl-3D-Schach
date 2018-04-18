@@ -17,9 +17,8 @@ class C_MoveBot{
     }
 
 
-    Update():void{
-        console.log(this.MyObjectTransform.position.x);
-        console.log(this.TragetVec.x);
+    public  Update():void{
+
         if(this.MyObjectTransform.position.x === this.TragetVec.x)
         {
             
@@ -46,41 +45,92 @@ class C_MoveBot{
 
 
     // step * speed
-    MoveZ(step:number){
-        this.MyObjectTransform.position.z += step * this.speed;
+    public  MoveZ(step:number):void{
+        var temp:number =  step * this.speed;
+        this.MyObjectTransform.position.z +=  temp;
+        if(this.MyObjectTransform.position.z < this.TragetVec.z)
+        {
+            if(this.MyObjectTransform.position.z + temp >  this.TragetVec.z )
+            {
+                this.MyObjectTransform.position.z = this.TragetVec.z;
+            }
+        }
+        if(this.MyObjectTransform.position.z > this.TragetVec.z)
+        {
+            if(this.MyObjectTransform.position.z + temp <  this.TragetVec.z )
+            {
+                this.MyObjectTransform.position.z = this.TragetVec.z;
+            }
+        }
     }
 
     // step * speed
-    MoveX(step:number){
-        this.MyObjectTransform.position.x += step * this.speed;
+    public  MoveX(step:number):void{
+        var temp:number =  step * this.speed;
+        this.MyObjectTransform.position.x +=  temp;
+        if(this.MyObjectTransform.position.x < this.TragetVec.x)
+        {
+            if(this.MyObjectTransform.position.x + temp >  this.TragetVec.x )
+            {
+                this.MyObjectTransform.position.x = this.TragetVec.x;
+            }
+        }
+        if(this.MyObjectTransform.position.x > this.TragetVec.x)
+        {
+            if(this.MyObjectTransform.position.x + temp <  this.TragetVec.x )
+            {
+                this.MyObjectTransform.position.x = this.TragetVec.x;
+            }
+        }
     }
 
     // step * speed
-    MoveY(step:number){
-        this.MyObjectTransform.position.y += step * this.speed;
+    public   MoveY(step:number):void{
+        var temp:number =  step * this.speed;
+        this.MyObjectTransform.position.y +=  temp;
+        if(this.MyObjectTransform.position.y < this.TragetVec.y)
+        {
+            if(this.MyObjectTransform.position.y + temp >  this.TragetVec.y )
+            {
+                this.MyObjectTransform.position.y = this.TragetVec.y;
+            }
+        }
+        if(this.MyObjectTransform.position.y > this.TragetVec.y)
+        {
+            if(this.MyObjectTransform.position.y + temp <  this.TragetVec.y )
+            {
+                this.MyObjectTransform.position.y = this.TragetVec.y;
+            }
+        }
+     
     }
+
+    private saveMove(pos:number, stepSpeed:number):void {
+        // if(pos + (stepSpeed*2) <  )
+    }
+
  
     ////////////////////////////////////////////
-    GetSpeed():number{
+    public GetSpeed():number{
          return this.speed;
     }
 
-    SetSpeed(Speed:number){
+    public SetSpeed(Speed:number){
         this.speed = Speed;
     }
 
 //////////////////////////////////////////////////////
-    GetMyObjectTransform():C_Transform{
+public  GetMyObjectTransform():C_Transform{
         return this.MyObjectTransform;
     }
-    SetMyObjectTransform(newTransform:C_Transform):void{
+    public SetMyObjectTransform(newTransform:C_Transform):void{
         this.MyObjectTransform = newTransform;
     }
     /////////////////////////////////////////////////////
-    GetPosition():C_Vector3{
+    public GetPosition():C_Vector3{
         return this.MyObjectTransform.position;
     }
-    SetPosition(NewVector:C_Vector3):void{
+    public  SetPosition(NewVector:C_Vector3):void{
         this.MyObjectTransform.position = NewVector;
     }
 }

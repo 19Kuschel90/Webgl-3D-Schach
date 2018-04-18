@@ -12,8 +12,6 @@ var C_MoveBot = /** @class */ (function () {
         this.speed = Speed;
     }
     C_MoveBot.prototype.Update = function () {
-        console.log(this.MyObjectTransform.position.x);
-        console.log(this.TragetVec.x);
         if (this.MyObjectTransform.position.x === this.TragetVec.x) {
         }
         else {
@@ -37,15 +35,51 @@ var C_MoveBot = /** @class */ (function () {
     };
     // step * speed
     C_MoveBot.prototype.MoveZ = function (step) {
-        this.MyObjectTransform.position.z += step * this.speed;
+        var temp = step * this.speed;
+        this.MyObjectTransform.position.z += temp;
+        if (this.MyObjectTransform.position.z < this.TragetVec.z) {
+            if (this.MyObjectTransform.position.z + temp > this.TragetVec.z) {
+                this.MyObjectTransform.position.z = this.TragetVec.z;
+            }
+        }
+        if (this.MyObjectTransform.position.z > this.TragetVec.z) {
+            if (this.MyObjectTransform.position.z + temp < this.TragetVec.z) {
+                this.MyObjectTransform.position.z = this.TragetVec.z;
+            }
+        }
     };
     // step * speed
     C_MoveBot.prototype.MoveX = function (step) {
-        this.MyObjectTransform.position.x += step * this.speed;
+        var temp = step * this.speed;
+        this.MyObjectTransform.position.x += temp;
+        if (this.MyObjectTransform.position.x < this.TragetVec.x) {
+            if (this.MyObjectTransform.position.x + temp > this.TragetVec.x) {
+                this.MyObjectTransform.position.x = this.TragetVec.x;
+            }
+        }
+        if (this.MyObjectTransform.position.x > this.TragetVec.x) {
+            if (this.MyObjectTransform.position.x + temp < this.TragetVec.x) {
+                this.MyObjectTransform.position.x = this.TragetVec.x;
+            }
+        }
     };
     // step * speed
     C_MoveBot.prototype.MoveY = function (step) {
-        this.MyObjectTransform.position.y += step * this.speed;
+        var temp = step * this.speed;
+        this.MyObjectTransform.position.y += temp;
+        if (this.MyObjectTransform.position.y < this.TragetVec.y) {
+            if (this.MyObjectTransform.position.y + temp > this.TragetVec.y) {
+                this.MyObjectTransform.position.y = this.TragetVec.y;
+            }
+        }
+        if (this.MyObjectTransform.position.y > this.TragetVec.y) {
+            if (this.MyObjectTransform.position.y + temp < this.TragetVec.y) {
+                this.MyObjectTransform.position.y = this.TragetVec.y;
+            }
+        }
+    };
+    C_MoveBot.prototype.saveMove = function (pos, stepSpeed) {
+        // if(pos + (stepSpeed*2) <  )
     };
     ////////////////////////////////////////////
     C_MoveBot.prototype.GetSpeed = function () {
