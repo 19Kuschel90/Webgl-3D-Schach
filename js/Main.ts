@@ -40,7 +40,7 @@ function main(vertex_shader:string,fragment_shader:string):void
 				gl = GLInstance("webglCanvas").fFitScreen(0.95,0.9).fClear();
 				
 				gCamera = new C_Camera(gl);
-				gCamera.transform.position.set(8,-8,15);
+				//gCamera.transform.position.set(8,-8,15);
 				gCamera.transform.rotation.set(90,0,0);
 				gCameraCtrl = new C_CameraController(gl,gCamera);
 
@@ -48,9 +48,10 @@ function main(vertex_shader:string,fragment_shader:string):void
 				gRLoop = new C_RenderLoop(onRender,30);
 
 				//....................................
-				//Load up resources
+				//Load up resources team-liquid-logo-blue-ocean.jpg
 		//		C_Resources.setup(gl,onReady).loadTexture("atlas","../image/Pony.png").start();
 				C_Resources.setup(gl,onReady).loadTexture("atlas","../image/c62bb9b27329447cb2b937fe6213889a.jpg").start();
+			//	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/team-liquid-logo-blue-ocean.jpg").start();
 			//	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/atlas_mindcraft.png").start();
 			}
 			
@@ -72,14 +73,17 @@ function main(vertex_shader:string,fragment_shader:string):void
 				//		.setPosition(0,0.6,0);//.setScale(0.7,0.7,0.7);
 
 				var cubemesh:any = Primatives.Cube.createMesh(gl,"Cube",1,1,1,0,0,0,false);
+				// 8 y = x  // 16 l
+				gCamera.transform.position.set(7.5,-7.5,14.7);
+				//gCamera.transform.position.set(0,0,64);
 				for(var i=0; i < 256; i++){
-					var model:C_Modal = new C_Modal(cubemesh).setPosition( (i%16 ) , 2.0 , -Math.floor(i/16) );
+					var model:C_Modal = new C_Modal(cubemesh).setPosition( (i%16 ) , 0.0 , -Math.floor(i/16) );
 					gCubes.push(model);
 					moveBot.push( new C_MoveBot(model.transform,
 						model.transform.position
 						));
 					moveBot[i].SetPosition(new C_Vector3(0,0,0));
-					moveBot[i].SetSpeed(0.005);
+					moveBot[i].SetSpeed(0.5);
 				}
 				//....................................
 				gRLoop.start();
@@ -97,8 +101,8 @@ function onRender(dt:number):void{
 				//................................
 				//Draw Out models
 				gShader.preRender("uCameraMatrix",gCamera.viewMatrix);
-					//.renderModel(gModel.preRender(),false);
-// console.log(gCubes);
+				//.renderModel(gModel.preRender(),false);
+				// console.log(gCubes);
 				uPositonX = 0;
 				uPositonY = 0;
 				temp = 15;
@@ -107,8 +111,10 @@ function onRender(dt:number):void{
 					getPositioninTexture(i);
 					moveBot[i].Update();
 				}
-			 	// (<HTMLElement>document.getElementById('PosX')).innerText = String(moveBot.GetMyObjectTransform().position.x);
-				// (<HTMLElement>document.getElementById('PosY')).innerText = String(moveBot.GetMyObjectTransform().position.y);
+			 	//  (<HTMLElement>document.getElementById('PosX')).innerText = String(gCamera.transform.position.x);
+			 	//  (<HTMLElement>document.getElementById('PosY')).innerText = String(gCamera.transform.position.y);
+			 	//  (<HTMLElement>document.getElementById('PosZ')).innerText = String(gCamera.transform.position.z);
+			// (<HTMLElement>document.getElementById('PosY')).innerText = String(moveBot.GetMyObjectTransform().position.y);
 				//fsds = tesft.innerText;
 		  
 }
