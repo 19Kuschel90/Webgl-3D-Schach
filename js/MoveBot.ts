@@ -7,7 +7,7 @@ class C_MoveBot{
     constructor( 
         ObjectTransform:C_Transform = new C_Transform()
         ,TragetVec:C_Vector3 = new C_Vector3(0,0,0)      
-        ,imRun:boolean = false
+        ,imRun:boolean = true
         ,Speed:number = 1
     ) {
         this.MyObjectTransform = ObjectTransform;
@@ -40,6 +40,13 @@ class C_MoveBot{
             }else{
                  this.MoveZ(-1);
             }
+        }
+        if(this.MyObjectTransform.position.z === this.TragetVec.z)
+        {
+
+        if(this.MyObjectTransform.position.x === this.TragetVec.x){
+            this.isRun = false;
+        }
         }
     }
 
@@ -120,8 +127,8 @@ class C_MoveBot{
     }
 
 //////////////////////////////////////////////////////
-public  GetMyObjectTransform():C_Transform{
-        return this.MyObjectTransform;
+    public  GetMyObjectTransform():C_Transform{
+            return this.MyObjectTransform;
     }
     public SetMyObjectTransform(newTransform:C_Transform):void{
         this.MyObjectTransform = newTransform;
@@ -132,5 +139,12 @@ public  GetMyObjectTransform():C_Transform{
     }
     public  SetPosition(NewVector:C_Vector3):void{
         this.MyObjectTransform.position = NewVector;
+    }
+    ////////////////////////////////////
+    public GetIsRun():boolean{
+        return this.isRun;
+    }
+    public SetIsRun(wert:boolean){
+         this.isRun = wert;
     }
 }

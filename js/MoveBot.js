@@ -3,7 +3,7 @@ var C_MoveBot = /** @class */ (function () {
     function C_MoveBot(ObjectTransform, TragetVec, imRun, Speed) {
         if (ObjectTransform === void 0) { ObjectTransform = new C_Transform(); }
         if (TragetVec === void 0) { TragetVec = new C_Vector3(0, 0, 0); }
-        if (imRun === void 0) { imRun = false; }
+        if (imRun === void 0) { imRun = true; }
         if (Speed === void 0) { Speed = 1; }
         this.speed = 1;
         this.MyObjectTransform = ObjectTransform;
@@ -30,6 +30,11 @@ var C_MoveBot = /** @class */ (function () {
             }
             else {
                 this.MoveZ(-1);
+            }
+        }
+        if (this.MyObjectTransform.position.z === this.TragetVec.z) {
+            if (this.MyObjectTransform.position.x === this.TragetVec.x) {
+                this.isRun = false;
             }
         }
     };
@@ -101,6 +106,13 @@ var C_MoveBot = /** @class */ (function () {
     };
     C_MoveBot.prototype.SetPosition = function (NewVector) {
         this.MyObjectTransform.position = NewVector;
+    };
+    ////////////////////////////////////
+    C_MoveBot.prototype.GetIsRun = function () {
+        return this.isRun;
+    };
+    C_MoveBot.prototype.SetIsRun = function (wert) {
+        this.isRun = wert;
     };
     return C_MoveBot;
 }());

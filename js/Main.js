@@ -68,13 +68,14 @@ function onReady() {
         var model = new C_Modal(cubemesh).setPosition((i % 16), 0.0, -Math.floor(i / 16));
         gCubes.push(model);
         moveBot.push(new C_MoveBot(model.transform, model.transform.position));
-        moveBot[i].SetPosition(new C_Vector3(4, 0, -5));
-        moveBot[i].SetSpeed(0.5);
+        moveBot[i].SetPosition(new C_Vector3(0, 0, 0));
+        moveBot[i].SetSpeed(1.0);
     }
     //....................................
     gRLoop.start();
     //onRender(0);
 }
+var testi = 0;
 function onRender(dt) {
     // console.log("run");
     //................................
@@ -93,7 +94,12 @@ function onRender(dt) {
     for (var i = 0; i < gCubes.length; i++) {
         gShader.setUniforms("uPositonX", uPositonX).setUniforms("uPositonY", uPositonY).renderModel(gCubes[i].preRender());
         getPositioninTexture(i);
-        moveBot[i].Update();
+        if (moveBot[i].GetIsRun() == true && testi == i) {
+            moveBot[i].Update();
+            if (moveBot[i].GetIsRun() == false) {
+                testi++;
+            }
+        }
     }
     //  (<HTMLElement>document.getElementById('PosX')).innerText = String(gCamera.transform.position.x);
     //  (<HTMLElement>document.getElementById('PosY')).innerText = String(gCamera.transform.position.y);

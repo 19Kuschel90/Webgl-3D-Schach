@@ -83,14 +83,15 @@ function main(vertex_shader:string,fragment_shader:string):void
 					moveBot.push( new C_MoveBot(model.transform,
 						model.transform.position
 						));
-					moveBot[i].SetPosition(new C_Vector3(4,0,-5));
-					moveBot[i].SetSpeed(0.5);
+					moveBot[i].SetPosition(new C_Vector3(0,0,0));
+					moveBot[i].SetSpeed(1.0);
 				}
+				
 				//....................................
 				gRLoop.start();
 				//onRender(0);
 			}
-
+var testi:number = 0;
 function onRender(dt:number):void{
 	// console.log("run");
 	//................................
@@ -110,7 +111,14 @@ function onRender(dt:number):void{
 				for(var i:number=0; i < gCubes.length; i++){
 					gShader.setUniforms("uPositonX",uPositonX).setUniforms("uPositonY",uPositonY).renderModel( gCubes[i].preRender() );
 					getPositioninTexture(i);
-					moveBot[i].Update();
+					if(moveBot[i].GetIsRun() == true &&testi == i)
+					{
+						moveBot[i].Update();
+						if(moveBot[i].GetIsRun() == false)
+						{
+							testi++;
+						}
+					}
 				}
 			 	//  (<HTMLElement>document.getElementById('PosX')).innerText = String(gCamera.transform.position.x);
 			 	//  (<HTMLElement>document.getElementById('PosY')).innerText = String(gCamera.transform.position.y);
@@ -119,6 +127,7 @@ function onRender(dt:number):void{
 				//fsds = tesft.innerText;
 		  
 }
+
 
 function getPositioninTexture(i:number):void{
 	if(i >= temp)
