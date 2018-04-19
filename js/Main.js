@@ -68,7 +68,7 @@ function onReady() {
         var model = new C_Modal(cubemesh).setPosition((i % 16), 0.0, -Math.floor(i / 16));
         gCubes.push(model);
         moveBot.push(new C_MoveBot(model.transform, model.transform.position));
-        moveBot[i].SetPosition(new C_Vector3(0, 0, 0));
+        moveBot[i].SetPosition(new C_Vector3(4, 0, -5));
         moveBot[i].SetSpeed(0.5);
     }
     //....................................

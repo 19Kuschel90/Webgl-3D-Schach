@@ -33,6 +33,7 @@ var moveBot:C_MoveBot[] = [];
 
 function main(vertex_shader:string,fragment_shader:string):void
 {
+	
 	gvertex_shader = vertex_shader;
 	gfragment_shader = fragment_shader;
 					//....................................
@@ -82,7 +83,7 @@ function main(vertex_shader:string,fragment_shader:string):void
 					moveBot.push( new C_MoveBot(model.transform,
 						model.transform.position
 						));
-					moveBot[i].SetPosition(new C_Vector3(0,0,0));
+					moveBot[i].SetPosition(new C_Vector3(4,0,-5));
 					moveBot[i].SetSpeed(0.5);
 				}
 				//....................................
