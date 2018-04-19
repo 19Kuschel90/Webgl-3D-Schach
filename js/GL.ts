@@ -193,8 +193,8 @@ function GLInstance(canvasID:string):any{
     ):any
     {
 		//set the size of the canvas, on chrome we need to set it 3 ways to make it work perfectly.
-		this.canvas.style.width = String(64) + Unit;
-		this.canvas.style.height = String(48) + Unit;
+		this.canvas.style.width = String(1024) + Unit;
+		this.canvas.style.height = String(1024) + Unit;
 		this.canvas.width = 1024;
 		this.canvas.height = 1024;
 
