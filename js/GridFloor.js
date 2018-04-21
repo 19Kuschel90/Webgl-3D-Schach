@@ -2,6 +2,14 @@
 var C_GridFloor = /** @class */ (function () {
     function C_GridFloor(gl, incAxis) {
         if (incAxis === void 0) { incAxis = false; }
+        this.gl = null;
+        this.transform = new C_Transform();
+        this.mShader = null;
+        this.mUniformColor = null;
+        this.mUniformProj = null;
+        this.mUniformCamera = null;
+        this.mUniformModelV = null;
+        this.mesh = null;
         this.transform = new C_Transform();
         this.gl = gl;
         this.createMesh(gl, incAxis);
@@ -133,6 +141,16 @@ var C_GridFloor = /** @class */ (function () {
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
         gl.mMeshCache["grid"] = mesh;
         this.mesh = mesh;
+    };
+    C_GridFloor.prototype.rest = function () {
+        gl = null;
+        this.transform = new C_Transform();
+        this.mShader = null;
+        this.mUniformColor = null;
+        this.mUniformProj = null;
+        this.mUniformCamera = null;
+        this.mUniformModelV = null;
+        this.mesh = null;
     };
     return C_GridFloor;
 }());

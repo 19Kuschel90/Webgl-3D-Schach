@@ -1,12 +1,12 @@
 class C_GridFloor{
-   public gl:any;
-   public  transform:C_Transform;
-   public mShader:any;
-   public  mUniformColor:any;
-   public   mUniformProj:any;
-   public  mUniformCamera:any;
-   public  mUniformModelV:any;
-   public  mesh:any;
+   public gl:any = null;
+   public  transform:C_Transform  = new C_Transform();
+   public mShader:any  = null;
+   public  mUniformColor:any = null;
+   public   mUniformProj:any = null;
+   public  mUniformCamera:any = null;
+   public  mUniformModelV:any = null;
+   public  mesh:any = null;
 	constructor(gl:any,incAxis:any = false){
 		this.transform = new C_Transform();
 		this.gl = gl;
@@ -165,5 +165,16 @@ class C_GridFloor{
 		gl.bindBuffer(gl.ARRAY_BUFFER,null);
 		gl.mMeshCache["grid"] = mesh;
 		this.mesh = mesh;
+	}
+
+	public rest():void{
+		 gl = null;
+		 this.transform  = new C_Transform();
+		 this.mShader  = null;
+		 this.mUniformColor = null;
+		 this.mUniformProj = null;
+		 this.mUniformCamera = null;
+		 this.mUniformModelV = null;
+		 this.mesh = null;
 	}
 }
