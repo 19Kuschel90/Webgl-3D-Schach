@@ -7,8 +7,8 @@ class C_Resources{
 	public static Queue:any[] = [];
 	public static Images:any[] = [];
 	public static Videos:any[] = [];
-	public static queueData:any;
-	public static tagName:any;
+	public static queueData:any = null;
+	public static tagName:any = null;
 	//Setup resource object
 	public static setup(gl:any,completeHandler:any){
 		C_Resources.gl = gl;
@@ -109,6 +109,16 @@ class C_Resources{
 	public static onDownloadError(){
 		console.log("Error getting ",this);
 		C_Resources.loadNextItem();
+	}
+
+	public static rest(){
+		C_Resources.gl = null;
+		C_Resources.onComplete = null;
+		C_Resources.Queue = [];
+		C_Resources.Images = [];
+		C_Resources.Videos = [];
+		C_Resources.queueData = null;
+		C_Resources.tagName = null;
 	}
 }
 

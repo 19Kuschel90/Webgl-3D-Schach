@@ -99,10 +99,21 @@ var C_Resources = /** @class */ (function () {
         console.log("Error getting ", this);
         C_Resources.loadNextItem();
     };
+    C_Resources.rest = function () {
+        C_Resources.gl = null;
+        C_Resources.onComplete = null;
+        C_Resources.Queue = [];
+        C_Resources.Images = [];
+        C_Resources.Videos = [];
+        C_Resources.queueData = null;
+        C_Resources.tagName = null;
+    };
     C_Resources.onComplete = null;
     C_Resources.Queue = [];
     C_Resources.Images = [];
     C_Resources.Videos = [];
+    C_Resources.queueData = null;
+    C_Resources.tagName = null;
     return C_Resources;
 }());
 // var C_Resources.Queue = [];

@@ -1,11 +1,11 @@
 
 class C_RenderLoop{
-    public msLastFrame:any;
-    public callBack:any;
-    public isActive:boolean;
-    public fps:Number;
-    public msFpsLimit:any;
-    public run:any;
+    public msLastFrame:any = null;
+    public callBack:any  = null;;
+    private isActive:boolean  = false;;
+    public fps:Number  = -1;
+	public msFpsLimit:any = null;
+    public run:any = null;
 	constructor(callback:any = null	,fps:any = null){
 		var oThis = this;
 		this.msLastFrame = null;	//The time in Miliseconds of the last frame.
@@ -54,4 +54,13 @@ class C_RenderLoop{
 	}
 
 	public stop():void{ this.isActive = false; }
+
+	public rest():void{
+		this.msLastFrame = null;
+		this.callBack  = null;;
+		this.isActive  = false;;
+		this.fps  = -1;
+		this.msFpsLimit = null;
+		this.run = null;
+	}
 }

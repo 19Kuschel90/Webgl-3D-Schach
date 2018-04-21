@@ -3,6 +3,12 @@ var C_RenderLoop = /** @class */ (function () {
     function C_RenderLoop(callback, fps) {
         if (callback === void 0) { callback = null; }
         if (fps === void 0) { fps = null; }
+        this.msLastFrame = null;
+        this.callBack = null;
+        this.isActive = false;
+        this.fps = -1;
+        this.msFpsLimit = null;
+        this.run = null;
         var oThis = this;
         this.msLastFrame = null; //The time in Miliseconds of the last frame.
         this.callBack = callback; //What function to call for each frame
@@ -36,6 +42,8 @@ var C_RenderLoop = /** @class */ (function () {
             };
         }
     }
+    ;
+    ;
     C_RenderLoop.prototype.start = function () {
         this.isActive = true;
         this.msLastFrame = performance.now();
@@ -43,6 +51,16 @@ var C_RenderLoop = /** @class */ (function () {
         return this;
     };
     C_RenderLoop.prototype.stop = function () { this.isActive = false; };
+    C_RenderLoop.prototype.rest = function () {
+        this.msLastFrame = null;
+        this.callBack = null;
+        ;
+        this.isActive = false;
+        ;
+        this.fps = -1;
+        this.msFpsLimit = null;
+        this.run = null;
+    };
     return C_RenderLoop;
 }());
 //# sourceMappingURL=RenderLoop.js.map
