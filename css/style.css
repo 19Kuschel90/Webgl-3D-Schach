@@ -1,18 +1,6 @@
-.navbar {
-    background: pink;
-    color: pink;
+.input-field {
+  background: #bdc4c0;
+  width: 600px;
+  margin: 0 auto;
 }
-
-.navbar-light .navbar-brand {
-    color: red !important;
-}
-
-body {
-    background: green;
-}
-
-.alert-success {
-    background: url(../image/team-liquid-logo-blue-ocean.jpg);
-    background-size: cover;
-    color: ghostwhite;
-}
+/*# sourceMappingURL=style.css.map */
