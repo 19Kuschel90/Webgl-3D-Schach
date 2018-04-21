@@ -166,10 +166,12 @@ function GLInstance(canvasID) {
     , h, // height 
     Unit // %, px, .....
     ) {
+        if (w === void 0) { w = 600; } // width
+        if (h === void 0) { h = 600; }
         if (Unit === void 0) { Unit = "px"; } // %, px, .....
         //set the size of the canvas, on chrome we need to set it 3 ways to make it work perfectly.
-        this.canvas.style.width = String(1024) + Unit;
-        this.canvas.style.height = String(1024) + Unit;
+        this.canvas.style.width = String(600) + Unit;
+        this.canvas.style.height = String(600) + Unit;
         this.canvas.width = 1024;
         this.canvas.height = 1024;
         //when updating the canvas size, must reset the viewport of the canvas 

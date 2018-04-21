@@ -187,14 +187,14 @@ function GLInstance(canvasID:string):any{
 
 	//Set the size of the canvas html element and the rendering view port
     gl.fSetSize = function(
-        w:number // width
-        ,h:number, // height 
+        w:number = 600 // width
+        ,h:number = 600, // height 
         Unit:String = "px" // %, px, .....
     ):any
     {
 		//set the size of the canvas, on chrome we need to set it 3 ways to make it work perfectly.
-		this.canvas.style.width = String(1024) + Unit;
-		this.canvas.style.height = String(1024) + Unit;
+		this.canvas.style.width = String(600) + Unit;
+		this.canvas.style.height = String(600) + Unit;
 		this.canvas.width = 1024;
 		this.canvas.height = 1024;
 
