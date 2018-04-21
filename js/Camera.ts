@@ -1,9 +1,9 @@
 class C_Camera{
-    projectionMatrix:Float32Array;
-    viewMatrix:Float32Array;
-    mode:number;
+    projectionMatrix:Float32Array = new Float32Array(16);
+    viewMatrix:Float32Array = new Float32Array(16);;
+    mode:number = 0;
     Camera:number = 1;
-    transform:C_Transform;
+    transform:C_Transform = new C_Transform();
   
 	constructor(gl:any,fov:number = 45,near:number = 0.1,far:number= 100.0){
 		//Setup the perspective matrix
@@ -68,6 +68,14 @@ class C_Camera{
 		C_Matrix4.invert(this.viewMatrix,this.transform.matView.raw);
 		return this.viewMatrix;
 	}
+
+	rest():void{
+		this.projectionMatrix = new Float32Array(16);
+		this.viewMatrix = new Float32Array(16);;
+		this.mode = 0;
+		this.Camera = 1;
+		this.transform = new C_Transform();
+	}
 }
 
 
@@ -78,19 +86,19 @@ class C_Camera{
 
 
 class C_CameraController{
-    canvas:any;
-    camera:any;
-    rotateRate:number;
-    panRate:number;
-    zoomRate:number;
-    offsetX:number;
-    offsetY:number;
-    initX:number;
-    initY:number;
-    prevX:number;
-    prevY:number;
-    onUpHandler:any;
-    onMoveHandler:any;
+    canvas:any = null;
+    camera:any = null;
+    rotateRate:number = 0;
+    panRate:number = 0;
+    zoomRate:number = 0;
+    offsetX:number = 0;
+    offsetY:number = 0;
+    initX:number = 0;
+    initY:number = 0;
+    prevX:number = 0;
+    prevY:number = 0;
+    onUpHandler:any = null;
+    onMoveHandler:any = null;
 	constructor(gl:any,camera:any){
 		var oThis = this;
 		var box = gl.canvas.getBoundingClientRect();
@@ -156,5 +164,22 @@ class C_CameraController{
 
 		this.prevX = x;
 		this.prevY = y;
+	}
+
+	rest():void
+	{
+		this.canvas = null;
+		this.camera = null;
+		this.rotateRate = 0;
+		this.panRate = 0;
+		this.zoomRate = 0;
+		this.offsetX = 0;
+		this.offsetY = 0;
+		this.initX = 0;
+		this.initY = 0;
+		this.prevX = 0;
+		this.prevY = 0;
+		this.onUpHandler = null;
+		this.onMoveHandler = null;
 	}
 }

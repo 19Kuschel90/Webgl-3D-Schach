@@ -4,7 +4,11 @@ var C_Camera = /** @class */ (function () {
         if (fov === void 0) { fov = 45; }
         if (near === void 0) { near = 0.1; }
         if (far === void 0) { far = 100.0; }
+        this.projectionMatrix = new Float32Array(16);
+        this.viewMatrix = new Float32Array(16);
+        this.mode = 0;
         this.Camera = 1;
+        this.transform = new C_Transform();
         //Setup the perspective matrix
         this.projectionMatrix = new Float32Array(16);
         var ratio = gl.canvas.width / gl.canvas.height;
@@ -13,6 +17,7 @@ var C_Camera = /** @class */ (function () {
         this.viewMatrix = new Float32Array(16); //Cache the matrix that will hold the inverse of the transform.
         this.mode = 1; //Set what sort of control mode to use.
     }
+    ;
     C_Camera.prototype.panX = function (v) {
         if (this.mode == 1)
             return; // Panning on the X Axis is only allowed when in free mode
@@ -61,12 +66,33 @@ var C_Camera = /** @class */ (function () {
         C_Matrix4.invert(this.viewMatrix, this.transform.matView.raw);
         return this.viewMatrix;
     };
+    C_Camera.prototype.rest = function () {
+        this.projectionMatrix = new Float32Array(16);
+        this.viewMatrix = new Float32Array(16);
+        ;
+        this.mode = 0;
+        this.Camera = 1;
+        this.transform = new C_Transform();
+    };
     return C_Camera;
 }());
 // Camera.MODE_FREE = 0;	//Allows free movement of position and rotation, basicly first person type of camera
 // Camera.MODE_ORBIT = 1;	//Movement is locked to rotate around the origin, Great for 3d editors or a single model viewer
 var C_CameraController = /** @class */ (function () {
     function C_CameraController(gl, camera) {
+        this.canvas = null;
+        this.camera = null;
+        this.rotateRate = 0;
+        this.panRate = 0;
+        this.zoomRate = 0;
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.initX = 0;
+        this.initY = 0;
+        this.prevX = 0;
+        this.prevY = 0;
+        this.onUpHandler = null;
+        this.onMoveHandler = null;
         var oThis = this;
         var box = gl.canvas.getBoundingClientRect();
         this.canvas = gl.canvas; //Need access to the canvas html element, main to access events
@@ -118,6 +144,21 @@ var C_CameraController = /** @class */ (function () {
         }
         this.prevX = x;
         this.prevY = y;
+    };
+    C_CameraController.prototype.rest = function () {
+        this.canvas = null;
+        this.camera = null;
+        this.rotateRate = 0;
+        this.panRate = 0;
+        this.zoomRate = 0;
+        this.offsetX = 0;
+        this.offsetY = 0;
+        this.initX = 0;
+        this.initY = 0;
+        this.prevX = 0;
+        this.prevY = 0;
+        this.onUpHandler = null;
+        this.onMoveHandler = null;
     };
     return C_CameraController;
 }());
