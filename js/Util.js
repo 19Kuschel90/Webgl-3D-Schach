@@ -16,7 +16,6 @@ function G_LoadShader() {
                         return;
                     }
                     else {
-                        // Too Do
                         main(vertex_shader, fragment_shader);
                     }
                 });

@@ -1,9 +1,5 @@
 // call G_Main
 function G_LoadShader():void {
-
-
-
-    
     try {
         G_loadTextResource('../glsl/vertex_shader.glsl', function(vsErr:any, vertex_shader:string) {
             if (vsErr) {
@@ -17,7 +13,7 @@ function G_LoadShader():void {
                         console.error(fsErr);
                         return;
                     } else {
-                        // Too Do
+                 
                         main(
                             vertex_shader,
                             fragment_shader);
@@ -28,9 +24,6 @@ function G_LoadShader():void {
         } catch (e) {
             alert('Fatal error getting Susan texture (see console) 2522018033520');
         }
-        
-    
-
 }
 
 // load Text Resource
