@@ -6,7 +6,6 @@
 		uniform mat4 uPMatrix;
 		uniform mat4 uMVMatrix;
 		uniform mat4 uCameraMatrix;
-		uniform vec2[6] uFaces;
 		uniform float uPositonX;
 		uniform float uPositonY;
 		out highp vec2 vUV;
