@@ -2,28 +2,19 @@
 window.addEventListener("load", function () {
     G_LoadShader();
 });
-var gl;
-var gModal;
+var gl = null;
+var gModal = null;
 var gCamera;
 var gCameraCtrl;
-var gShader;
-var gGridShader;
-var gGridModal;
-var RLoop;
-var gGridFloor;
+var gShader = null;
+var gGridShader = null;
+var gGridModal = null;
+var RLoop = null;
 var gRLoop;
-var Resources;
+var Resources = null;
 var gCubes = [];
-var texMap = [
-    [15, 15, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-    [4, 1, 4, 1, 4, 1, 5, 1, 4, 1, 5, 1],
-    [11, 1, 10, 1, 10, 1, 9, 1, 10, 1, 9, 1],
-    [7, 7, 6, 7, 6, 7, 6, 7, 6, 7, 6, 6],
-    [8, 8, 8, 8, 8, 8, 9, 8, 8, 8, 9, 8],
-    [8, 0, 8, 0, 8, 0, 10, 0, 8, 0, 9, 0] //TNT
-];
-var gvertex_shader;
-var gfragment_shader;
+var gVertex_shader;
+var gFragment_shader;
 var uPositonX = 0;
 var uPositonY = 0;
 var temp = 15;
@@ -31,16 +22,14 @@ var moveBot = [];
 // var tesft:HTMLElement  | null;
 // var fsds:string ;
 function main(vertex_shader, fragment_shader) {
-    gvertex_shader = vertex_shader;
-    gfragment_shader = fragment_shader;
+    gVertex_shader = vertex_shader;
+    gFragment_shader = fragment_shader;
     //....................................
     //System Setup
     gl = GLInstance("webglCanvas").fFitScreen(0.95, 0.9).fClear();
     gCamera = new C_Camera(gl);
-    //gCamera.transform.position.set(8,-8,15);
     gCamera.transform.rotation.set(90, 0, 0);
     gCameraCtrl = new C_CameraController(gl, gCamera);
-    gGridFloor = new C_GridFloor(gl);
     gRLoop = new C_RenderLoop(onRender, 30);
     //....................................
     //Load up resources team-liquid-logo-blue-ocean.jpg
@@ -49,17 +38,11 @@ function main(vertex_shader, fragment_shader) {
     //	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/team-liquid-logo-blue-ocean.jpg").start();
     //	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/atlas_mindcraft.png").start();
 }
-//==================================================
-//When Main System is setup and all resources are downloaded.
 function onReady() {
-    // console.log("onReady()");
-    //Setup Test Shader, Modal, Meshes
-    gShader = new C_ShaderBuilder(gl, gvertex_shader, gfragment_shader)
+    gShader = new C_ShaderBuilder(gl, gVertex_shader, gFragment_shader)
         .prepareUniforms("uPMatrix", "mat4", "uMVMatrix", "mat4", "uCameraMatrix", "mat4", "uFaces", "2fv", "uPositonX", "fv", "uPositonY", "fv")
         .prepareTextures("uAltas", "atlas")
         .setUniforms("uPMatrix", gCamera.projectionMatrix);
-    //gModel = Primatives.Cube.createModal(gl,"Cube",true)
-    //		.setPosition(0,0.6,0);//.setScale(0.7,0.7,0.7);
     var cubemesh = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
     // 8 y = x  // 16 l
     gCamera.transform.position.set(7.5, -7.5, 14.7);
@@ -75,14 +58,13 @@ function onReady() {
     gRLoop.start();
     //onRender(0);
 }
-var testi = 0;
+var testi = 0; // Too Do
 function onRender(dt) {
     // console.log("run");
     //................................
     //Main Elements to draw to the frame
     gl.fClear();
     gCamera.updateViewMatrix();
-    gGridFloor.render(gCamera);
     //................................
     //Draw Out models
     gShader.preRender("uCameraMatrix", gCamera.viewMatrix);
@@ -116,5 +98,36 @@ function getPositioninTexture(i) {
     else {
         uPositonX++;
     }
+}
+function shutdown() {
+    gl = null;
+    gModal = null;
+    gCamera.rest();
+    gCameraCtrl.rest();
+    gShader = null;
+    gGridShader = null;
+    gGridModal = null;
+    RLoop = null;
+    gRLoop.rest();
+    C_Resources.rest();
+    gCubes = [];
+    testi = 0;
+    gVertex_shader = null;
+    gFragment_shader = null;
+    uPositonX = 0;
+    uPositonY = 0;
+    temp = 15;
+    moveBot = [];
+}
+function NewStart() {
+    console.log("NewStart");
+    shutdown();
+    G_LoadShader();
+}
+function StopRenderLoop() {
+    gRLoop.stop();
+}
+function StartRenderLoop() {
+    gRLoop.start();
 }
 //# sourceMappingURL=Main.js.map

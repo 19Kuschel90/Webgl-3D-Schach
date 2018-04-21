@@ -1,29 +1,21 @@
 window.addEventListener("load",function(){
     G_LoadShader();
 });
-var gl:any;
-var gModal:any;
+var gl:any = null;
+var gModal:any = null;
 var gCamera:C_Camera;
 var gCameraCtrl:C_CameraController;
-var gShader:any;
-var gGridShader:any;
-var gGridModal:any;
-var RLoop:any;
-var gGridFloor:C_GridFloor;
+var gShader:any = null;
+var gGridShader:any = null;
+var gGridModal:any = null;
+var RLoop:any = null;
 var gRLoop:C_RenderLoop;
-var Resources:any;
+var Resources:any = null;
 var gCubes:C_Modal[] = [];
-var texMap:any[] = [
-	[15,15, 1,0, 1,0, 1,0, 1,0, 1,0],			//GrassDirt
-	[4,1, 4,1, 4,1, 5,1, 4,1, 5,1],			//Log
-	[11,1, 10,1, 10,1, 9,1, 10,1, 9,1],		//Chest
-	[7,7, 6,7, 6,7, 6,7, 6,7, 6,6],			//Pumpkin
-	[8,8, 8,8, 8,8, 9,8, 8,8, 9,8],			//WaterMelon
-	[8,0, 8,0, 8,0, 10,0, 8,0, 9,0]			//TNT
-];
 
-var gvertex_shader:string;
-var gfragment_shader:string;
+var gVertex_shader:any;
+var gFragment_shader:any;
+
 var uPositonX:number = 0;
 var uPositonY:number = 0;
 var temp:number = 15;
@@ -33,45 +25,38 @@ var moveBot:C_MoveBot[] = [];
 
 function main(vertex_shader:string,fragment_shader:string):void
 {
+	gVertex_shader = vertex_shader;
+	gFragment_shader = fragment_shader;
+	//....................................
+	//System Setup
+	gl = GLInstance("webglCanvas").fFitScreen(0.95,0.9).fClear();
 	
-	gvertex_shader = vertex_shader;
-	gfragment_shader = fragment_shader;
-					//....................................
-				//System Setup
-				gl = GLInstance("webglCanvas").fFitScreen(0.95,0.9).fClear();
-				
-				gCamera = new C_Camera(gl);
-				//gCamera.transform.position.set(8,-8,15);
-				gCamera.transform.rotation.set(90,0,0);
-				gCameraCtrl = new C_CameraController(gl,gCamera);
+	gCamera = new C_Camera(gl);
+	gCamera.transform.rotation.set(90,0,0);
+	gCameraCtrl = new C_CameraController(gl,gCamera);
+	
+	gRLoop = new C_RenderLoop(onRender,30);
+	
+	//....................................
+	//Load up resources team-liquid-logo-blue-ocean.jpg
+	//		C_Resources.setup(gl,onReady).loadTexture("atlas","../image/Pony.png").start();
+	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/c62bb9b27329447cb2b937fe6213889a.jpg").start();
+	//	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/team-liquid-logo-blue-ocean.jpg").start();
+	//	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/atlas_mindcraft.png").start();
+}
 
-				gGridFloor = new C_GridFloor(gl);
-				gRLoop = new C_RenderLoop(onRender,30);
+function onReady():void{
+	
+	gShader = new C_ShaderBuilder(gl,gVertex_shader,gFragment_shader)
+	.prepareUniforms("uPMatrix","mat4"
+	,"uMVMatrix","mat4"
+	,"uCameraMatrix","mat4"
+	,"uFaces","2fv",
+	"uPositonX","fv"
+	,"uPositonY","fv")
+	.prepareTextures("uAltas","atlas")
+	.setUniforms("uPMatrix",gCamera.projectionMatrix);
 
-				//....................................
-				//Load up resources team-liquid-logo-blue-ocean.jpg
-		//		C_Resources.setup(gl,onReady).loadTexture("atlas","../image/Pony.png").start();
-				C_Resources.setup(gl,onReady).loadTexture("atlas","../image/c62bb9b27329447cb2b937fe6213889a.jpg").start();
-			//	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/team-liquid-logo-blue-ocean.jpg").start();
-			//	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/atlas_mindcraft.png").start();
-			}
-			
-			//==================================================
-			//When Main System is setup and all resources are downloaded.
-			function onReady():void{
-				// console.log("onReady()");
-				//Setup Test Shader, Modal, Meshes
-				gShader = new C_ShaderBuilder(gl,gvertex_shader,gfragment_shader)
-				.prepareUniforms("uPMatrix","mat4"
-				,"uMVMatrix","mat4"
-				,"uCameraMatrix","mat4"
-				,"uFaces","2fv",
-				"uPositonX","fv"
-				,"uPositonY","fv")
-				.prepareTextures("uAltas","atlas")
-				.setUniforms("uPMatrix",gCamera.projectionMatrix);
-				//gModel = Primatives.Cube.createModal(gl,"Cube",true)
-				//		.setPosition(0,0.6,0);//.setScale(0.7,0.7,0.7);
 
 				var cubemesh:any = Primatives.Cube.createMesh(gl,"Cube",1,1,1,0,0,0,false);
 				// 8 y = x  // 16 l
@@ -91,14 +76,13 @@ function main(vertex_shader:string,fragment_shader:string):void
 				gRLoop.start();
 				//onRender(0);
 			}
-var testi:number = 0;
+var testi:number = 0;// Too Do
 function onRender(dt:number):void{
 	// console.log("run");
 	//................................
 				//Main Elements to draw to the frame
 				gl.fClear();
 				gCamera.updateViewMatrix();
-				gGridFloor.render(gCamera);
 
 				//................................
 				//Draw Out models
@@ -139,4 +123,45 @@ function getPositioninTexture(i:number):void{
 	{
 		uPositonX++;
 	}
+}
+
+function shutdown()
+{
+	 gl = null;
+	  gModal = null;
+ gCamera.rest();
+ gCameraCtrl.rest();
+ gShader = null;
+ gGridShader = null;
+ gGridModal = null;
+ RLoop = null;
+ gRLoop.rest();
+ C_Resources.rest();
+ gCubes = [];
+ testi = 0;
+ gVertex_shader = null;
+ gFragment_shader = null;
+
+ uPositonX = 0;
+ uPositonY = 0;
+ temp = 15;
+ moveBot = [];
+}
+
+function NewStart()
+{
+	console.log("NewStart");
+	shutdown();
+
+	G_LoadShader();
+}
+
+function StopRenderLoop()
+{
+	gRLoop.stop();
+}
+
+function StartRenderLoop()
+{
+	gRLoop.start();
 }
