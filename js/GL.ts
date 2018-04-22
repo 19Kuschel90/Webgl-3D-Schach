@@ -185,27 +185,21 @@ function GLInstance(canvasID:string):any{
     };
 
 
-	//Set the size of the canvas html element and the rendering view port
-    gl.fSetSize = function(
-        w:number = 600 // width
-        ,h:number = 600, // height 
-        Unit:String = "px" // %, px, .....
-    ):any
+
+    gl.fSetSize = function():any
     {
-		//set the size of the canvas, on chrome we need to set it 3 ways to make it work perfectly.
-		this.canvas.style.width = String(600) + Unit;
-		this.canvas.style.height = String(600) + Unit;
+		
+        this.canvas.style.width = String(gInputManager.canvasSizeW) + "px" ;
+		this.canvas.style.height = String(gInputManager.canvasSizeH) + "px" ;
 		this.canvas.width = 1024;
 		this.canvas.height = 1024;
 
-		//when updating the canvas size, must reset the viewport of the canvas 
-		//else the resolution webgl renders at will not change
 		this.viewport(0,0,1024,1024);
 		return this;
 	}
 
 		//Set the size of the canvas to fill a % of the total screen.
-	gl.fFitScreen = function(wp:any,hp:any):any{ return this.fSetSize(window.innerWidth * (wp || 1),window.innerHeight * (hp || 1)); }
+	gl.fFitScreen = function(wp:any,hp:any):any{ return this.fSetSize(); }
 	return gl;
 }
 
