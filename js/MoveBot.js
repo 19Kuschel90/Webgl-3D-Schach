@@ -32,9 +32,21 @@ var C_MoveBot = /** @class */ (function () {
                 this.MoveZ(-1);
             }
         }
+        if (this.MyObjectTransform.position.y === this.TragetVec.y) {
+        }
+        else {
+            if (this.MyObjectTransform.position.y < this.TragetVec.y) {
+                this.MoveY(1);
+            }
+            else {
+                this.MoveY(-1);
+            }
+        }
         if (this.MyObjectTransform.position.z === this.TragetVec.z) {
             if (this.MyObjectTransform.position.x === this.TragetVec.x) {
-                this.isRun = false;
+                if (this.MyObjectTransform.position.y === this.TragetVec.y) {
+                    this.isRun = false;
+                }
             }
         }
     };
