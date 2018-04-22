@@ -12,7 +12,7 @@ var RLoop:any = null;
 var gRLoop:C_RenderLoop;
 var Resources:any = null;
 var gCubes:C_Modal[] = [];
-
+var gInputManager:C_InputManager = new C_InputManager();
 var gVertex_shader:any;
 var gFragment_shader:any;
 
@@ -20,8 +20,7 @@ var uPositonX:number = 0;
 var uPositonY:number = 0;
 var temp:number = 15;
 var moveBot:C_MoveBot[] = [];
-// var tesft:HTMLElement  | null;
-// var fsds:string ;
+
 
 function main(vertex_shader:string,fragment_shader:string):void
 {
@@ -40,7 +39,7 @@ function main(vertex_shader:string,fragment_shader:string):void
 	//....................................
 	//Load up resources team-liquid-logo-blue-ocean.jpg
 	//		C_Resources.setup(gl,onReady).loadTexture("atlas","../image/Pony.png").start();
-	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/c62bb9b27329447cb2b937fe6213889a.jpg").start();
+	C_Resources.setup(gl,onReady).loadTexture("atlas",gInputManager.atlasLink).start();
 	//	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/team-liquid-logo-blue-ocean.jpg").start();
 	//	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/atlas_mindcraft.png").start();
 }
@@ -68,7 +67,7 @@ function onReady():void{
 					moveBot.push( new C_MoveBot(model.transform,
 						model.transform.position
 						));
-					moveBot[i].SetPosition(new C_Vector3(0,0,0));
+					moveBot[i].SetPosition(new C_Vector3(gInputManager.startPos.x,gInputManager.startPos.y,gInputManager.startPos.z));
 					moveBot[i].SetSpeed(1.0);
 				}
 				
@@ -104,12 +103,6 @@ function onRender(dt:number):void{
 						}
 					}
 				}
-			 	//  (<HTMLElement>document.getElementById('PosX')).innerText = String(gCamera.transform.position.x);
-			 	//  (<HTMLElement>document.getElementById('PosY')).innerText = String(gCamera.transform.position.y);
-			 	//  (<HTMLElement>document.getElementById('PosZ')).innerText = String(gCamera.transform.position.z);
-			// (<HTMLElement>document.getElementById('PosY')).innerText = String(moveBot.GetMyObjectTransform().position.y);
-				//fsds = tesft.innerText;
-		  
 }
 
 

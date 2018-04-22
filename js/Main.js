@@ -13,14 +13,13 @@ var RLoop = null;
 var gRLoop;
 var Resources = null;
 var gCubes = [];
+var gInputManager = new C_InputManager();
 var gVertex_shader;
 var gFragment_shader;
 var uPositonX = 0;
 var uPositonY = 0;
 var temp = 15;
 var moveBot = [];
-// var tesft:HTMLElement  | null;
-// var fsds:string ;
 function main(vertex_shader, fragment_shader) {
     gVertex_shader = vertex_shader;
     gFragment_shader = fragment_shader;
@@ -34,7 +33,7 @@ function main(vertex_shader, fragment_shader) {
     //....................................
     //Load up resources team-liquid-logo-blue-ocean.jpg
     //		C_Resources.setup(gl,onReady).loadTexture("atlas","../image/Pony.png").start();
-    C_Resources.setup(gl, onReady).loadTexture("atlas", "../image/c62bb9b27329447cb2b937fe6213889a.jpg").start();
+    C_Resources.setup(gl, onReady).loadTexture("atlas", gInputManager.atlasLink).start();
     //	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/team-liquid-logo-blue-ocean.jpg").start();
     //	C_Resources.setup(gl,onReady).loadTexture("atlas","../image/atlas_mindcraft.png").start();
 }
@@ -51,7 +50,7 @@ function onReady() {
         var model = new C_Modal(cubemesh).setPosition((i % 16), 0.0, -Math.floor(i / 16));
         gCubes.push(model);
         moveBot.push(new C_MoveBot(model.transform, model.transform.position));
-        moveBot[i].SetPosition(new C_Vector3(0, 0, 0));
+        moveBot[i].SetPosition(new C_Vector3(gInputManager.startPos.x, gInputManager.startPos.y, gInputManager.startPos.z));
         moveBot[i].SetSpeed(1.0);
     }
     //....................................
@@ -83,11 +82,6 @@ function onRender(dt) {
             }
         }
     }
-    //  (<HTMLElement>document.getElementById('PosX')).innerText = String(gCamera.transform.position.x);
-    //  (<HTMLElement>document.getElementById('PosY')).innerText = String(gCamera.transform.position.y);
-    //  (<HTMLElement>document.getElementById('PosZ')).innerText = String(gCamera.transform.position.z);
-    // (<HTMLElement>document.getElementById('PosY')).innerText = String(moveBot.GetMyObjectTransform().position.y);
-    //fsds = tesft.innerText;
 }
 function getPositioninTexture(i) {
     if (i >= temp) {
