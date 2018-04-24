@@ -143,9 +143,7 @@ function shutdown()
 
 function NewStart()
 {
-	console.log("NewStart");
 	shutdown();
-
 	G_LoadShader();
 }
 
