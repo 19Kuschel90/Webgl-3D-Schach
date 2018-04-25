@@ -144,6 +144,8 @@ function shutdown()
 function NewStart()
 {
 	shutdown();
+	gInputManager.update();
+	gRLoop.stop();	
 	G_LoadShader();
 }
 
