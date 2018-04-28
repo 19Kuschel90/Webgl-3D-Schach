@@ -95,10 +95,7 @@ var C_ShaderBuilder = /** @class */ (function () {
                 return this;
             }
             else {
-                // console.log("Number: " + i + " " + this.mUniformList[name].type);
-                // console.log("Number: " + i + " " + this.mUniformList[name]);
             }
-            // console.log(myargument[i + 1]);
             switch (this.mUniformList[name].type) {
                 case "fv":
                     this.gl.uniform1f(this.mUniformList[name].loc, myargument[i + 1]);
@@ -170,10 +167,6 @@ var C_ShaderBuilder = /** @class */ (function () {
         else {
         }
         if (model.mesh.indexCount) {
-            // console.log("ok");
-            // console.log(model.mesh.drawMode);
-            // console.log(model.mesh.indexCount);
-            // console.log(gl.UNSIGNED_SHORT);
             this.gl.drawElements(model.mesh.drawMode, model.mesh.indexCount, gl.UNSIGNED_SHORT, 0);
         }
         else {
@@ -197,9 +190,6 @@ var C_ShaderBuilder = /** @class */ (function () {
     };
     return C_ShaderBuilder;
 }());
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 var C_Shader = /** @class */ (function () {
     function C_Shader(gl, vertShaderSrc, fragShaderSrc) {
@@ -245,9 +235,6 @@ var C_Shader = /** @class */ (function () {
     return C_Shader;
 }());
 //////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 var C_TestShader = /** @class */ (function (_super) {
     __extends(C_TestShader, _super);
     function C_TestShader(gl, aryColor, vertSrc, fragSrc) {
@@ -260,9 +247,6 @@ var C_TestShader = /** @class */ (function (_super) {
     }
     return C_TestShader;
 }(C_Shader));
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 var C_GridAxisShader = /** @class */ (function (_super) {
     __extends(C_GridAxisShader, _super);
@@ -370,19 +354,6 @@ var C_ShaderUtil = /** @class */ (function () {
         }
         return C_ShaderUtil.createProgram(gl, vShader, fShader, true);
     };
-    // Ceate Program 
-    // static domShaderProgram(gl:any,vectText:any,fragText:any){
-    // 	var vShader:any		= C_ShaderUtil.createShader(gl,vectText,gl.VERTEX_SHADER);		
-    // 	if(!vShader)	{
-    // 		return null;
-    // 	}
-    // 	var fShader:any		= C_ShaderUtil.createShader(gl,fragText,gl.FRAGMENT_SHADER);	
-    // 	if(!fShader)	{
-    // 		return null;
-    // 	}
-    // 	return C_ShaderUtil.createProgram(gl,vShader,fShader,true);
-    // }
-    //??????
     C_ShaderUtil.createProgramFromText = function (gl, vShaderTxt, fShaderTxt, doValidate) {
         var vShader = C_ShaderUtil.createShader(gl, vShaderTxt, gl.VERTEX_SHADER);
         if (!vShader)

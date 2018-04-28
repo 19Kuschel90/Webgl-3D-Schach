@@ -42,18 +42,6 @@ function GLInstance(canvasID) {
         //Create and bind vao
         rtn.vao = this.createVertexArray();
         this.bindVertexArray(rtn.vao); //Bind it so all the calls to vertexAttribPointer/enableVertexAttribArray is saved to the vao.
-        //.......................................................
-        //Set up vertices
-        // old
-        // if(aryVert !== undefined && aryVert != null){
-        // 	rtn.bufVertices = this.createBuffer();													//Create buffer...
-        // 	rtn.vertexComponentLen = 3;																//How many floats make up a vertex
-        // 	rtn.vertexCount = aryVert.length / rtn.vertexComponentLen;								//How many vertices in the array
-        // 	this.bindBuffer(this.ARRAY_BUFFER, rtn.bufVertices);
-        // 	this.bufferData(this.ARRAY_BUFFER, new Float32Array(aryVert), this.STATIC_DRAW);		//then push array into it.
-        // 	this.enableVertexAttribArray(ATTR_POSITION_LOC);										//Enable Attribute location
-        // 	this.vertexAttribPointer(ATTR_POSITION_LOC,3,this.FLOAT,false,0,0);						//Put buffer at location of the vao
-        // }
         if (aryVert !== undefined && aryVert != null) {
             rtn.bufVertices = this.createBuffer(); //Create buffer...
             rtn.vertexComponentLen = vertLen || 3; //How many floats make up a vertex
@@ -61,7 +49,6 @@ function GLInstance(canvasID) {
             this.bindBuffer(this.ARRAY_BUFFER, rtn.bufVertices);
             this.bufferData(this.ARRAY_BUFFER, new Float32Array(aryVert), this.STATIC_DRAW); //then push array into it.
             this.enableVertexAttribArray(ATTR_POSITION_LOC); //Enable Attribute location
-            //this.vertexAttribPointer(ATTR_POSITION_LOC,3,this.FLOAT,false,0,0);						//Put buffer at location of the vao\
             this.vertexAttribPointer(ATTR_POSITION_LOC, rtn.vertexComponentLen, this.FLOAT, false, 0, 0); //Put buffer at location of the vao
         }
         //.......................................................
@@ -82,16 +69,6 @@ function GLInstance(canvasID) {
             this.enableVertexAttribArray(ATTR_UV_LOC);
             this.vertexAttribPointer(ATTR_UV_LOC, 2, this.FLOAT, false, 0, 0); //UV only has two floats per component
         }
-        //.......................................................
-        //Setup Index.
-        // old
-        // if(aryInd !== undefined && aryInd != null){
-        // 	rtn.bufIndex = this.createBuffer();
-        // 	rtn.indexCount = aryInd.length;
-        // 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER, rtn.bufIndex);
-        // 	this.bufferData(this.ELEMENT_ARRAY_BUFFER, new Uint16Array(aryInd), this.STATIC_DRAW);
-        // 	this.bindBuffer(this.ELEMENT_ARRAY_BUFFER,null);
-        // }
         if (aryInd !== undefined && aryInd != null) {
             rtn.bufIndex = this.createBuffer();
             rtn.indexCount = aryInd.length;
@@ -137,14 +114,9 @@ function GLInstance(canvasID) {
     //imgAry must be 6 elements long and images placed in the right order
     //RIGHT,LEFT,TOP,BOTTOM,BACK,FRONT
     gl.fLoadCubeMap = function (name, imgAry) {
-        if (imgAry.length != 6)
+        if (imgAry.length != 6) {
             return null;
-        //Cube Constants values increment, so easy to start with right and just add 1 in a loop
-        //To make the code easier costs by making the imgAry coming into the function to have
-        //the images sorted in the same way the constants are set.
-        //	TEXTURE_CUBE_MAP_POSITIVE_X - Right	:: TEXTURE_CUBE_MAP_NEGATIVE_X - Left
-        //	TEXTURE_CUBE_MAP_POSITIVE_Y - Top 	:: TEXTURE_CUBE_MAP_NEGATIVE_Y - Bottom
-        //	TEXTURE_CUBE_MAP_POSITIVE_Z - Back	:: TEXTURE_CUBE_MAP_NEGATIVE_Z - Front
+        }
         var tex = this.createTexture();
         this.bindTexture(this.TEXTURE_CUBE_MAP, tex);
         //push image to specific spot in the cube map.

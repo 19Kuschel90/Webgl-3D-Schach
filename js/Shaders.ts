@@ -73,10 +73,8 @@ class C_ShaderBuilder{
         for (var i = 0; i < myargument.length; i += 2) {
             name = myargument[i];
             if (this.mUniformList[name] === undefined) { console.log("uniform not found " + name); return this; } else {
-                // console.log("Number: " + i + " " + this.mUniformList[name].type);
-                // console.log("Number: " + i + " " + this.mUniformList[name]);
+
             }
-// console.log(myargument[i + 1]);
             switch (this.mUniformList[name].type) {
 				case "fv":
 					this.gl.uniform1f(this.mUniformList[name].loc, myargument[i+1]);
@@ -155,10 +153,6 @@ class C_ShaderBuilder{
 		
 		if(model.mesh.indexCount) 
 		{
-			// console.log("ok");
-			// console.log(model.mesh.drawMode);
-			// console.log(model.mesh.indexCount);
-			// console.log(gl.UNSIGNED_SHORT);
 			this.gl.drawElements(model.mesh.drawMode, model.mesh.indexCount, gl.UNSIGNED_SHORT, 0); 
 		}else{ this.gl.drawArrays(model.mesh.drawMode, 0, model.mesh.vertexCount);
 			console.log("no");
@@ -179,14 +173,6 @@ class C_ShaderBuilder{
 		return this;
 	}
 }
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
 class C_Shader{
@@ -243,9 +229,6 @@ class C_Shader{
 	}
 }
 //////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
 class C_TestShader extends C_Shader{
 	
 	constructor(gl:any,aryColor:any, vertSrc:any,fragSrc:any){
@@ -260,9 +243,7 @@ class C_TestShader extends C_Shader{
 	}
 }
 //////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
+
 class C_GridAxisShader extends C_Shader{
 	public	program:any;
 	constructor(gl:any,pMatrix:any){
@@ -368,20 +349,7 @@ class C_ShaderUtil{
 		return C_ShaderUtil.createProgram(gl,vShader,fShader,true);
 	}
 
-		// Ceate Program 
-		// static domShaderProgram(gl:any,vectText:any,fragText:any){
-		// 	var vShader:any		= C_ShaderUtil.createShader(gl,vectText,gl.VERTEX_SHADER);		
-		// 	if(!vShader)	{
-		// 		return null;
-		// 	}
-		// 	var fShader:any		= C_ShaderUtil.createShader(gl,fragText,gl.FRAGMENT_SHADER);	
-		// 	if(!fShader)	{
-		// 		return null;
-		// 	}
-		// 	return C_ShaderUtil.createProgram(gl,vShader,fShader,true);
-		// }
 
-//??????
 public static createProgramFromText(gl:any,vShaderTxt:any,fShaderTxt:any,doValidate:any){
 		var vShader		= C_ShaderUtil.createShader(gl,vShaderTxt,gl.VERTEX_SHADER);		if(!vShader)	return null;
 		var fShader		= C_ShaderUtil.createShader(gl,fShaderTxt,gl.FRAGMENT_SHADER);	if(!fShader){	gl.deleteShader(vShader); return null; }

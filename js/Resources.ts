@@ -1,5 +1,3 @@
-/* C_Resources.setup(gl,onReady).loadTexture("tex001","../shared/UV_Grid_Lrg.jpg").start(); */
-
 
 class C_Resources{
 	public	static gl:any;
@@ -22,17 +20,6 @@ class C_Resources{
         {
             C_Resources.loadNextItem();
 	}}
-
-	//===================================================
-	// // Loading
-	// static loadTexture(name:any,src:any,...myarguments:any[]):any{
-	// 	console.log("hallo");
-	// 	console.log(myarguments);
-	// 	for(var i=0; i < myarguments.length; i+=2){
-	// 		C_Resources.Queue.push({type:"img",name:myarguments[i],src:myarguments[i+1]});
-	// 	}
-	// 	return this;
-	// }
 
 		//===================================================
 	// Loading
@@ -122,10 +109,3 @@ class C_Resources{
 	}
 }
 
-
-// var C_Resources.Queue = [];
-// C_Resources.onComplete = null;
-// C_Resources.gl = null;
-
-// C_Resources.Images = [];
-// C_Resources.Videos = [];

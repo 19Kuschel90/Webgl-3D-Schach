@@ -61,4 +61,4 @@ class C_Transform{
 	}
 }
 
-// C_Transform.deg2Rad = Math.PI/180; //Cache result, one less operation to do for each update.
+

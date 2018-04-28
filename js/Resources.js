@@ -1,5 +1,4 @@
 "use strict";
-/* C_Resources.setup(gl,onReady).loadTexture("tex001","../shared/UV_Grid_Lrg.jpg").start(); */
 var C_Resources = /** @class */ (function () {
     function C_Resources() {
     }
@@ -15,16 +14,6 @@ var C_Resources = /** @class */ (function () {
             C_Resources.loadNextItem();
         }
     };
-    //===================================================
-    // // Loading
-    // static loadTexture(name:any,src:any,...myarguments:any[]):any{
-    // 	console.log("hallo");
-    // 	console.log(myarguments);
-    // 	for(var i=0; i < myarguments.length; i+=2){
-    // 		C_Resources.Queue.push({type:"img",name:myarguments[i],src:myarguments[i+1]});
-    // 	}
-    // 	return this;
-    // }
     //===================================================
     // Loading
     C_Resources.loadTexture = function (name, src) {
@@ -116,9 +105,4 @@ var C_Resources = /** @class */ (function () {
     C_Resources.tagName = null;
     return C_Resources;
 }());
-// var C_Resources.Queue = [];
-// C_Resources.onComplete = null;
-// C_Resources.gl = null;
-// C_Resources.Images = [];
-// C_Resources.Videos = [];
 //# sourceMappingURL=Resources.js.map
