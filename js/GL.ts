@@ -1,7 +1,7 @@
  const ATTR_POSITION_NAME:string	= "a_position";
 const ATTR_POSITION_LOC:number		= 0;
 const ATTR_NORMAL_NAME:string		= "a_norm";
-const ATTR_NORMAL_LOC:number	= 1;
+const ATTR_NORMAL_LOC:number	    = 1;
 const ATTR_UV_NAME:string			= "a_uv";
 const ATTR_UV_LOC:number			= 2;
 
