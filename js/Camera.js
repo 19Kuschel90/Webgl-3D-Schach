@@ -76,8 +76,6 @@ var C_Camera = /** @class */ (function () {
     };
     return C_Camera;
 }());
-// Camera.MODE_FREE = 0;	//Allows free movement of position and rotation, basicly first person type of camera
-// Camera.MODE_ORBIT = 1;	//Movement is locked to rotate around the origin, Great for 3d editors or a single model viewer
 var C_CameraController = /** @class */ (function () {
     function C_CameraController(gl, camera) {
         this.canvas = null;

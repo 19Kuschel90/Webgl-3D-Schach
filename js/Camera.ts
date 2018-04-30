@@ -78,13 +78,6 @@ class C_Camera{
 	}
 }
 
-
-
-
-// Camera.MODE_FREE = 0;	//Allows free movement of position and rotation, basicly first person type of camera
-// Camera.MODE_ORBIT = 1;	//Movement is locked to rotate around the origin, Great for 3d editors or a single model viewer
-
-
 class C_CameraController{
     canvas:any = null;
     camera:any = null;
