@@ -1,5 +1,5 @@
 window.addEventListener("load",function(){
-    G_LoadShader();
+    main();
 });
 var gl:any = null;
 var gModal:any = null;
@@ -13,8 +13,36 @@ var gRLoop:C_RenderLoop;
 var Resources:any = null;
 var gCubes:C_Modal[] = [];
 var gInputManager:C_InputManager = new C_InputManager();
-var gVertex_shader:any;
-var gFragment_shader:any;
+var gVertex_shader:any =  '#version 300 es' + "\n"+
+'in vec4 a_position;' + "\n"+
+'in vec3 a_norm;' + "\n"+
+'in vec2 a_uv;' + "\n"+
+
+'uniform mat4 uPMatrix;' + "\n"+
+'uniform mat4 uMVMatrix;' + "\n"+
+'uniform mat4 uCameraMatrix;' + "\n"+
+'uniform float uPositonX;' + "\n"+
+'uniform float uPositonY;' + "\n"+
+'out highp vec2 vUV;' + "\n"+
+
+'const float size = 1.0/16.0;' + "\n"+
+
+'void main(void){' + "\n"+
+'	int f = int(a_position.w);' + "\n"+
+	'float u = uPositonX * size + a_uv.x * size;' + "\n"+
+	'float v = uPositonY* size + a_uv.y * size;' + "\n"+
+	'vUV = vec2(u,v);' + "\n"+
+
+	'gl_Position = uPMatrix * uCameraMatrix * uMVMatrix * vec4(a_position.xyz, 1.0); ' + "\n"+
+'}';
+var gFragment_shader:any = 
+		'#version 300 es ' + "\n"+
+		'precision mediump float; ' + "\n"+
+		'uniform sampler2D uAltas; ' + "\n"+
+		'in highp vec2 vUV; ' + "\n"+
+		'out vec4 outColor; ' + "\n"+
+
+		'void main(void){ outColor = texture(uAltas,vUV); } ' ;
 var uPositonX:number = 0;
 var uPositonY:number = 0;
 var temp:number = 15;
@@ -22,10 +50,9 @@ var NewLine:number = 0;
 var moveBot:C_MoveBot[] = [];
 
 
-function main(vertex_shader:string,fragment_shader:string):void
+function main():void
 {
-	gVertex_shader = vertex_shader;
-	gFragment_shader = fragment_shader;
+
 
 	// init webgl2
 	gl = GLInstance("webglCanvas").fFitScreen(0.95,0.9).fClear();
@@ -106,13 +133,14 @@ function Shutdown()
  C_Resources.rest();
  gCubes = [];
  NewLine = 0;
- gVertex_shader = null;
- gFragment_shader = null;
-
+ 
  uPositonX = 0;
  uPositonY = 0;
  temp = 15;
  moveBot = [];
+ // we not need to null
+ //  gVertex_shader = null;
+ //  gFragment_shader = null;
 }
 
 function NewStart()
@@ -120,7 +148,8 @@ function NewStart()
 	Shutdown();
 	gInputManager.update();
 	gRLoop.stop();	
-	G_LoadShader();
+	// G_LoadShader();
+	main();
 }
 
 function StopRenderLoop()
