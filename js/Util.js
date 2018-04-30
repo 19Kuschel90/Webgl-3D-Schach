@@ -1,5 +1,5 @@
 "use strict";
-// call G_Main
+// this conde is not use G_LoadShader 
 function G_LoadShader() {
     try {
         G_loadTextResource('../glsl/vertex_shader.glsl', function (vsErr, vertex_shader) {
@@ -16,7 +16,9 @@ function G_LoadShader() {
                         return;
                     }
                     else {
-                        main(vertex_shader, fragment_shader);
+                        // main(
+                        //     vertex_shader,
+                        //     fragment_shader);
                     }
                 });
             }

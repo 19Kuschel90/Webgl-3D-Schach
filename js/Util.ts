@@ -1,4 +1,4 @@
-// call G_Main
+// this conde is not use G_LoadShader 
 function G_LoadShader():void {
     try {
         G_loadTextResource('../glsl/vertex_shader.glsl', function(vsErr:any, vertex_shader:string) {
@@ -14,9 +14,9 @@ function G_LoadShader():void {
                         return;
                     } else {
                  
-                        main(
-                            vertex_shader,
-                            fragment_shader);
+                        // main(
+                        //     vertex_shader,
+                        //     fragment_shader);
                         }
                     });
                 }
