@@ -1,8 +1,8 @@
 
 class C_RenderLoop{
     public msLastFrame:any = null;
-    public callBack:any  = null;;
-    private isActive:boolean  = false;;
+    public callBack:any  = null;
+    private isActive:boolean  = false;
     public fps:Number  = -1;
 	public msFpsLimit:any = null;
     public run:any = null;
@@ -10,6 +10,7 @@ class C_RenderLoop{
 		var oThis = this;
 		this.msLastFrame = null;	//The time in Miliseconds of the last frame.
 		this.callBack = callback;	//What function to call for each frame
+		console.log(this.callBack);
 		this.isActive = false;		//Control the On/Off state of the render loop
 		this.fps = 0;				//Save the value of how fast the loop is going.
 
@@ -34,12 +35,12 @@ class C_RenderLoop{
 			this.run = function(){
 				//Calculate Deltatime between frames and the FPS currently.
 				var msCurrent	= performance.now(),	//Gives you the whole number of how many milliseconds since the dawn of time :)
-					deltaTime	= (msCurrent - oThis.msLastFrame) / 1000.0;	//ms between frames, Then / by 1 second to get the fraction of a second.
-
+				deltaTime	=  (msCurrent - oThis.msLastFrame) / 1000.0;	//ms between frames, Then / by 1 second to get the fraction of a second.
+				
 				//Now execute frame since the time has elapsed.
 				oThis.fps			= Math.floor(1/deltaTime); //Time it took to generate one frame, divide 1 by that to get how many frames in one second.
 				oThis.msLastFrame	= msCurrent;
-
+				
 				oThis.callBack(deltaTime);
 				if(oThis.isActive) window.requestAnimationFrame(oThis.run);
 			}
@@ -57,8 +58,8 @@ class C_RenderLoop{
 
 	public rest():void{
 		this.msLastFrame = null;
-		this.callBack  = null;;
-		this.isActive  = false;;
+		// this.callBack  = null;
+		this.isActive  = false;
 		this.fps  = -1;
 		this.msFpsLimit = null;
 		this.run = null;
