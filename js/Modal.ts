@@ -1,7 +1,9 @@
-class C_Modal{
+class C_Modal extends C_Feld{
 	public transform:C_Transform;
 	public mesh:any;
-	constructor(meshData:any){
+
+	constructor(meshData:any, colord:number = 0){
+		super();
 		this.transform = new C_Transform();
 		this.mesh = meshData;
 	}

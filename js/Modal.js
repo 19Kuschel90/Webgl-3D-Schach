@@ -1,8 +1,22 @@
 "use strict";
-var C_Modal = /** @class */ (function () {
-    function C_Modal(meshData) {
-        this.transform = new C_Transform();
-        this.mesh = meshData;
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var C_Modal = /** @class */ (function (_super) {
+    __extends(C_Modal, _super);
+    function C_Modal(meshData, colord) {
+        if (colord === void 0) { colord = 0; }
+        var _this = _super.call(this) || this;
+        _this.transform = new C_Transform();
+        _this.mesh = meshData;
+        return _this;
     }
     //--------------------------------------------------------------------------
     //Getters/Setters
@@ -16,5 +30,5 @@ var C_Modal = /** @class */ (function () {
     //Things to do before its time to render
     C_Modal.prototype.preRender = function () { this.transform.updateMatrix(); return this; };
     return C_Modal;
-}());
+}(C_Feld));
 //# sourceMappingURL=Modal.js.map
