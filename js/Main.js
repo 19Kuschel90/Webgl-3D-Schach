@@ -12,20 +12,11 @@ var Resources = null;
 var gCubes = [];
 var gInputManager = new C_InputManager();
 var _a = gShaderFunction(), gShader = _a.gShader, gVertex_shader = _a.gVertex_shader, gFragment_shader = _a.gFragment_shader;
-var moveBot = [];
-var _b = BotHelperNumbers(), uPositonX = _b.uPositonX, uPositonY = _b.uPositonY, temp = _b.temp, NewLine = _b.NewLine;
 function gShaderFunction() {
     var gShader = null;
     var gVertex_shader = "";
     var gFragment_shader = "";
     return { gShader: gShader, gVertex_shader: gVertex_shader, gFragment_shader: gFragment_shader };
-}
-function BotHelperNumbers() {
-    var uPositonX = 0;
-    var uPositonY = 0;
-    var temp = 15;
-    var NewLine = 0;
-    return { uPositonX: uPositonX, uPositonY: uPositonY, temp: temp, NewLine: NewLine };
 }
 //#region init webgl
 function main(VS, FS) {
@@ -43,22 +34,30 @@ function main(VS, FS) {
 //#region Load Objects
 function onReady() {
     initShader();
-    initCubs();
+    initFeld();
     gRLoop.start();
-    function initCubs() {
+    function initFeld() {
         var cubemesh = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
         gCamera.transform.position.set(7.5, -7.5, 14.7);
         for (var i = 0; i < 64; i++) {
             var model = new C_Modal(cubemesh).setPosition((i % 8), 0.0, -Math.floor(i / 8));
             gCubes.push(model);
-            moveBot.push(new C_MoveBot(model.transform, model.transform.position));
-            moveBot[i].SetPosition(new C_Vector3(gInputManager.startPos.x, gInputManager.startPos.y, gInputManager.startPos.z));
-            moveBot[i].SetSpeed(1.0);
+        }
+        givePosition();
+        // A1 A2 B1 B2 ....
+        function givePosition() {
+            var temp = 0;
+            for (var X = 1; X <= 8; X++) {
+                for (var Y = 1; Y <= 8; Y++) {
+                    gCubes[temp].SetFeld(X, Y);
+                    temp++;
+                }
+            }
         }
     }
     function initShader() {
         gShader = new C_ShaderBuilder(gl, gVertex_shader, gFragment_shader)
-            .prepareUniforms("uPMatrix", "mat4", "uMVMatrix", "mat4", "uCameraMatrix", "mat4", "uFaces", "2fv", "uPositonX", "fv", "uPositonY", "fv")
+            .prepareUniforms("uPMatrix", "mat4", "uMVMatrix", "mat4", "uCameraMatrix", "mat4", "uFaces", "2fv", "ublackWite", "fv")
             .prepareTextures("uAltas", "atlas")
             .setUniforms("uPMatrix", gCamera.projectionMatrix);
     }
@@ -69,31 +68,11 @@ function onRender(dt) {
     gl.fClear();
     gCamera.updateViewMatrix();
     gShader.preRender("uCameraMatrix", gCamera.viewMatrix);
-    uPositonX = 0;
-    uPositonY = 0;
-    temp = 15;
     for (var i = 0; i < gCubes.length; i++) {
-        gShader.setUniforms("uPositonX", uPositonX).setUniforms("uPositonY", uPositonY).renderModel(gCubes[i].preRender());
-        SetPositioninTexture(i);
-        if (moveBot[i].GetIsRun() == true && NewLine == i) {
-            moveBot[i].Update();
-            if (moveBot[i].GetIsRun() == false) {
-                NewLine++;
-            }
-        }
+        gShader.setUniforms("ublackWite", gCubes[i].GetFeldcolor()).renderModel(gCubes[i].preRender());
     }
 }
 //#endregion
-function SetPositioninTexture(i) {
-    if (i >= temp) {
-        temp += 16;
-        uPositonY++;
-        uPositonX = 0;
-    }
-    else {
-        uPositonX++;
-    }
-}
 //#region Shutdown
 function Shutdown() {
     gl = null;
@@ -105,11 +84,6 @@ function Shutdown() {
     gRLoop.rest();
     C_Resources.rest();
     gCubes = [];
-    NewLine = 0;
-    uPositonX = 0;
-    uPositonY = 0;
-    temp = 15;
-    moveBot = [];
     // we not need to null
     //  gVertex_shader = null;
     //  gFragment_shader = null;
@@ -120,7 +94,7 @@ function NewStart() {
     gInputManager.update();
     gRLoop.stop();
     // G_LoadShader();
-    main();
+    G_LoadShader();
 }
 function StopRenderLoop() {
     gRLoop.stop();
