@@ -13,6 +13,7 @@ var gCubes = [];
 var gFigure = [];
 var gInputManager = new C_InputManager();
 var _a = gShaderFunction(), gShader = _a.gShader, gVertex_shader = _a.gVertex_shader, gFragment_shader = _a.gFragment_shader;
+var gModel;
 function gShaderFunction() {
     var gShader = null;
     var gVertex_shader = "";
@@ -58,7 +59,7 @@ function onReady() {
         }
     }
     function Setfigure() {
-        var cubemesh = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
+        var cubemesh = Primatives.Model.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
         for (var i = 0; i < 16; i++) {
             var model = new C_Modal(cubemesh).setPosition((i % 8), -1.0, -Math.floor(i / 8));
             gFigure.push(model);
@@ -82,7 +83,7 @@ function onRender(dt) {
     gCamera.updateViewMatrix();
     gShader.preRender("uCameraMatrix", gCamera.viewMatrix);
     for (var i = 0; i < gCubes.length; i++) {
-        gShader.setUniforms("ublackWite", gCubes[i].GetFeldcolor()).renderModel(gCubes[i].preRender());
+        // gShader.setUniforms("ublackWite", (<C_Feld>gCubes[i]).GetFeldcolor() ).renderModel( gCubes[i].preRender() );		
     }
     for (var i = 0; i < gFigure.length / 2; i++) {
         gShader.setUniforms("ublackWite", 0).renderModel(gFigure[i].preRender());
