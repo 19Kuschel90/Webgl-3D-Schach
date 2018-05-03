@@ -9,6 +9,7 @@ var RLoop:any = null;
 var gRLoop:C_RenderLoop;
 var Resources:any = null;
 var gCubes:C_Modal[] = [];
+var gFigure:C_Modal[] = [];
 var gInputManager:C_InputManager = new C_InputManager();
 var { gShader, gVertex_shader, gFragment_shader }: { gShader: any; gVertex_shader: any; gFragment_shader: any; } = gShaderFunction();
 		
@@ -40,13 +41,14 @@ function main(VS:string,FS:string):void
 
 //#region Load Objects
 function onReady():void{
+	gCamera.transform.position.set(7.5, -7.5, 14.7);
 	initShader();
 	initFeld();
+	Setfigure();
 	gRLoop.start();	
 
 	function initFeld() {
 		var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
-		gCamera.transform.position.set(7.5, -7.5, 14.7);
 		for (var i = 0; i < 64; i++) {
 			var model: C_Modal = new C_Modal(cubemesh ).setPosition((i % 8), 0.0, -Math.floor(i / 8));
 			gCubes.push(model);
@@ -62,6 +64,21 @@ function onReady():void{
 					temp++;
 				}
 			}
+		}
+	}
+
+	function Setfigure()
+	{
+		var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
+		for (var i = 0; i < 16; i++) {
+	
+			var model: C_Modal = new C_Modal(cubemesh ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+			gFigure.push(model);
+		}
+		for (var i = 48; i < 64; i++) {
+		
+			var model: C_Modal = new C_Modal(cubemesh ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+			gFigure.push(model);
 		}
 	}
 
@@ -81,12 +98,17 @@ function onRender(dt:number):void{
 		gCamera.updateViewMatrix();
 		gShader.preRender("uCameraMatrix",gCamera.viewMatrix);
 		for(var i:number=0; i < gCubes.length; i++){	
-				gShader.setUniforms("ublackWite", (<C_Feld>gCubes[i]).GetFeldcolor() ).renderModel( gCubes[i].preRender() );
-			
+				gShader.setUniforms("ublackWite", (<C_Feld>gCubes[i]).GetFeldcolor() ).renderModel( gCubes[i].preRender() );		
+			}
+			for(var i:number=0; i < gFigure.length /2; i++){
+				gShader.setUniforms("ublackWite", 0).renderModel( gFigure[i].preRender() );		
+			}
+			for(var i:number=gFigure.length/2; i < gFigure.length ; i++){
+				gShader.setUniforms("ublackWite", 1).renderModel( gFigure[i].preRender() );		
+			}
 		}
-}
 //#endregion
-
+	
 
 //#region Shutdown
 function Shutdown()

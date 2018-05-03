@@ -10,6 +10,7 @@ var RLoop = null;
 var gRLoop;
 var Resources = null;
 var gCubes = [];
+var gFigure = [];
 var gInputManager = new C_InputManager();
 var _a = gShaderFunction(), gShader = _a.gShader, gVertex_shader = _a.gVertex_shader, gFragment_shader = _a.gFragment_shader;
 function gShaderFunction() {
@@ -33,12 +34,13 @@ function main(VS, FS) {
 //#endregion
 //#region Load Objects
 function onReady() {
+    gCamera.transform.position.set(7.5, -7.5, 14.7);
     initShader();
     initFeld();
+    Setfigure();
     gRLoop.start();
     function initFeld() {
         var cubemesh = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
-        gCamera.transform.position.set(7.5, -7.5, 14.7);
         for (var i = 0; i < 64; i++) {
             var model = new C_Modal(cubemesh).setPosition((i % 8), 0.0, -Math.floor(i / 8));
             gCubes.push(model);
@@ -53,6 +55,17 @@ function onReady() {
                     temp++;
                 }
             }
+        }
+    }
+    function Setfigure() {
+        var cubemesh = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
+        for (var i = 0; i < 16; i++) {
+            var model = new C_Modal(cubemesh).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+            gFigure.push(model);
+        }
+        for (var i = 48; i < 64; i++) {
+            var model = new C_Modal(cubemesh).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+            gFigure.push(model);
         }
     }
     function initShader() {
@@ -70,6 +83,12 @@ function onRender(dt) {
     gShader.preRender("uCameraMatrix", gCamera.viewMatrix);
     for (var i = 0; i < gCubes.length; i++) {
         gShader.setUniforms("ublackWite", gCubes[i].GetFeldcolor()).renderModel(gCubes[i].preRender());
+    }
+    for (var i = 0; i < gFigure.length / 2; i++) {
+        gShader.setUniforms("ublackWite", 0).renderModel(gFigure[i].preRender());
+    }
+    for (var i = gFigure.length / 2; i < gFigure.length; i++) {
+        gShader.setUniforms("ublackWite", 1).renderModel(gFigure[i].preRender());
     }
 }
 //#endregion
