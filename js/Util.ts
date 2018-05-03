@@ -14,9 +14,9 @@ function G_LoadShader():void {
                         return;
                     } else {
                  
-                        // main(
-                        //     vertex_shader,
-                        //     fragment_shader);
+                        main(
+                            vertex_shader,
+                            fragment_shader);
                         }
                     });
                 }
