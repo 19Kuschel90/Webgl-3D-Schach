@@ -1,6 +1,12 @@
 // this conde is not use G_LoadShader 
 function G_LoadShader():void {
     try {
+        G_loadJSONResource("../model/Logo4.json", function(modelErr:any, modelObj:any) {
+            if (modelErr) {
+                alert('Fatal error getting  model (see console)');
+                console.error(modelErr);
+                return;
+            } else{
         G_loadTextResource('../glsl/vertex_shader.glsl', function(vsErr:any, vertex_shader:string) {
             if (vsErr) {
                 alert(' error getting vertex shader (see console) 2522018033326');
@@ -13,12 +19,14 @@ function G_LoadShader():void {
                         console.error(fsErr);
                         return;
                     } else {
-                 
+                        gModel = modelObj;
                         main(
                             vertex_shader,
                             fragment_shader);
                         }
                     });
+                }
+            });
                 }
             });
         } catch (e) {
