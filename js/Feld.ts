@@ -1,8 +1,10 @@
 
 class C_Feld {
     private feldNumber:string = "";
-    constructor() {
+    private myState:string = ""
+    constructor(_myState:string = "feld") {
         this.feldNumber;
+        this.myState  = _myState;
     }
 
     // only for Feld
@@ -15,6 +17,15 @@ class C_Feld {
     {
       this.feldNumber = String((<string>this.toNumber(X)));
       this.feldNumber += String(Y);
+    }
+
+    public SetState(state:string):void
+    {
+      this.myState  = state;
+    }
+    public GetState():string
+    {
+        return this.myState;
     }
    
    private  toNumber(char:string | number):number | string{

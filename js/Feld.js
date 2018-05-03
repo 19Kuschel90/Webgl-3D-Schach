@@ -1,8 +1,11 @@
 "use strict";
 var C_Feld = /** @class */ (function () {
-    function C_Feld() {
+    function C_Feld(_myState) {
+        if (_myState === void 0) { _myState = "feld"; }
         this.feldNumber = "";
+        this.myState = "";
         this.feldNumber;
+        this.myState = _myState;
     }
     // only for Feld
     C_Feld.prototype.GetFeldcolor = function () {
@@ -11,6 +14,12 @@ var C_Feld = /** @class */ (function () {
     C_Feld.prototype.SetFeld = function (X, Y) {
         this.feldNumber = String(this.toNumber(X));
         this.feldNumber += String(Y);
+    };
+    C_Feld.prototype.SetState = function (state) {
+        this.myState = state;
+    };
+    C_Feld.prototype.GetState = function () {
+        return this.myState;
     };
     C_Feld.prototype.toNumber = function (char) {
         if (typeof char === 'string') {
