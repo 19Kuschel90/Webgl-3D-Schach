@@ -4,4 +4,4 @@
 		in highp vec2 vUV;
 		out vec4 outColor;
 
-		void main(void){ outColor = texture(uAltas,vUV); }
+		void main(void){ outColor = vec4(vUV.x,vUV.x,vUV.x,1.0f) ; }
