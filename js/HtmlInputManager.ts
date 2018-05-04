@@ -14,3 +14,89 @@ class  C_InputManager {
 
     }
 }
+
+class C_ruls{
+ private feld:string[][] = [
+  ["","","","","","","",""],
+  ["","","","","","","",""],
+  ["","","","","","","",""],
+  ["","","","","","","",""],
+  ["","","","","","","",""],
+  ["","","","","","","",""],
+  ["","","","","","","",""],
+  ["","","","","","","",""]];
+
+  constructor() {
+    this.feld;
+  }
+  /**
+   * SetOnfeld
+   */
+  public SetOnfeld(state:string, ID:number, targetA:number,targetB:number ) {
+    this.feld[targetA][targetB] = state + String(ID);
+    console.log(this.feld);
+  }
+
+  public isMoveOK(pos:string, _state:string, target:string):boolean {
+    var posA:number = Number(<number>this.toNumber(pos[0]));
+    var posB:number = Number(pos[1]);
+    var targetA:number = Number(<number>this.toNumber(target[0]));
+    var targetB:number = Number(target[1]);
+    this.MoveOK([posA,posB] , _state,[targetA,targetB]);
+    return false;
+  }
+
+  private MoveOK(move:number[],state:string, target:number[]) {
+    
+  }
+
+
+
+  private  toNumber(char:string | number):number | string{
+    if(typeof char === 'string')
+    {
+      switch(char)
+      {
+        case "A":
+        return 1;
+        case "B":
+        return 2;
+        case "C":
+        return 3;
+        case "D":
+        return 4;
+        case "E":
+        return 5;
+        case "F":
+        return 6;
+        case "G":
+        return 7;
+        case "H":
+        return 8;
+       }
+       return -1;
+     }else{
+     switch(char)
+      {
+        case 1:
+        return "A";
+        case 2:
+        return "B";
+        case 3:
+        return "C";
+        case 4:
+        return "D";
+        case 5:
+        return "E";
+        case 6:
+        return "F";
+        case 7:
+        return "G";
+        case 8:
+        return "H";
+       }
+     }
+     return -1;// only by error
+ }
+  
+}
