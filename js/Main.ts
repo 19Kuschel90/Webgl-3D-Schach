@@ -4,6 +4,7 @@ window.addEventListener("load",function(){
 var gl:any = null;
 var gModal:any = null;
 var gModal2: C_Modal;
+var testtemp:any;
 var gCamera:C_Camera;
 var gCameraCtrl:C_CameraController;
 var RLoop:any = null;
@@ -74,15 +75,17 @@ function onReady():void{
 		for (var i = 0; i < 16; i++) {
 	
 			var model: C_Modal = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true)  ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+			model.setScale(0.2,0.2,0.2);
 			gFigure.push(model);
 		}
 		for (var i = 48; i < 64; i++) {
 		
 			 var model: C_Modal = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true)  ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
-			 gFigure.push(model);
+			model.setScale(0.2,0.2,0.2);
+			gFigure.push(model);
 		}
-		gModal2 = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true) )
-		gModal2.setPosition(0,0,0).setScale(0.5,0.5,0.5);
+		// gModal2 = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true) )
+		// gModal2.setPosition(0,0,0).
 	}
 
 	 function initShader():void {
@@ -104,13 +107,13 @@ function onRender(dt:number):void{
 				 gShader.setUniforms("ublackWite", (<C_Feld>gCubes[i]).GetFeldcolor() ).renderModel( gCubes[i].preRender() );		
 			}
 			for(var i:number=0; i < gFigure.length /2; i++){
-				gShader.setUniforms("ublackWite", 0).renderModel( gFigure[i].preRender() );		
+				gShader.setUniforms("ublackWite", 0.4).renderModel( gFigure[i].preRender() );		
 			}
 			for(var i:number=gFigure.length/2; i < gFigure.length ; i++){
-				 gShader.setUniforms("ublackWite", 1).renderModel( gFigure[i].preRender() );		
+				 gShader.setUniforms("ublackWite", 0.8).renderModel( gFigure[i].preRender() );		
 			}
 			// gShader.setUniforms("ublackWite", 0).renderModal( gFigure[0].preRender() );
-		//	gShader.setUniforms("ublackWite", 0).renderModel( gModal2.preRender() );
+			//gShader.setUniforms("ublackWite", 0.5).renderModel( gModal2.preRender() );
 		}
 //#endregion
 	

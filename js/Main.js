@@ -5,6 +5,7 @@ window.addEventListener("load", function () {
 var gl = null;
 var gModal = null;
 var gModal2;
+var testtemp;
 var gCamera;
 var gCameraCtrl;
 var RLoop = null;
@@ -62,14 +63,16 @@ function onReady() {
         var cubemesh = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
         for (var i = 0; i < 16; i++) {
             var model = new C_Modal(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+            model.setScale(0.2, 0.2, 0.2);
             gFigure.push(model);
         }
         for (var i = 48; i < 64; i++) {
             var model = new C_Modal(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+            model.setScale(0.2, 0.2, 0.2);
             gFigure.push(model);
         }
-        gModal2 = new C_Modal(ObjLoader.domToMesh("objCube", "obj_file", true));
-        gModal2.setPosition(0, 0, 0).setScale(0.5, 0.5, 0.5);
+        // gModal2 = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true) )
+        // gModal2.setPosition(0,0,0).
     }
     function initShader() {
         gShader = new C_ShaderBuilder(gl, gVertex_shader, gFragment_shader)
@@ -88,13 +91,13 @@ function onRender(dt) {
         gShader.setUniforms("ublackWite", gCubes[i].GetFeldcolor()).renderModel(gCubes[i].preRender());
     }
     for (var i = 0; i < gFigure.length / 2; i++) {
-        gShader.setUniforms("ublackWite", 0).renderModel(gFigure[i].preRender());
+        gShader.setUniforms("ublackWite", 0.4).renderModel(gFigure[i].preRender());
     }
     for (var i = gFigure.length / 2; i < gFigure.length; i++) {
-        gShader.setUniforms("ublackWite", 1).renderModel(gFigure[i].preRender());
+        gShader.setUniforms("ublackWite", 0.8).renderModel(gFigure[i].preRender());
     }
     // gShader.setUniforms("ublackWite", 0).renderModal( gFigure[0].preRender() );
-    //	gShader.setUniforms("ublackWite", 0).renderModel( gModal2.preRender() );
+    //gShader.setUniforms("ublackWite", 0.5).renderModel( gModal2.preRender() );
 }
 //#endregion
 //#region Shutdown
