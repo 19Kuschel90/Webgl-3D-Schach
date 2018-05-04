@@ -11,7 +11,6 @@
 
 		
 		void main(void){
-			int f = int(a_position.w);
 
 			vUV = vec2(ublackWite,1.0f);
 
