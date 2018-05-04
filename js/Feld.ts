@@ -1,10 +1,21 @@
 
 class C_Feld {
     private feldNumber:string = "";
-    private myState:string = ""
+    private myState:string = "";
+    private ID:number = 0;
     constructor(_myState:string = "feld") {
         this.feldNumber;
+        this.ID;
         this.myState  = _myState;
+    }
+
+    SetID(ID:number)
+    {
+      this.ID = ID;
+    }
+
+    GetID():number{
+      return this.ID;
     }
 
     // only for Feld

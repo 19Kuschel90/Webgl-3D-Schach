@@ -4,9 +4,17 @@ var C_Feld = /** @class */ (function () {
         if (_myState === void 0) { _myState = "feld"; }
         this.feldNumber = "";
         this.myState = "";
+        this.ID = 0;
         this.feldNumber;
+        this.ID;
         this.myState = _myState;
     }
+    C_Feld.prototype.SetID = function (ID) {
+        this.ID = ID;
+    };
+    C_Feld.prototype.GetID = function () {
+        return this.ID;
+    };
     // only for Feld
     C_Feld.prototype.GetFeldcolor = function () {
         return (this.toNumber(this.feldNumber[0]) + Number(this.feldNumber[1])) % 2;
