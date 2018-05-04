@@ -14,7 +14,7 @@ var gCubes:C_Modal[] = [];
 var gFigure:C_Modal[] = [];
 var gInputManager:C_InputManager = new C_InputManager();
 var { gShader, gVertex_shader, gFragment_shader }: { gShader: any; gVertex_shader: any; gFragment_shader: any; } = gShaderFunction();
-
+var gRuls:C_ruls = new C_ruls();
 		
 
 function gShaderFunction() {
@@ -53,6 +53,7 @@ function onReady():void{
 		var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
 		for (var i = 0; i < 64; i++) {
 			var model: C_Modal = new C_Modal(cubemesh ).setPosition((i % 8), 0.0, -Math.floor(i / 8));
+			model.SetState("feld");
 			gCubes.push(model);
 		}
 		givePosition();
@@ -71,17 +72,46 @@ function onReady():void{
 
 	function Setfigure()
 	{
+		var IDs:number =0;
 		var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
 		for (var i = 0; i < 16; i++) {
-	
-			var model: C_Modal = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true)  ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+			IDs++;
+			var model: C_Modal;
+			if(i > 7 && i < 16)
+			{
+			model	 = new C_Modal( ObjLoader.domToMesh("objCube","obj_fileBauer",true)  ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+			model.SetID(IDs);				
 			model.setScale(0.2,0.2,0.2);
+			model.setRotation(180.0,0.0,0.0);
+			model.SetState("BB");				
+		}
+		else{
+			model	 = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true)  ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+			model.SetState("BtooDo");				
+			model.SetID(IDs);				
+			model.setScale(0.2,0.2,0.2);
+		}
+		gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, Math.floor(i / 8 ));
 			gFigure.push(model);
 		}
 		for (var i = 48; i < 64; i++) {
-		
-			 var model: C_Modal = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true)  ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+			IDs++;
+			var model: C_Modal;
+			if(i < 56)
+			{
+				model = new C_Modal( ObjLoader.domToMesh("objCube","obj_fileBauer",true)  ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+				model.SetState("WB");				
+				model.SetID(IDs);				
+				model.setRotation(180.0,0.0,0.0);
+				model.setScale(0.2,0.2,0.2);
+			}else{
+				model = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true)  ).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+			model.SetState("WtooDo");				
 			model.setScale(0.2,0.2,0.2);
+			model.SetID(IDs);				
+		}
+		gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, -Math.floor(i / 8 ));
+		
 			gFigure.push(model);
 		}
 		// gModal2 = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true) )
@@ -100,6 +130,7 @@ function onReady():void{
 
 //#region Render Loop 
 function onRender(dt:number):void{
+	update();
 		gl.fClear();
 		gCamera.updateViewMatrix();
 		gShader.preRender("uCameraMatrix",gCamera.viewMatrix);
@@ -110,12 +141,23 @@ function onRender(dt:number):void{
 				gShader.setUniforms("ublackWite", 0.4).renderModel( gFigure[i].preRender() );		
 			}
 			for(var i:number=gFigure.length/2; i < gFigure.length ; i++){
-				 gShader.setUniforms("ublackWite", 0.8).renderModel( gFigure[i].preRender() );		
+				if(gFigure[i].GetState() == "B")
+				{
+					gShader.setUniforms("ublackWite", 0.0).renderModel( gFigure[i].preRender() );		
+
+				}else{
+
+					gShader.setUniforms("ublackWite", 0.8).renderModel( gFigure[i].preRender() );		
+				}
 			}
 			// gShader.setUniforms("ublackWite", 0).renderModal( gFigure[0].preRender() );
 			//gShader.setUniforms("ublackWite", 0.5).renderModel( gModal2.preRender() );
 		}
 //#endregion
+
+function update():void {
+	
+}
 	
 
 //#region Shutdown
