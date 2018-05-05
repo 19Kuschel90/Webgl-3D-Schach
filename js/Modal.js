@@ -30,5 +30,5 @@ var C_Modal = /** @class */ (function (_super) {
     //Things to do before its time to render
     C_Modal.prototype.preRender = function () { this.transform.updateMatrix(); return this; };
     return C_Modal;
-}(C_Feld));
+}(C_GameObject));
 //# sourceMappingURL=Modal.js.map

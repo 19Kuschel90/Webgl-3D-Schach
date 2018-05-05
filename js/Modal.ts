@@ -1,4 +1,4 @@
-class C_Modal extends C_Feld{
+class C_Modal extends C_GameObject{
 	public transform:C_Transform;
 	public mesh:any;
 
