@@ -195,5 +195,7 @@ function StopRenderLoop()
 
 function StartRenderLoop()
 {
-	gRLoop.start();
+	console.log("hi");
+	gInputManager.yourCommand();
+	// gRLoop.start();// too do
 }

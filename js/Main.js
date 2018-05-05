@@ -166,6 +166,8 @@ function StopRenderLoop() {
     gRLoop.stop();
 }
 function StartRenderLoop() {
-    gRLoop.start();
+    console.log("hi");
+    gInputManager.yourCommand();
+    // gRLoop.start();// too do
 }
 //# sourceMappingURL=Main.js.map
