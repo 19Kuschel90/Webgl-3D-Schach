@@ -155,7 +155,6 @@ class C_ShaderBuilder{
 		{
 			this.gl.drawElements(model.mesh.drawMode, model.mesh.indexCount, gl.UNSIGNED_SHORT, 0); 
 		}else{ this.gl.drawArrays(model.mesh.drawMode, 0, model.mesh.vertexCount);
-			console.log("no");
 		}
 		//Cleanup
 		this.gl.bindVertexArray(null);
@@ -244,6 +243,7 @@ class C_TestShader extends C_Shader{
 }
 //////////////////////////////////////////////////////////////////////////////
 
+//Not use
 class C_GridAxisShader extends C_Shader{
 	public	program:any;
 	constructor(gl:any,pMatrix:any){

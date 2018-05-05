@@ -171,7 +171,6 @@ var C_ShaderBuilder = /** @class */ (function () {
         }
         else {
             this.gl.drawArrays(model.mesh.drawMode, 0, model.mesh.vertexCount);
-            console.log("no");
         }
         //Cleanup
         this.gl.bindVertexArray(null);
@@ -248,6 +247,7 @@ var C_TestShader = /** @class */ (function (_super) {
     return C_TestShader;
 }(C_Shader));
 //////////////////////////////////////////////////////////////////////////////
+//Not use
 var C_GridAxisShader = /** @class */ (function (_super) {
     __extends(C_GridAxisShader, _super);
     function C_GridAxisShader(gl, pMatrix) {
