@@ -5,10 +5,29 @@ var C_GameObject = /** @class */ (function () {
         this.feldNumber = "";
         this.myState = "";
         this.ID = 0;
+        this.selctionColor = 1.0;
+        this.color = 0.0;
+        this.OrColor = 0.0;
         this.feldNumber;
         this.ID;
         this.myState = _myState;
+        this.color;
+        this.selctionColor;
+        this.OrColor;
     }
+    C_GameObject.prototype.GetColor = function () {
+        return this.color;
+    };
+    C_GameObject.prototype.setColor = function (color) {
+        this.OrColor = this.color;
+        this.color = color;
+    };
+    C_GameObject.prototype.restColor = function () {
+        this.color = this.OrColor;
+    };
+    C_GameObject.prototype.SetSelctionColor = function () {
+        this.setColor(this.selctionColor);
+    };
     C_GameObject.prototype.SetID = function (ID) {
         this.ID = ID;
     };

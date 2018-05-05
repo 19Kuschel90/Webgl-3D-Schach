@@ -3,13 +3,36 @@ class C_GameObject {
     private feldNumber:string = "";
     private myState:string = "";
     private ID:number = 0;
+    private selctionColor = 1.0;
+    private color = 0.0;
+    private OrColor = 0.0;
     constructor(_myState:string = "feld") {
         this.feldNumber;
         this.ID;
         this.myState  = _myState;
+        this.color;
+        this.selctionColor;
+        this.OrColor;
+    }
+    GetColor():number{
+       return this.color;
     }
 
-    SetID(ID:number)
+    setColor(color:number){
+      this.OrColor = this.color;
+      this.color = color;
+    }
+
+    restColor()
+    {
+      this.color = this.OrColor;
+    }
+
+    SetSelctionColor():void{
+      this.setColor(this.selctionColor);
+    }
+
+    SetID(ID:number):void
     {
       this.ID = ID;
     }
