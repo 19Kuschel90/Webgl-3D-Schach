@@ -14,10 +14,21 @@ class  C_InputManager {
       this.canvasSizeH =  Number((<HTMLInputElement>document.getElementById("canvasSizeH")).value)
     }
 
-    yourCommand(){
+    yourCommand():void{
       gRuls.isMoveOK("B1",gFigure[10], "B3");
     }
     
+    setOptionsInHtml(ID:string, state:string):void
+    {
+      var x = document.createElement("OPTION");
+      x.setAttribute("value", "volvocar");
+      var t = document.createTextNode(state + ID);
+      x.appendChild(t);
+      (<HTMLSelectElement>document.getElementById("PlayerSelect")).appendChild(x);
+      // var temp = (<HTMLSelectElement>document.getElementById("PlayerSelect")).appendChild(document.createTextNode("ff"));
+      // console.log(temp);
+      
+    }
 }
 
 class C_ruls{

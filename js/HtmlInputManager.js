@@ -17,6 +17,15 @@ var C_InputManager = /** @class */ (function () {
     C_InputManager.prototype.yourCommand = function () {
         gRuls.isMoveOK("B1", gFigure[10], "B3");
     };
+    C_InputManager.prototype.setOptionsInHtml = function (ID, state) {
+        var x = document.createElement("OPTION");
+        x.setAttribute("value", "volvocar");
+        var t = document.createTextNode(state + ID);
+        x.appendChild(t);
+        document.getElementById("PlayerSelect").appendChild(x);
+        // var temp = (<HTMLSelectElement>document.getElementById("PlayerSelect")).appendChild(document.createTextNode("ff"));
+        // console.log(temp);
+    };
     return C_InputManager;
 }());
 var C_ruls = /** @class */ (function () {
