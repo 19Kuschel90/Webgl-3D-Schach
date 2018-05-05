@@ -81,6 +81,7 @@ function onReady() {
                 model.setScale(0.2, 0.2, 0.2);
             }
             gRuls.SetOnfeld(model.GetState(), Number(model.GetID()), i % 8, Math.floor(i / 8));
+            gInputManager.setOptionsInHtml(String(model.GetID()), model.GetState());
             gFigure.push(model);
         }
         for (var i = 48; i < 64; i++) {
@@ -100,6 +101,7 @@ function onReady() {
                 model.SetID(IDs);
             }
             gRuls.SetOnfeld(model.GetState(), Number(model.GetID()), i % 8, -Math.floor(i / 8));
+            gInputManager.setOptionsInHtml(String(model.GetID()), model.GetState());
             gFigure.push(model);
         }
         // gModal2 = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true) )

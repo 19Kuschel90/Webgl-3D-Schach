@@ -49,7 +49,7 @@ function onReady():void{
 	Setfigure();
 	gRLoop.start();	
 
-	function initFeld() {
+	function initFeld():void {
 		var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
 		for (var i = 0; i < 64; i++) {
 			var model: C_Modal = new C_Modal(cubemesh ).setPosition((i % 8), 0.0, -Math.floor(i / 8));
@@ -59,20 +59,20 @@ function onReady():void{
 		givePosition();
 
 		// A1 A2 B1 B2 ....
-		function givePosition() {
+		function givePosition():void {
 			var temp = 0;
 			for (var X: number = 1; X <= 8; X++) {
 				for (var Y: number = 1; Y <= 8; Y++) {
-					(<C_Feld>gCubes[temp]).SetFeld(X, Y);
+					(<C_GameObject>gCubes[temp]).SetFeld(X, Y);
 					temp++;
 				}
 			}
 		}
 	}
 
-	function Setfigure()
+	function Setfigure():void
 	{
-		var IDs:number =0;
+		var IDs:number = 0;
 		var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
 		for (var i = 0; i < 16; i++) {
 			IDs++;
@@ -92,6 +92,7 @@ function onReady():void{
 			model.setScale(0.2,0.2,0.2);
 		}
 		gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, Math.floor(i / 8 ));
+		gInputManager.setOptionsInHtml(String(model.GetID()),model.GetState());
 			gFigure.push(model);
 		}
 		for (var i = 48; i < 64; i++) {
@@ -111,7 +112,7 @@ function onReady():void{
 			model.SetID(IDs);				
 		}
 		gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, -Math.floor(i / 8 ));
-		
+		gInputManager.setOptionsInHtml(String(model.GetID()),model.GetState());		
 			gFigure.push(model);
 		}
 		// gModal2 = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true) )
@@ -135,7 +136,7 @@ function onRender(dt:number):void{
 		gCamera.updateViewMatrix();
 		gShader.preRender("uCameraMatrix",gCamera.viewMatrix);
 		for(var i:number=0; i < gCubes.length; i++){	
-				 gShader.setUniforms("ublackWite", (<C_Feld>gCubes[i]).GetFeldcolor() ).renderModel( gCubes[i].preRender() );		
+				 gShader.setUniforms("ublackWite", (<C_GameObject>gCubes[i]).GetFeldcolor() ).renderModel( gCubes[i].preRender() );		
 			}
 			for(var i:number=0; i < gFigure.length /2; i++){
 				gShader.setUniforms("ublackWite", 0.4).renderModel( gFigure[i].preRender() );		
