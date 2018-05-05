@@ -21,12 +21,10 @@ class  C_InputManager {
     setOptionsInHtml(ID:string, state:string):void
     {
       var x = document.createElement("OPTION");
-      x.setAttribute("value", "volvocar");
+      x.setAttribute("value", String(Number(ID) -1));
       var t = document.createTextNode(state + ID);
       x.appendChild(t);
       (<HTMLSelectElement>document.getElementById("PlayerSelect")).appendChild(x);
-      // var temp = (<HTMLSelectElement>document.getElementById("PlayerSelect")).appendChild(document.createTextNode("ff"));
-      // console.log(temp);
       
     }
 }
