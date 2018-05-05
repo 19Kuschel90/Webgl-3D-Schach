@@ -5,6 +5,7 @@ var C_InputManager = /** @class */ (function () {
         this.startPos = new C_Vector3(8, 15, -20);
         this.canvasSizeW = 600;
         this.canvasSizeH = 600;
+        this.isYourTure = true;
     }
     C_InputManager.prototype.update = function () {
         this.startPos.x = Number(document.getElementById("SX").value);
@@ -12,6 +13,9 @@ var C_InputManager = /** @class */ (function () {
         this.startPos.z = Number(document.getElementById("SZ").value);
         this.canvasSizeW = Number(document.getElementById("canvasSizeW").value);
         this.canvasSizeH = Number(document.getElementById("canvasSizeH").value);
+    };
+    C_InputManager.prototype.yourCommand = function () {
+        gRuls.isMoveOK("B1", gFigure[10], "B3");
     };
     return C_InputManager;
 }());
@@ -36,15 +40,22 @@ var C_ruls = /** @class */ (function () {
         this.feld[targetA][targetB] = state + String(ID);
         console.log(this.feld);
     };
-    C_ruls.prototype.isMoveOK = function (pos, _state, target) {
+    C_ruls.prototype.isMoveOK = function (pos, figure, target) {
         var posA = Number(this.toNumber(pos[0]));
         var posB = Number(pos[1]);
         var targetA = Number(this.toNumber(target[0]));
         var targetB = Number(target[1]);
-        this.MoveOK([posA, posB], _state, [targetA, targetB]);
+        this.MoveOK([posA, posB], figure, [targetA, targetB]);
         return false;
     };
-    C_ruls.prototype.MoveOK = function (move, state, target) {
+    C_ruls.prototype.MoveOK = function (move, figure, target) {
+        var temp = this.feld[move[0]][move[1]];
+        this.feld[move[0]][move[1]] = "";
+        this.feld[target[0]][target[1]] = temp;
+        figure.setPosition(target[0], -1.0, -target[1]);
+        console.log("errgbins");
+        console.log(temp);
+        console.log(this.feld);
     };
     C_ruls.prototype.toNumber = function (char) {
         if (typeof char === 'string') {

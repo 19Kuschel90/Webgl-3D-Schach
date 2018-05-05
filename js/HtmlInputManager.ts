@@ -3,6 +3,7 @@ class  C_InputManager {
   public startPos:C_Vector3 = new C_Vector3(8,15,-20);
   public canvasSizeW:number = 600;
   public canvasSizeH:number = 600;
+  private isYourTure:boolean = true;
     constructor() {
     }
     update():void{
@@ -11,8 +12,12 @@ class  C_InputManager {
       this.startPos.z = Number((<HTMLInputElement>document.getElementById("SZ")).value);
       this.canvasSizeW =  Number((<HTMLInputElement>document.getElementById("canvasSizeW")).value)
       this.canvasSizeH =  Number((<HTMLInputElement>document.getElementById("canvasSizeH")).value)
-
     }
+
+    yourCommand(){
+      gRuls.isMoveOK("B1",gFigure[10], "B3");
+    }
+    
 }
 
 class C_ruls{
@@ -37,16 +42,23 @@ class C_ruls{
     console.log(this.feld);
   }
 
-  public isMoveOK(pos:string, _state:string, target:string):boolean {
+  public isMoveOK(pos:string, figure:C_Modal, target:string):boolean {
     var posA:number = Number(<number>this.toNumber(pos[0]));
     var posB:number = Number(pos[1]);
     var targetA:number = Number(<number>this.toNumber(target[0]));
     var targetB:number = Number(target[1]);
-    this.MoveOK([posA,posB] , _state,[targetA,targetB]);
+    this.MoveOK([posA,posB] , figure,[targetA,targetB]);
     return false;
   }
 
-  private MoveOK(move:number[],state:string, target:number[]) {
+  private MoveOK(move:number[],figure:C_Modal, target:number[]) {
+    var temp = this.feld[move[0]][move[1]];
+    this.feld[move[0]][move[1]] = "";
+    this.feld[target[0]][target[1]] = temp;
+    figure.setPosition( target[0], -1.0, -target[1]);
+    console.log("errgbins");
+    console.log(temp);
+    console.log(this.feld);
     
   }
 
