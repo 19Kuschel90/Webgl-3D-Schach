@@ -1,6 +1,18 @@
 window.addEventListener("load",function(){
 	G_LoadShader();
 });
+
+(<HTMLSelectElement>document.getElementById("PlayerSelect")).addEventListener("change", ()=>{
+	var temp =	(<HTMLSelectElement>document.getElementById("PlayerSelect")).value;
+	gFigure[Number(oldSelection)].restColor();
+	console.log(temp);
+	oldSelection = temp;
+	gFigure[Number(temp)].SetSelctionColor();
+	console.log(gFigure);
+	
+});
+
+var oldSelection:string = "0";// tooDo
 var gl:any = null;
 var gModal:any = null;
 var gModal2: C_Modal;
@@ -93,7 +105,8 @@ function onReady():void{
 		}
 		gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, Math.floor(i / 8 ));
 		gInputManager.setOptionsInHtml(String(model.GetID()),model.GetState());
-			gFigure.push(model);
+		(<C_GameObject> model).setColor(0.2);
+		gFigure.push(model);
 		}
 		for (var i = 48; i < 64; i++) {
 			IDs++;
@@ -113,8 +126,10 @@ function onReady():void{
 		}
 		gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, -Math.floor(i / 8 ));
 		gInputManager.setOptionsInHtml(String(model.GetID()),model.GetState());		
+		(<C_GameObject> model).setColor(0.8);
 			gFigure.push(model);
 		}
+		console.log(gFigure);
 		// gModal2 = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true) )
 		// gModal2.setPosition(0,0,0).
 	}
@@ -138,22 +153,15 @@ function onRender(dt:number):void{
 		for(var i:number=0; i < gCubes.length; i++){	
 				 gShader.setUniforms("ublackWite", (<C_GameObject>gCubes[i]).GetFeldcolor() ).renderModel( gCubes[i].preRender() );		
 			}
-			for(var i:number=0; i < gFigure.length /2; i++){
-				gShader.setUniforms("ublackWite", 0.4).renderModel( gFigure[i].preRender() );		
-			}
-			for(var i:number=gFigure.length/2; i < gFigure.length ; i++){
-				if(gFigure[i].GetState() == "B")
-				{
-					gShader.setUniforms("ublackWite", 0.0).renderModel( gFigure[i].preRender() );		
 
-				}else{
-
-					gShader.setUniforms("ublackWite", 0.8).renderModel( gFigure[i].preRender() );		
+			for(var i:number= 0; i < gFigure.length ; i++){
+				
+					gShader.setUniforms("ublackWite", gFigure[i].GetColor()).renderModel( gFigure[i].preRender() );		
 				}
 			}
 			// gShader.setUniforms("ublackWite", 0).renderModal( gFigure[0].preRender() );
 			//gShader.setUniforms("ublackWite", 0.5).renderModel( gModal2.preRender() );
-		}
+		
 //#endregion
 
 function update():void {
