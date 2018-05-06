@@ -10,7 +10,6 @@ class C_RenderLoop{
 		var oThis = this;
 		this.msLastFrame = null;	//The time in Miliseconds of the last frame.
 		this.callBack = callback;	//What function to call for each frame
-		console.log(this.callBack);
 		this.isActive = false;		//Control the On/Off state of the render loop
 		this.fps = 0;				//Save the value of how fast the loop is going.
 
