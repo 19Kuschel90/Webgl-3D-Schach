@@ -173,6 +173,30 @@ class C_ShaderBuilder{
 	}
 }
 //////////////////////////////////////////////////////////////////////////////
+class GlUtil{
+
+	//Convert Hex colors to float arrays, can batch process a list into one big array.
+	//example : GlUtil.rgbArray("#FF0000","00FF00","#0000FF");
+	static rgbArray(...myArguments:any[]):any{
+		if(myArguments.length == 0) return null;
+		var rtn = [];
+
+		for(var i=0,c,p; i < myArguments.length; i++){
+			if(myArguments[i].length < 6) continue;
+			c = myArguments[i];		//Just an alias(copy really) of the color text, make code smaller.
+			p = (c[0] == "#")?1:0;	//Determine starting position in char array to start pulling from
+
+			rtn.push(
+				parseInt(c[p]	+c[p+1],16)	/ 255.0,
+				parseInt(c[p+2]	+c[p+3],16)	/ 255.0,
+				parseInt(c[p+4]	+c[p+5],16)	/ 255.0
+			);
+		}
+		return rtn;
+	}
+
+}
+//////////////////////////////////////////////////////////////////////////////
 
 class C_Shader{
 	public	gl:any;
@@ -187,6 +211,9 @@ class C_Shader{
 			gl.useProgram(this.program);
 			this.attribLoc = C_ShaderUtil.getStandardAttribLocations(gl,this.program);
 			this.uniformLoc = C_ShaderUtil.getStandardUniformLocations(gl,this.program);
+		}
+		else{
+			console.log("!! this.program == null")
 		}
 
 		//Note :: Extended shaders should deactivate shader when done calling super and setting up custom parts in the constructor.
@@ -226,23 +253,78 @@ class C_Shader{
 
 		return this;
 	}
-}
-//////////////////////////////////////////////////////////////////////////////
-class C_TestShader extends C_Shader{
 	
-	constructor(gl:any,aryColor:any, vertSrc:any,fragSrc:any){
+}
+	//////////////////////////////////////////////////////////////////////////////		
+	class TestShader extends C_Shader{
+		
+		mainTexture: number;
+				constructor(gl:any,pMatrix:Float32Array){
+					var vertSrc = C_ShaderUtil.domShaderSrc("vertex_shader"),
+						fragSrc = C_ShaderUtil.domShaderSrc("fragment_shader");
+					super(gl,vertSrc,fragSrc);
+					//Custom Uniforms
+					this.uniformLoc.time = gl.getUniformLocation(this.program,"uTime");
+					
+					var uColor	= gl.getUniformLocation(this.program,"uColor");
+					gl.uniform3fv(uColor, new Float32Array( GlUtil.rgbArray("#FF0000","00FF00","0000FF","909090","C0C0C0","404040") ));
 
+					//Standrd Uniforms
+					this.setPerspective(pMatrix);
+					this.mainTexture = -1; //Store Our Texture ID
+					gl.useProgram(null); //Done setting up shader
+				}
+
+				setTime(t:any){ this.gl.uniform1f(this.uniformLoc.time,t); return this; }
+				setTexture(texID:any){ this.mainTexture = texID; return this; }
+
+				//Override
+				preRender(){
+					//Setup Texture
+					this.gl.activeTexture(this.gl.TEXTURE0);
+					this.gl.bindTexture(this.gl.TEXTURE_2D, this.mainTexture);
+					this.gl.uniform1i(this.uniformLoc.mainTexture,0); //Our predefined uniformLoc.mainTexture is uMainTex, Prev Lessons we made ShaderUtil.getStandardUniformLocations() function in Shaders.js to get its location.
+
+					return this;
+				}
+			}
+//////////////////////////////////////////////////////////////////////////////
+class SkymapShader extends C_Shader{
+	texNight: any;
+	texDay: any;
+	constructor(gl:any,pMatrix:any,dayTex:any,nightTex:any){
+		var vertSrc = skyShader[0],
+			fragSrc = skyShader[1];
+			
 		super(gl,vertSrc,fragSrc);
 
-		//Our shader uses custom uniforms 
-		var uColor	= gl.getUniformLocation(this.program,"uColor");
-		gl.uniform3fv(uColor, aryColor);
+		//Custom Uniforms
+		this.uniformLoc.time = gl.getUniformLocation(this.program,"uTime");
+		this.uniformLoc.dayTex = gl.getUniformLocation(this.program,"uDayTex");
+		this.uniformLoc.nightTex = gl.getUniformLocation(this.program,"uNightTex");
 
+		//Standrd Uniforms
+		this.setPerspective(pMatrix);
+		this.texDay = dayTex;
+		this.texNight = nightTex;
 		gl.useProgram(null); //Done setting up shader
 	}
-}
-//////////////////////////////////////////////////////////////////////////////
 
+	setTime(t:any){ this.gl.uniform1f(this.uniformLoc.time,t); return this; }
+
+	//Override
+	preRender(){
+		//Setup Texture
+		this.gl.activeTexture(this.gl.TEXTURE0);
+		this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texDay);
+		this.gl.uniform1i(this.uniformLoc.dayTex,0);
+
+		this.gl.activeTexture(this.gl.TEXTURE1);
+		this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texNight);
+		this.gl.uniform1i(this.uniformLoc.nightTex,1);
+		return this;
+	}
+}
 //Not use
 class C_GridAxisShader extends C_Shader{
 	public	program:any;

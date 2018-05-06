@@ -190,6 +190,31 @@ var C_ShaderBuilder = /** @class */ (function () {
     return C_ShaderBuilder;
 }());
 //////////////////////////////////////////////////////////////////////////////
+var GlUtil = /** @class */ (function () {
+    function GlUtil() {
+    }
+    //Convert Hex colors to float arrays, can batch process a list into one big array.
+    //example : GlUtil.rgbArray("#FF0000","00FF00","#0000FF");
+    GlUtil.rgbArray = function () {
+        var myArguments = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            myArguments[_i] = arguments[_i];
+        }
+        if (myArguments.length == 0)
+            return null;
+        var rtn = [];
+        for (var i = 0, c, p; i < myArguments.length; i++) {
+            if (myArguments[i].length < 6)
+                continue;
+            c = myArguments[i]; //Just an alias(copy really) of the color text, make code smaller.
+            p = (c[0] == "#") ? 1 : 0; //Determine starting position in char array to start pulling from
+            rtn.push(parseInt(c[p] + c[p + 1], 16) / 255.0, parseInt(c[p + 2] + c[p + 3], 16) / 255.0, parseInt(c[p + 4] + c[p + 5], 16) / 255.0);
+        }
+        return rtn;
+    };
+    return GlUtil;
+}());
+//////////////////////////////////////////////////////////////////////////////
 var C_Shader = /** @class */ (function () {
     function C_Shader(gl, vertShaderSrc, fragShaderSrc) {
         this.program = C_ShaderUtil.createProgramFromText(gl, vertShaderSrc, fragShaderSrc, true);
@@ -198,6 +223,9 @@ var C_Shader = /** @class */ (function () {
             gl.useProgram(this.program);
             this.attribLoc = C_ShaderUtil.getStandardAttribLocations(gl, this.program);
             this.uniformLoc = C_ShaderUtil.getStandardUniformLocations(gl, this.program);
+        }
+        else {
+            console.log("!! this.program == null");
         }
         //Note :: Extended shaders should deactivate shader when done calling super and setting up custom parts in the constructor.
     }
@@ -233,20 +261,67 @@ var C_Shader = /** @class */ (function () {
     };
     return C_Shader;
 }());
-//////////////////////////////////////////////////////////////////////////////
-var C_TestShader = /** @class */ (function (_super) {
-    __extends(C_TestShader, _super);
-    function C_TestShader(gl, aryColor, vertSrc, fragSrc) {
-        var _this = _super.call(this, gl, vertSrc, fragSrc) || this;
-        //Our shader uses custom uniforms 
+//////////////////////////////////////////////////////////////////////////////		
+var TestShader = /** @class */ (function (_super) {
+    __extends(TestShader, _super);
+    function TestShader(gl, pMatrix) {
+        var _this = this;
+        var vertSrc = C_ShaderUtil.domShaderSrc("vertex_shader"), fragSrc = C_ShaderUtil.domShaderSrc("fragment_shader");
+        _this = _super.call(this, gl, vertSrc, fragSrc) || this;
+        //Custom Uniforms
+        _this.uniformLoc.time = gl.getUniformLocation(_this.program, "uTime");
         var uColor = gl.getUniformLocation(_this.program, "uColor");
-        gl.uniform3fv(uColor, aryColor);
+        gl.uniform3fv(uColor, new Float32Array(GlUtil.rgbArray("#FF0000", "00FF00", "0000FF", "909090", "C0C0C0", "404040")));
+        //Standrd Uniforms
+        _this.setPerspective(pMatrix);
+        _this.mainTexture = -1; //Store Our Texture ID
         gl.useProgram(null); //Done setting up shader
         return _this;
     }
-    return C_TestShader;
+    TestShader.prototype.setTime = function (t) { this.gl.uniform1f(this.uniformLoc.time, t); return this; };
+    TestShader.prototype.setTexture = function (texID) { this.mainTexture = texID; return this; };
+    //Override
+    TestShader.prototype.preRender = function () {
+        //Setup Texture
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.mainTexture);
+        this.gl.uniform1i(this.uniformLoc.mainTexture, 0); //Our predefined uniformLoc.mainTexture is uMainTex, Prev Lessons we made ShaderUtil.getStandardUniformLocations() function in Shaders.js to get its location.
+        return this;
+    };
+    return TestShader;
 }(C_Shader));
 //////////////////////////////////////////////////////////////////////////////
+var SkymapShader = /** @class */ (function (_super) {
+    __extends(SkymapShader, _super);
+    function SkymapShader(gl, pMatrix, dayTex, nightTex) {
+        var _this = this;
+        var vertSrc = skyShader[0], fragSrc = skyShader[1];
+        _this = _super.call(this, gl, vertSrc, fragSrc) || this;
+        //Custom Uniforms
+        _this.uniformLoc.time = gl.getUniformLocation(_this.program, "uTime");
+        _this.uniformLoc.dayTex = gl.getUniformLocation(_this.program, "uDayTex");
+        _this.uniformLoc.nightTex = gl.getUniformLocation(_this.program, "uNightTex");
+        //Standrd Uniforms
+        _this.setPerspective(pMatrix);
+        _this.texDay = dayTex;
+        _this.texNight = nightTex;
+        gl.useProgram(null); //Done setting up shader
+        return _this;
+    }
+    SkymapShader.prototype.setTime = function (t) { this.gl.uniform1f(this.uniformLoc.time, t); return this; };
+    //Override
+    SkymapShader.prototype.preRender = function () {
+        //Setup Texture
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texDay);
+        this.gl.uniform1i(this.uniformLoc.dayTex, 0);
+        this.gl.activeTexture(this.gl.TEXTURE1);
+        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texNight);
+        this.gl.uniform1i(this.uniformLoc.nightTex, 1);
+        return this;
+    };
+    return SkymapShader;
+}(C_Shader));
 //Not use
 var C_GridAxisShader = /** @class */ (function (_super) {
     __extends(C_GridAxisShader, _super);
