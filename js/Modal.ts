@@ -1,9 +1,9 @@
-class C_Modal extends C_GameObject{
+class C_Modal {
 	public transform:C_Transform;
 	public mesh:any;
 
-	constructor(meshData:any, colord:number = 0){
-		super();
+	constructor(meshData:any){
+		
 		this.transform = new C_Transform();
 		this.mesh = meshData;
 	}
