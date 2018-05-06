@@ -1,19 +1,32 @@
 "use strict";
-var C_GameObject = /** @class */ (function () {
-    function C_GameObject(_myState) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var C_GameObject = /** @class */ (function (_super) {
+    __extends(C_GameObject, _super);
+    function C_GameObject(meshData, _myState) {
         if (_myState === void 0) { _myState = "feld"; }
-        this.feldNumber = "";
-        this.myState = "";
-        this.ID = 0;
-        this.selctionColor = 1.0;
-        this.color = 0.0;
-        this.OrColor = 0.0;
-        this.feldNumber;
-        this.ID;
-        this.myState = _myState;
-        this.color;
-        this.selctionColor;
-        this.OrColor;
+        var _this = _super.call(this, meshData) || this;
+        _this.feldNumber = "";
+        _this.myState = "";
+        _this.ID = 0;
+        _this.selctionColor = 1.0;
+        _this.color = 0.0;
+        _this.OrColor = 0.0;
+        _this.feldNumber;
+        _this.ID;
+        _this.myState = _myState;
+        _this.color;
+        _this.selctionColor;
+        _this.OrColor;
+        return _this;
     }
     C_GameObject.prototype.GetColor = function () {
         return this.color;
@@ -93,5 +106,5 @@ var C_GameObject = /** @class */ (function () {
         return -1; // only by error
     };
     return C_GameObject;
-}());
+}(C_Modal));
 //# sourceMappingURL=C_GameObject.js.map

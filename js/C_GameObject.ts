@@ -1,12 +1,13 @@
 
-class C_GameObject {
+class C_GameObject  extends C_Modal{
     private feldNumber:string = "";
     private myState:string = "";
     private ID:number = 0;
     private selctionColor = 1.0;
     private color = 0.0;
     private OrColor = 0.0;
-    constructor(_myState:string = "feld") {
+    constructor(meshData:any,_myState:string = "feld") {
+      super(meshData);
         this.feldNumber;
         this.ID;
         this.myState  = _myState;
