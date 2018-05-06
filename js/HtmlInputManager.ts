@@ -39,35 +39,71 @@ class C_ruls{
   ["","","","","","","",""],
   ["","","","","","","",""],
   ["","","","","","","",""]];
-
+  private WorkPos:number[] = []; // temp figure Pos
+  private WorkPosTarget:number[] = []; // temp traget pos
   constructor() {
     this.feld;
+    this.WorkPos;
   }
   /**
    * SetOnfeld
    */
   public SetOnfeld(state:string, ID:number, targetA:number,targetB:number ) {
     this.feld[targetA][targetB] = state + String(ID);
-    // console.log(this.feld);
   }
 
-  public isMoveOK(pos:string, figure:C_Modal, target:string):boolean {
-    var posA:number = Number(<number>this.toNumber(pos[0]));
-    var posB:number = Number(pos[1]);
-    var targetA:number = Number(<number>this.toNumber(target[0]));
-    var targetB:number = Number(target[1]);
-    this.MoveOK([posA,posB] , figure,[targetA,targetB]);
+  public isMoveOK(pos:string, figure:C_GameObject, target:string):boolean {
+    // feld to number z.b A1 to 11
+    // old
+    // this.WorkPosTarget[0] = Number(<number>this.toNumber(target[0]));
+    // this.WorkPosTarget[1] = Number(target[1]);
+
+    // this.MoveOK([posA,posB] , figure,[targetA,targetB]);
     return false;
   }
+public iCanMove(figure:C_GameObject) {
+  
+  if(figure.GetState() ==  "WB" || "BB")
+  {
+    if(figure.GetState() == "BB")
+    {
+      this.iBBCanBauerMove(figure.GetFeldNumber());
+    }else{
+      this.iWBCanBauerMove(figure.GetFeldNumber());
+    }
+    
+  }
+}
 
-  private MoveOK(move:number[],figure:C_Modal, target:number[]) {
+  private SetWorkPos(pos:string):void
+  {
+    console.log(pos);
+    this.WorkPos[0] = Number(<number>this.toNumber(pos[0]))-1;
+    this.WorkPos[1] = Number(pos[1]);
+  }
+
+  // White Bauer
+  private iWBCanBauerMove(feldNumber:string) {
+    console.log(feldNumber);
+    this.SetWorkPos(feldNumber);
+    this.feld[this.WorkPos[0]][this.WorkPos[1]-1] = "X";
+    console.log(this.feld);
+  }
+
+  // Black Bauer
+  private iBBCanBauerMove(feldNumber:string) {
+    console.log(feldNumber);
+    this.SetWorkPos(feldNumber);
+    this.feld[this.WorkPos[0]][this.WorkPos[1]+1] = "X";
+    console.log(this.feld);
+  }
+
+  private MoveOK(move:number[],figure:C_GameObject, target:number[]) {
     var temp = this.feld[move[0]][move[1]];
     this.feld[move[0]][move[1]] = "";
     this.feld[target[0]][target[1]] = temp;
     figure.setPosition( target[0], -1.0, -target[1]);
-    // console.log("errgbins");
-    // console.log(temp);
-    // console.log(this.feld);
+  
     
   }
 
@@ -95,7 +131,7 @@ class C_ruls{
         case "H":
         return 8;
        }
-       return -1;
+       return -666;
      }else{
      switch(char)
       {
@@ -117,7 +153,7 @@ class C_ruls{
         return "H";
        }
      }
-     return -1;// only by error
+     return -666;// only by error
  }
   
 }

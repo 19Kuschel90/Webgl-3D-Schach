@@ -38,31 +38,59 @@ var C_ruls = /** @class */ (function () {
             ["", "", "", "", "", "", "", ""],
             ["", "", "", "", "", "", "", ""]
         ];
+        this.WorkPos = []; // temp figure Pos
+        this.WorkPosTarget = []; // temp traget pos
         this.feld;
+        this.WorkPos;
     }
     /**
      * SetOnfeld
      */
     C_ruls.prototype.SetOnfeld = function (state, ID, targetA, targetB) {
         this.feld[targetA][targetB] = state + String(ID);
-        // console.log(this.feld);
     };
     C_ruls.prototype.isMoveOK = function (pos, figure, target) {
-        var posA = Number(this.toNumber(pos[0]));
-        var posB = Number(pos[1]);
-        var targetA = Number(this.toNumber(target[0]));
-        var targetB = Number(target[1]);
-        this.MoveOK([posA, posB], figure, [targetA, targetB]);
+        // feld to number z.b A1 to 11
+        // old
+        // this.WorkPosTarget[0] = Number(<number>this.toNumber(target[0]));
+        // this.WorkPosTarget[1] = Number(target[1]);
+        // this.MoveOK([posA,posB] , figure,[targetA,targetB]);
         return false;
+    };
+    C_ruls.prototype.iCanMove = function (figure) {
+        if (figure.GetState() == "WB" || "BB") {
+            if (figure.GetState() == "BB") {
+                this.iBBCanBauerMove(figure.GetFeldNumber());
+            }
+            else {
+                this.iWBCanBauerMove(figure.GetFeldNumber());
+            }
+        }
+    };
+    C_ruls.prototype.SetWorkPos = function (pos) {
+        console.log(pos);
+        this.WorkPos[0] = Number(this.toNumber(pos[0])) - 1;
+        this.WorkPos[1] = Number(pos[1]);
+    };
+    // White Bauer
+    C_ruls.prototype.iWBCanBauerMove = function (feldNumber) {
+        console.log(feldNumber);
+        this.SetWorkPos(feldNumber);
+        this.feld[this.WorkPos[0]][this.WorkPos[1] - 1] = "X";
+        console.log(this.feld);
+    };
+    // Black Bauer
+    C_ruls.prototype.iBBCanBauerMove = function (feldNumber) {
+        console.log(feldNumber);
+        this.SetWorkPos(feldNumber);
+        this.feld[this.WorkPos[0]][this.WorkPos[1] + 1] = "X";
+        console.log(this.feld);
     };
     C_ruls.prototype.MoveOK = function (move, figure, target) {
         var temp = this.feld[move[0]][move[1]];
         this.feld[move[0]][move[1]] = "";
         this.feld[target[0]][target[1]] = temp;
         figure.setPosition(target[0], -1.0, -target[1]);
-        // console.log("errgbins");
-        // console.log(temp);
-        // console.log(this.feld);
     };
     C_ruls.prototype.toNumber = function (char) {
         if (typeof char === 'string') {
@@ -84,7 +112,7 @@ var C_ruls = /** @class */ (function () {
                 case "H":
                     return 8;
             }
-            return -1;
+            return -666;
         }
         else {
             switch (char) {
@@ -106,7 +134,7 @@ var C_ruls = /** @class */ (function () {
                     return "H";
             }
         }
-        return -1; // only by error
+        return -666; // only by error
     };
     return C_ruls;
 }());
