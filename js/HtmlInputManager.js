@@ -45,7 +45,7 @@ var C_ruls = /** @class */ (function () {
      */
     C_ruls.prototype.SetOnfeld = function (state, ID, targetA, targetB) {
         this.feld[targetA][targetB] = state + String(ID);
-        console.log(this.feld);
+        // console.log(this.feld);
     };
     C_ruls.prototype.isMoveOK = function (pos, figure, target) {
         var posA = Number(this.toNumber(pos[0]));
@@ -60,9 +60,9 @@ var C_ruls = /** @class */ (function () {
         this.feld[move[0]][move[1]] = "";
         this.feld[target[0]][target[1]] = temp;
         figure.setPosition(target[0], -1.0, -target[1]);
-        console.log("errgbins");
-        console.log(temp);
-        console.log(this.feld);
+        // console.log("errgbins");
+        // console.log(temp);
+        // console.log(this.feld);
     };
     C_ruls.prototype.toNumber = function (char) {
         if (typeof char === 'string') {

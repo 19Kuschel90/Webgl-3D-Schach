@@ -48,7 +48,7 @@ class C_ruls{
    */
   public SetOnfeld(state:string, ID:number, targetA:number,targetB:number ) {
     this.feld[targetA][targetB] = state + String(ID);
-    console.log(this.feld);
+    // console.log(this.feld);
   }
 
   public isMoveOK(pos:string, figure:C_Modal, target:string):boolean {
@@ -65,9 +65,9 @@ class C_ruls{
     this.feld[move[0]][move[1]] = "";
     this.feld[target[0]][target[1]] = temp;
     figure.setPosition( target[0], -1.0, -target[1]);
-    console.log("errgbins");
-    console.log(temp);
-    console.log(this.feld);
+    // console.log("errgbins");
+    // console.log(temp);
+    // console.log(this.feld);
     
   }
 
