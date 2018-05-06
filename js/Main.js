@@ -23,8 +23,11 @@ var Resources = null;
 var gCubes = [];
 var gFigure = [];
 var gInputManager = new C_InputManager();
+var skyShader = [];
 var _a = gShaderFunction(), gShader = _a.gShader, gVertex_shader = _a.gVertex_shader, gFragment_shader = _a.gFragment_shader;
 var gRuls = new C_ruls();
+var gSkymap;
+var gSkyMapShader;
 function gShaderFunction() {
     var gShader = null;
     var gVertex_shader = "";
@@ -40,6 +43,23 @@ function main(VS, FS) {
     gCamera = new C_Camera(gl);
     gCamera.transform.rotation.set(90, 0, 0);
     gCameraCtrl = new C_CameraController(gl, gCamera);
+    // gl.fLoadTexture("tex001",document.getElementById("imgTex"));
+    gl.fLoadCubeMap("skybox01", [
+        document.getElementById("cube01_right"), document.getElementById("cube01_left"),
+        document.getElementById("cube01_top"), document.getElementById("cube01_bottom"),
+        document.getElementById("cube01_back"), document.getElementById("cube01_front")
+    ]);
+    gl.fLoadCubeMap("skybox02", [
+        document.getElementById("cube02_right"), document.getElementById("cube02_left"),
+        document.getElementById("cube02_top"), document.getElementById("cube02_bottom"),
+        document.getElementById("cube02_back"), document.getElementById("cube02_front")
+    ]);
+    //....................................
+    //Setup Test Shader, Modal, Meshes
+    // gShader = new TestShader(gl,gCamera.projectionMatrix);
+    // .setTexture(gl.mTextureCache["tex001"]);
+    gSkymap = new C_Modal(Primatives.Cube.createMesh(gl, "Skymap", 10, 10, 10, 0, 0, 0));
+    gSkyMapShader = new SkymapShader(gl, gCamera.projectionMatrix, gl.mTextureCache["skybox01"], gl.mTextureCache["skybox02"]);
     gRLoop = new C_RenderLoop(onRender, 30);
     C_Resources.setup(gl, onReady).loadTexture("atlas", gInputManager.atlasLink).start();
 }
@@ -54,7 +74,7 @@ function onReady() {
     function initFeld() {
         var cubemesh = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
         for (var i = 0; i < 64; i++) {
-            var model = new C_Modal(cubemesh).setPosition((i % 8), 0.0, -Math.floor(i / 8));
+            var model = new C_GameObject(cubemesh).setPosition((i % 8), 0.0, -Math.floor(i / 8));
             model.SetState("feld");
             gCubes.push(model);
         }
@@ -77,14 +97,14 @@ function onReady() {
             IDs++;
             var model;
             if (i > 7 && i < 16) {
-                model = new C_Modal(ObjLoader.domToMesh("objCube", "obj_fileBauer", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_fileBauer", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
                 model.SetID(IDs);
                 model.setScale(0.2, 0.2, 0.2);
                 model.setRotation(180.0, 0.0, 0.0);
                 model.SetState("BB");
             }
             else {
-                model = new C_Modal(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
                 model.SetState("BtooDo");
                 model.SetID(IDs);
                 model.setScale(0.2, 0.2, 0.2);
@@ -98,14 +118,14 @@ function onReady() {
             IDs++;
             var model;
             if (i < 56) {
-                model = new C_Modal(ObjLoader.domToMesh("objCube", "obj_fileBauer", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_fileBauer", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
                 model.SetState("WB");
                 model.SetID(IDs);
                 model.setRotation(180.0, 0.0, 0.0);
                 model.setScale(0.2, 0.2, 0.2);
             }
             else {
-                model = new C_Modal(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
                 model.SetState("WtooDo");
                 model.setScale(0.2, 0.2, 0.2);
                 model.SetID(IDs);
@@ -130,14 +150,22 @@ function onReady() {
 //#region Render Loop 
 function onRender(dt) {
     update();
-    gl.fClear();
     gCamera.updateViewMatrix();
-    gShader.preRender("uCameraMatrix", gCamera.viewMatrix);
+    gl.fClear();
+    gSkyMapShader.activate().preRender()
+        .setCameraMatrix(gCamera.getTranslatelessMatrix())
+        .setTime(performance.now())
+        .renderModal(gSkymap);
+    gShader.activate().preRender("uCameraMatrix", gCamera.viewMatrix);
     for (var i = 0; i < gCubes.length; i++) {
-        gShader.setUniforms("ublackWite", gCubes[i].GetFeldcolor()).renderModel(gCubes[i].preRender());
+        gShader
+            .setUniforms("ublackWite", gCubes[i].GetFeldcolor())
+            .renderModel(gCubes[i].preRender());
     }
     for (var i = 0; i < gFigure.length; i++) {
-        gShader.setUniforms("ublackWite", gFigure[i].GetColor()).renderModel(gFigure[i].preRender());
+        gShader
+            .setUniforms("ublackWite", gFigure[i].GetColor())
+            .renderModel(gFigure[i].preRender());
     }
 }
 // gShader.setUniforms("ublackWite", 0).renderModal( gFigure[0].preRender() );
