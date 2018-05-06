@@ -8,7 +8,7 @@ window.addEventListener("load",function(){
 	console.log(temp);
 	oldSelection = temp;
 	gFigure[Number(temp)].SetSelctionColor();
-	console.log(gFigure);
+	gRuls.iCanMove(gFigure[Number(temp)]);
 	
 });
 
@@ -130,6 +130,7 @@ function onReady():void{
 			model.setScale(0.2,0.2,0.2);
 		}
 		gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, Math.floor(i / 8 ));
+		model.SetFeld(i % 8+1, Math.floor(i / 8 ));
 		gInputManager.setOptionsInHtml(String(model.GetID()),model.GetState());
 		(<C_GameObject> model).setColor(0.2);
 		gFigure.push(model);
@@ -150,8 +151,9 @@ function onReady():void{
 			model.setScale(0.2,0.2,0.2);
 			model.SetID(IDs);				
 		}
-		gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, -Math.floor(i / 8 ));
+		gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, Math.floor(i / 8 ));
 		gInputManager.setOptionsInHtml(String(model.GetID()),model.GetState());		
+		model.SetFeld(i % 8 +1, Math.floor(i / 8 ));		
 		(<C_GameObject> model).setColor(0.8);
 			gFigure.push(model);
 		}

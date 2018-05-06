@@ -8,7 +8,7 @@ document.getElementById("PlayerSelect").addEventListener("change", function () {
     console.log(temp);
     oldSelection = temp;
     gFigure[Number(temp)].SetSelctionColor();
-    console.log(gFigure);
+    gRuls.iCanMove(gFigure[Number(temp)]);
 });
 var oldSelection = "0"; // tooDo
 var gl = null;
@@ -110,6 +110,7 @@ function onReady() {
                 model.setScale(0.2, 0.2, 0.2);
             }
             gRuls.SetOnfeld(model.GetState(), Number(model.GetID()), i % 8, Math.floor(i / 8));
+            model.SetFeld(i % 8 + 1, Math.floor(i / 8));
             gInputManager.setOptionsInHtml(String(model.GetID()), model.GetState());
             model.setColor(0.2);
             gFigure.push(model);
@@ -130,8 +131,9 @@ function onReady() {
                 model.setScale(0.2, 0.2, 0.2);
                 model.SetID(IDs);
             }
-            gRuls.SetOnfeld(model.GetState(), Number(model.GetID()), i % 8, -Math.floor(i / 8));
+            gRuls.SetOnfeld(model.GetState(), Number(model.GetID()), i % 8, Math.floor(i / 8));
             gInputManager.setOptionsInHtml(String(model.GetID()), model.GetState());
+            model.SetFeld(i % 8 + 1, Math.floor(i / 8));
             model.setColor(0.8);
             gFigure.push(model);
         }
