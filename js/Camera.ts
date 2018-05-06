@@ -17,6 +17,12 @@ class C_Camera{
 		this.mode = 1;			//Set what sort of control mode to use.
 	}
 
+	getTranslatelessMatrix(){
+		var mat = new Float32Array(this.viewMatrix);
+		mat[12] = mat[13] = mat[14] = 0.0; //Reset Translation position in the Matrix to zero.
+		return mat;
+	}
+
 	panX(v:any):void{
 		if(this.mode == 1) return; // Panning on the X Axis is only allowed when in free mode
 		this.updateViewMatrix();
