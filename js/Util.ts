@@ -7,6 +7,18 @@ function G_LoadShader():void {
                 console.error(modelErr);
                 return;
             } else{
+                G_loadTextResource('../glsl/VS_sky_vshader.glsl', function(vsErr:any, vertex_shadersky:string) {
+                    if (vsErr) {
+                        alert(' error getting vertex shader (see console) 2522018033326a');
+                        console.error(vsErr);
+                        return;
+                    } else {
+                        G_loadTextResource('../glsl/FS_sky_fshader.glsl', function(fsErr:any, fragment_shadersky:string) {
+                            if (fsErr) {
+                                alert(' error getting fragment shader (see console) 2522018033327b');
+                                console.error(fsErr);
+                                return;
+                            } else {
         G_loadTextResource('../glsl/vertex_shader.glsl', function(vsErr:any, vertex_shader:string) {
             if (vsErr) {
                 alert(' error getting vertex shader (see console) 2522018033326');
@@ -19,6 +31,8 @@ function G_LoadShader():void {
                         console.error(fsErr);
                         return;
                     } else {
+                        skyShader[0] = vertex_shadersky;
+                        skyShader[1] = fragment_shadersky;
                         testtemp = modelObj;
                         main(
                             vertex_shader,
@@ -26,7 +40,11 @@ function G_LoadShader():void {
                         }
                     });
                 }
-            });
+            });  
+          }
+        });
+    }
+});
                 }
             });
         } catch (e) {

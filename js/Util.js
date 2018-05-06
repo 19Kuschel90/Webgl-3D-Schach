@@ -9,22 +9,42 @@ function G_LoadShader() {
                 return;
             }
             else {
-                G_loadTextResource('../glsl/vertex_shader.glsl', function (vsErr, vertex_shader) {
+                G_loadTextResource('../glsl/VS_sky_vshader.glsl', function (vsErr, vertex_shadersky) {
                     if (vsErr) {
-                        alert(' error getting vertex shader (see console) 2522018033326');
+                        alert(' error getting vertex shader (see console) 2522018033326a');
                         console.error(vsErr);
                         return;
                     }
                     else {
-                        G_loadTextResource('../glsl/fragment_shader.glsl', function (fsErr, fragment_shader) {
+                        G_loadTextResource('../glsl/FS_sky_fshader.glsl', function (fsErr, fragment_shadersky) {
                             if (fsErr) {
-                                alert(' error getting fragment shader (see console) 2522018033327');
+                                alert(' error getting fragment shader (see console) 2522018033327b');
                                 console.error(fsErr);
                                 return;
                             }
                             else {
-                                testtemp = modelObj;
-                                main(vertex_shader, fragment_shader);
+                                G_loadTextResource('../glsl/vertex_shader.glsl', function (vsErr, vertex_shader) {
+                                    if (vsErr) {
+                                        alert(' error getting vertex shader (see console) 2522018033326');
+                                        console.error(vsErr);
+                                        return;
+                                    }
+                                    else {
+                                        G_loadTextResource('../glsl/fragment_shader.glsl', function (fsErr, fragment_shader) {
+                                            if (fsErr) {
+                                                alert(' error getting fragment shader (see console) 2522018033327');
+                                                console.error(fsErr);
+                                                return;
+                                            }
+                                            else {
+                                                skyShader[0] = vertex_shadersky;
+                                                skyShader[1] = fragment_shadersky;
+                                                testtemp = modelObj;
+                                                main(vertex_shader, fragment_shader);
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         });
                     }
