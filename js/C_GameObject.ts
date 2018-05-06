@@ -48,10 +48,18 @@ class C_GameObject  extends C_Modal{
       return  ((<number>this.toNumber(this.feldNumber[0])) + Number(this.feldNumber[1])) % 2;
     }
 
+    /**
+     * GetFeldNumber
+     */
+    public GetFeldNumber():string {
+      return this.feldNumber;
+    }
+
     public SetFeld(X:number, Y:number):void
     {
       this.feldNumber = String((<string>this.toNumber(X)));
       this.feldNumber += String(Y);
+      console.log(this.feldNumber);
     }
 
     public SetState(state:string):void
@@ -85,7 +93,7 @@ class C_GameObject  extends C_Modal{
          case "H":
          return 8;
         }
-        return -1;
+        return -666;
       }else{
       switch(char)
        {
@@ -107,7 +115,7 @@ class C_GameObject  extends C_Modal{
          return "H";
         }
       }
-      return -1;// only by error
+      return -666;// only by error
   }
   
 }

@@ -51,9 +51,16 @@ var C_GameObject = /** @class */ (function (_super) {
     C_GameObject.prototype.GetFeldcolor = function () {
         return (this.toNumber(this.feldNumber[0]) + Number(this.feldNumber[1])) % 2;
     };
+    /**
+     * GetFeldNumber
+     */
+    C_GameObject.prototype.GetFeldNumber = function () {
+        return this.feldNumber;
+    };
     C_GameObject.prototype.SetFeld = function (X, Y) {
         this.feldNumber = String(this.toNumber(X));
         this.feldNumber += String(Y);
+        console.log(this.feldNumber);
     };
     C_GameObject.prototype.SetState = function (state) {
         this.myState = state;
@@ -81,7 +88,7 @@ var C_GameObject = /** @class */ (function (_super) {
                 case "H":
                     return 8;
             }
-            return -1;
+            return -666;
         }
         else {
             switch (char) {
@@ -103,7 +110,7 @@ var C_GameObject = /** @class */ (function (_super) {
                     return "H";
             }
         }
-        return -1; // only by error
+        return -666; // only by error
     };
     return C_GameObject;
 }(C_Modal));
