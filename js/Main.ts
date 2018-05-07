@@ -22,7 +22,15 @@ var gCameraCtrl:C_CameraController;
 var RLoop:any = null;
 var gRLoop:C_RenderLoop;
 var Resources:any = null;
-var gCubes:C_Modal[] = [];
+var gCubes:any[][] =  [
+	["","","","","","","",""],
+	["","","","","","","",""],
+	["","","","","","","",""],
+	["","","","","","","",""],
+	["","","","","","","",""],
+	["","","","","","","",""],
+	["","","","","","","",""],
+	["","","","","","","",""]];
 var gFigure:C_GameObject[] = [];
 var gInputManager:C_InputManager = new C_InputManager();
 var skyShader:string[] = [];
@@ -80,6 +88,7 @@ function main(VS:string,FS:string):void
 
 //#region Load Objects
 function onReady():void{
+	var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
 	gCamera.transform.position.set(2.5, -2.5, 14.7);
 	initShader();
 	initFeld();
@@ -88,30 +97,26 @@ function onReady():void{
 	gRLoop.start();	
 
 	function initFeld():void {
-		var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
-		for (var i = 0; i < 64; i++) {
-			var model: C_GameObject = new C_GameObject(cubemesh ).setPosition((i % 8), 0.0, -Math.floor(i / 8));
-			model.SetState("feld");
-			gCubes.push(model);
-		}
-		givePosition();
-
-		// A1 A2 B1 B2 ....
-		function givePosition():void {
-			var temp = 0;
-			for (var X: number = 1; X <= 8; X++) {
-				for (var Y: number = 1; Y <= 8; Y++) {
-					(<C_GameObject>gCubes[temp]).SetFeld(X, Y);
-					temp++;
+			
+			var i =0;
+			for (var X: number = 0; X < 8; X++) {
+				for (var Y: number = 0; Y < 8; Y++) {
+					var model: C_GameObject = new C_GameObject(cubemesh ).setPosition((i % 8), 0.0, -Math.floor(i / 8));
+					console.log((i % 8), 0.0, -Math.floor(i / 8));
+					i++;
+						// model.setColor((Y+1) % 8);
+						model.SetFeld(X+1,Y+1);
+						model.SetState("feld");
+					gCubes[Y][X] = model;
 				}
+
 			}
-		}
+		console.log(gCubes.length /2);
 	}
 
 	function Setfigure():void
 	{
 		var IDs:number = 0;
-		var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
 		for (var i = 0; i < 16; i++) {
 			IDs++;
 			var model: C_GameObject;
@@ -185,10 +190,12 @@ function onRender(dt:number):void
 		.renderModal(gSkymap);
 		gShader.activate().preRender("uCameraMatrix",gCamera.viewMatrix);
 		for(var i:number=0; i < gCubes.length; i++){	
+			for(var X:number=0; X < gCubes.length; X++){	
 			gShader
-			.setUniforms("ublackWite", (<C_GameObject>gCubes[i]).GetFeldcolor() )
-			.renderModel( gCubes[i].preRender() );		
+			.setUniforms("ublackWite", (<C_GameObject>gCubes[X][i]).GetColor() )
+			.renderModel( gCubes[X][i].preRender() );
 		}
+	}
 		for(var i:number= 0; i < gFigure.length ; i++){
 			
 			gShader
@@ -244,7 +251,6 @@ function StopRenderLoop()
 
 function StartRenderLoop()
 {
-	console.log("hi");
 	gInputManager.yourCommand();
 	// gRLoop.start();// too do
 }
