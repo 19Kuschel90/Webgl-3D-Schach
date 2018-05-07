@@ -59,32 +59,53 @@ var C_ruls = /** @class */ (function () {
     };
     C_ruls.prototype.iCanMove = function (figure) {
         if (figure.GetState() == "WB" || "BB") {
-            if (figure.GetState() == "BB") {
-                this.iBBCanBauerMove(figure.GetFeldNumber());
-            }
-            else {
-                this.iWBCanBauerMove(figure.GetFeldNumber());
-            }
+            this.iCanBauerMove(figure.GetFeldNumber(), figure.GetfristMove(), figure.GetState());
         }
     };
+    // A1 to array number [1][1]
     C_ruls.prototype.SetWorkPos = function (pos) {
         console.log(pos);
         this.WorkPos[0] = Number(this.toNumber(pos[0])) - 1;
         this.WorkPos[1] = Number(pos[1]);
     };
-    // White Bauer
-    C_ruls.prototype.iWBCanBauerMove = function (feldNumber) {
-        console.log(feldNumber);
+    C_ruls.prototype.SetWorkToString = function (pos) {
+        console.log(pos);
+        var a = String(this.toNumber(pos[0]));
+        var b = String(pos[1]);
+        var temp = a + b;
+        console.log(temp);
+        return temp;
+    };
+    C_ruls.prototype.iCanBauerMove = function (feldNumber, fristmove, site) {
+        this.restOldSelect();
         this.SetWorkPos(feldNumber);
-        this.feld[this.WorkPos[0]][this.WorkPos[1] - 1] = "X";
+        if ("WB" == site) {
+            this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] - 1);
+            if (fristmove == false) {
+                this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] - 2);
+            }
+        }
+        else {
+            this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] + 1);
+            if (fristmove == false) {
+                this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] + 2);
+            }
+        }
         console.log(this.feld);
     };
-    // Black Bauer
-    C_ruls.prototype.iBBCanBauerMove = function (feldNumber) {
-        console.log(feldNumber);
-        this.SetWorkPos(feldNumber);
-        this.feld[this.WorkPos[0]][this.WorkPos[1] + 1] = "X";
-        console.log(this.feld);
+    C_ruls.prototype.restOldSelect = function () {
+        for (var X = 0; X < this.feld.length; X++) {
+            for (var Y = 0; Y < this.feld.length; Y++) {
+                if (this.feld[X][Y] == "X") {
+                    gCubes[X][Y].restColor();
+                }
+            }
+        }
+        // this.oldSelect.
+    };
+    C_ruls.prototype.SetSelectFeld = function (A, B) {
+        this.feld[A][B] = "X";
+        gCubes[A][B].SetSelctionColor();
     };
     C_ruls.prototype.MoveOK = function (move, figure, target) {
         var temp = this.feld[move[0]][move[1]];

@@ -4,29 +4,29 @@ class  C_InputManager {
   public canvasSizeW:number = 600;
   public canvasSizeH:number = 600;
   private isYourTure:boolean = true;
-    constructor() {
-    }
-    update():void{
-      this.startPos.x = Number((<HTMLInputElement>document.getElementById("SX")).value);
-      this.startPos.y = Number((<HTMLInputElement>document.getElementById("SY")).value);
-      this.startPos.z = Number((<HTMLInputElement>document.getElementById("SZ")).value);
-      this.canvasSizeW =  Number((<HTMLInputElement>document.getElementById("canvasSizeW")).value)
-      this.canvasSizeH =  Number((<HTMLInputElement>document.getElementById("canvasSizeH")).value)
-    }
-
-    yourCommand():void{
-      gRuls.isMoveOK("B1",gFigure[10], "B3");
-    }
+  constructor() {
+  }
+  update():void{
+    this.startPos.x = Number((<HTMLInputElement>document.getElementById("SX")).value);
+    this.startPos.y = Number((<HTMLInputElement>document.getElementById("SY")).value);
+    this.startPos.z = Number((<HTMLInputElement>document.getElementById("SZ")).value);
+    this.canvasSizeW =  Number((<HTMLInputElement>document.getElementById("canvasSizeW")).value)
+    this.canvasSizeH =  Number((<HTMLInputElement>document.getElementById("canvasSizeH")).value)
+  }
+  
+  yourCommand():void{
+    gRuls.isMoveOK("B1",gFigure[10], "B3");
+  }
+  
+  setOptionsInHtml(ID:string, state:string):void
+  {
+    var x = document.createElement("OPTION");
+    x.setAttribute("value", String(Number(ID) -1));
+    var t = document.createTextNode(state + ID);
+    x.appendChild(t);
+    (<HTMLSelectElement>document.getElementById("PlayerSelect")).appendChild(x);
     
-    setOptionsInHtml(ID:string, state:string):void
-    {
-      var x = document.createElement("OPTION");
-      x.setAttribute("value", String(Number(ID) -1));
-      var t = document.createTextNode(state + ID);
-      x.appendChild(t);
-      (<HTMLSelectElement>document.getElementById("PlayerSelect")).appendChild(x);
-      
-    }
+  }
 }
 
 class C_ruls{
@@ -65,16 +65,11 @@ public iCanMove(figure:C_GameObject) {
   
   if(figure.GetState() ==  "WB" || "BB")
   {
-    if(figure.GetState() == "BB")
-    {
-      this.iBBCanBauerMove(figure.GetFeldNumber());
-    }else{
-      this.iWBCanBauerMove(figure.GetFeldNumber());
-    }
-    
+      this.iCanBauerMove(figure.GetFeldNumber(), figure.GetfristMove(),figure.GetState());
   }
 }
 
+  // A1 to array number [1][1]
   private SetWorkPos(pos:string):void
   {
     console.log(pos);
@@ -82,29 +77,63 @@ public iCanMove(figure:C_GameObject) {
     this.WorkPos[1] = Number(pos[1]);
   }
 
-  // White Bauer
-  private iWBCanBauerMove(feldNumber:string) {
-    console.log(feldNumber);
-    this.SetWorkPos(feldNumber);
-    this.feld[this.WorkPos[0]][this.WorkPos[1]-1] = "X";
-    console.log(this.feld);
+  private SetWorkToString(pos:Number[]):string
+  {
+    console.log(pos);
+   var a = String(<String>this.toNumber((<number>pos[0])));
+   var b = String(pos[1]);
+   var temp = a + b
+   console.log(temp);
+   return  temp;
   }
 
-  // Black Bauer
-  private iBBCanBauerMove(feldNumber:string) {
-    console.log(feldNumber);
+  private iCanBauerMove(feldNumber:string, fristmove:boolean, site:string) {
+
+    this.restOldSelect();
     this.SetWorkPos(feldNumber);
-    this.feld[this.WorkPos[0]][this.WorkPos[1]+1] = "X";
+    if("WB" == site)
+    {
+      this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-1 );
+      if(fristmove == false){
+        this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-2 );
+      }
+    }else{ 
+      this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+1 );
+      if(fristmove == false){
+        this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+2 );
+      }
+    }
     console.log(this.feld);
+    
   }
+  
+  private restOldSelect():void {
+    for(var X = 0; X < this.feld.length;X++ )
+   { 
+     for(var Y = 0; Y < this.feld.length;Y++ )
+     {
+       if(this.feld[X][Y] == "X")
+       {
+         gCubes[X][Y].restColor();
+      }
+    }
+    
+  }
+  // this.oldSelect.
+  }
+  
+  private SetSelectFeld(A:number,B:number):void {
+    this.feld[A][B] = "X";
+    gCubes[A][B].SetSelctionColor();
+
+  }
+
 
   private MoveOK(move:number[],figure:C_GameObject, target:number[]) {
     var temp = this.feld[move[0]][move[1]];
     this.feld[move[0]][move[1]] = "";
     this.feld[target[0]][target[1]] = temp;
     figure.setPosition( target[0], -1.0, -target[1]);
-  
-    
   }
 
 
