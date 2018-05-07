@@ -3,9 +3,10 @@ class C_GameObject  extends C_Modal{
     private feldNumber:string = "";
     private myState:string = "";
     private ID:number = 0;
-    private selctionColor = 1.0;
+    private selctionColor = 0.5;
     private color = 0.0;
     private OrColor = 0.0;
+    private wasFristMove:boolean = false;
     constructor(meshData:any,_myState:string = "feld") {
       super(meshData);
         this.feldNumber;
@@ -14,22 +15,32 @@ class C_GameObject  extends C_Modal{
         this.color;
         this.selctionColor;
         this.OrColor;
+        this.wasFristMove;
     }
-    GetColor():number{
+
+    SetfristMove()
+    {
+      this.wasFristMove = true;
+    }
+    GetfristMove():boolean
+    {
+      return this.wasFristMove;
+    }
+    public GetColor():number{
        return this.color;
     }
 
-    setColor(color:number){
+    public  setColor(color:number){
       this.OrColor = this.color;
       this.color = color;
     }
 
-    restColor()
+    public  restColor()
     {
       this.color = this.OrColor;
     }
 
-    SetSelctionColor():void{
+    public   SetSelctionColor():void{
       this.setColor(this.selctionColor);
     }
 
@@ -38,15 +49,10 @@ class C_GameObject  extends C_Modal{
       this.ID = ID;
     }
 
-    GetID():number{
+    public  GetID():number{
       return this.ID;
     }
 
-    // only for Feld
-    public GetFeldcolor():number
-    {
-      return  ((<number>this.toNumber(this.feldNumber[0])) + Number(this.feldNumber[1])) % 2;
-    }
 
     /**
      * GetFeldNumber
@@ -57,9 +63,10 @@ class C_GameObject  extends C_Modal{
 
     public SetFeld(X:number, Y:number):void
     {
-      this.feldNumber = String((<string>this.toNumber(X)));
+      this.feldNumber = String(this.toNumber(X));
       this.feldNumber += String(Y);
-      console.log(this.feldNumber);
+      this.color =  ((<number>this.toNumber(this.feldNumber[0])) + Number(this.feldNumber[1])) % 2;
+
     }
 
     public SetState(state:string):void

@@ -17,17 +17,25 @@ var C_GameObject = /** @class */ (function (_super) {
         _this.feldNumber = "";
         _this.myState = "";
         _this.ID = 0;
-        _this.selctionColor = 1.0;
+        _this.selctionColor = 0.5;
         _this.color = 0.0;
         _this.OrColor = 0.0;
+        _this.wasFristMove = false;
         _this.feldNumber;
         _this.ID;
         _this.myState = _myState;
         _this.color;
         _this.selctionColor;
         _this.OrColor;
+        _this.wasFristMove;
         return _this;
     }
+    C_GameObject.prototype.SetfristMove = function () {
+        this.wasFristMove = true;
+    };
+    C_GameObject.prototype.GetfristMove = function () {
+        return this.wasFristMove;
+    };
     C_GameObject.prototype.GetColor = function () {
         return this.color;
     };
@@ -47,10 +55,6 @@ var C_GameObject = /** @class */ (function (_super) {
     C_GameObject.prototype.GetID = function () {
         return this.ID;
     };
-    // only for Feld
-    C_GameObject.prototype.GetFeldcolor = function () {
-        return (this.toNumber(this.feldNumber[0]) + Number(this.feldNumber[1])) % 2;
-    };
     /**
      * GetFeldNumber
      */
@@ -60,7 +64,7 @@ var C_GameObject = /** @class */ (function (_super) {
     C_GameObject.prototype.SetFeld = function (X, Y) {
         this.feldNumber = String(this.toNumber(X));
         this.feldNumber += String(Y);
-        console.log(this.feldNumber);
+        this.color = (this.toNumber(this.feldNumber[0]) + Number(this.feldNumber[1])) % 2;
     };
     C_GameObject.prototype.SetState = function (state) {
         this.myState = state;
