@@ -24,6 +24,30 @@ var C_InputManager = /** @class */ (function () {
         x.appendChild(t);
         document.getElementById("PlayerSelect").appendChild(x);
     };
+    C_InputManager.prototype.setMoveOption = function () {
+        // for(var i in )
+        // {
+        //   // x.remove
+        // }
+        var tempfeld = gRuls.getFeld();
+        for (var X = 0; X < tempfeld.length; X++) {
+            for (var Y = 0; Y < tempfeld.length; Y++) {
+                if (tempfeld[X][Y] == "X") {
+                    var x = document.createElement("OPTION");
+                    var t = document.createTextNode(String(X) + String(Y));
+                    x.appendChild(t);
+                    document.getElementById("PlayerCanMove").appendChild(x);
+                }
+            }
+        }
+        console.log(document.getElementById("PlayerCanMove").childNodes);
+        // Too do
+        //  var toRemove:ChildNode = (<ChildNode>(<HTMLSelectElement>document.getElementById("PlayerCanMove")).children[0]);
+        //  for(var i in toRemove)
+        {
+            // toRemove.remove(this);
+        }
+    };
     return C_InputManager;
 }());
 var C_ruls = /** @class */ (function () {
@@ -48,6 +72,9 @@ var C_ruls = /** @class */ (function () {
      */
     C_ruls.prototype.SetOnfeld = function (state, ID, targetA, targetB) {
         this.feld[targetA][targetB] = state + String(ID);
+    };
+    C_ruls.prototype.getFeld = function () {
+        return this.feld;
     };
     C_ruls.prototype.isMoveOK = function (pos, figure, target) {
         // feld to number z.b A1 to 11
@@ -91,7 +118,7 @@ var C_ruls = /** @class */ (function () {
                 this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] + 2);
             }
         }
-        console.log(this.feld);
+        gInputManager.setMoveOption();
     };
     C_ruls.prototype.restOldSelect = function () {
         for (var X = 0; X < this.feld.length; X++) {

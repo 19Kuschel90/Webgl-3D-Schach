@@ -25,7 +25,35 @@ class  C_InputManager {
     var t = document.createTextNode(state + ID);
     x.appendChild(t);
     (<HTMLSelectElement>document.getElementById("PlayerSelect")).appendChild(x);
-    
+  }
+public  setMoveOption():void
+  {
+    // for(var i in )
+    // {
+    //   // x.remove
+    // }
+    var tempfeld:string[][] = gRuls.getFeld();
+    for(var X = 0; X < tempfeld.length;X++ )
+    { 
+      for(var Y = 0; Y < tempfeld.length;Y++ )
+      {
+        if(tempfeld[X][Y] == "X" )
+        {
+    var x = document.createElement("OPTION");
+          
+          var t = document.createTextNode(String(X) + String(Y));
+          x.appendChild(t);
+          (<HTMLSelectElement>document.getElementById("PlayerCanMove")).appendChild(x);
+        }
+      }
+    }
+   console.log((<HTMLSelectElement>document.getElementById("PlayerCanMove")).childNodes);
+   // Too do
+  //  var toRemove:ChildNode = (<ChildNode>(<HTMLSelectElement>document.getElementById("PlayerCanMove")).children[0]);
+  //  for(var i in toRemove)
+   {
+    // toRemove.remove(this);
+   }
   }
 }
 
@@ -50,6 +78,11 @@ class C_ruls{
    */
   public SetOnfeld(state:string, ID:number, targetA:number,targetB:number ) {
     this.feld[targetA][targetB] = state + String(ID);
+  }
+
+  public getFeld():string[][]
+  {
+    return this.feld;
   }
 
   public isMoveOK(pos:string, figure:C_GameObject, target:string):boolean {
@@ -103,7 +136,7 @@ public iCanMove(figure:C_GameObject) {
         this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+2 );
       }
     }
-    console.log(this.feld);
+    gInputManager.setMoveOption();
     
   }
   
@@ -117,10 +150,11 @@ public iCanMove(figure:C_GameObject) {
          gCubes[X][Y].restColor();
       }
     }
-    
   }
   // this.oldSelect.
   }
+  
+
   
   private SetSelectFeld(A:number,B:number):void {
     this.feld[A][B] = "X";
