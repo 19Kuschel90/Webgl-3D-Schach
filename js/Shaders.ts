@@ -103,17 +103,17 @@ class C_ShaderBuilder{
 	//---------------------------------------------------
 	// Methods
 	//---------------------------------------------------
-	public activate(){ this.gl.useProgram(this.program); return this; }
-	public	deactivate(){ this.gl.useProgram(null); return this; }
+	public activate():this{ this.gl.useProgram(this.program); return this; }
+	public	deactivate():this{ this.gl.useProgram(null); return this; }
 
 	//function helps clean up resources when shader is no longer needed.
-	public dispose(){
+	public dispose():void{
 		//unbind the program if its currently active
 		if(this.gl.getParameter(this.gl.CURRENT_PROGRAM) === this.program) this.gl.useProgram(null);
 		this.gl.deleteProgram(this.program);
 	}
 
-	public preRender(){
+	public preRender():this{
 		this.gl.useProgram(this.program); //Save a function call and just activate this shader program on preRender
 
 		//If passing in arguments, then lets push that to setUniforms for handling. Make less line needed in the main program by having preRender handle Uniforms
@@ -241,17 +241,29 @@ class C_Shader{
 	public preRender(){} //abstract method, extended object may need need to do some things before rendering.
 
 	//Handle rendering a modal
-	public renderModal(modal:any):any{
-		// console.log(modal);
-		this.setModalMatrix(modal.transform.getViewMatrix());	//Set the transform, so the shader knows where the modal exists in 3d space
-		this.gl.bindVertexArray(modal.mesh.vao);				//Enable VAO, this will set all the predefined attributes for the shader
-		
-		if(modal.mesh.indexCount) this.gl.drawElements(modal.mesh.drawMode, modal.mesh.indexLength, gl.UNSIGNED_SHORT, 0);
-		else this.gl.drawArrays(modal.mesh.drawMode, 0, modal.mesh.vertexCount);
+	public renderModal(modal:C_Modal):any{
+		this.setModalMatrix(modal.transform.getViewMatrix()); //Set the transform, so the shader knows where the modal exists in 3d space
+        this.gl.bindVertexArray(modal.mesh.vao); //Enable VAO, this will set all the predefined attributes for the shader
 
-		this.gl.bindVertexArray(null);
+        // console.log("gl: " + gl);
+        if (modal.mesh.noCulling) {
+            this.gl.disable(this.gl.CULL_FACE);
+        }
 
-		return this;
+        if (modal.mesh.doBlending) {
+            this.gl.enable(this.gl.BLEND);
+        }
+        if (modal.mesh.indexCount) {
+            this.gl.drawElements(modal.mesh.drawMode, modal.mesh.indexCount, this.gl.UNSIGNED_SHORT, 0);
+        } else {
+            this.gl.drawArrays(modal.mesh.drawMode, 0, modal.mesh.vertexCount);
+        }
+        //Cleanup
+        this.gl.bindVertexArray(null);
+        if (modal.mesh.noCulling) this.gl.enable(this.gl.CULL_FACE);
+        if (modal.mesh.doBlending) this.gl.disable(this.gl.BLEND);
+
+        return this;
 	}
 	
 }
