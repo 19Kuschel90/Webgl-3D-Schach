@@ -50,7 +50,8 @@ function main(VS, FS) {
     // init webgl2
     gl = GLInstance("webglCanvas").fFitScreen(0.95, 0.9).fClear();
     gCamera = new C_Camera(gl);
-    gCamera.transform.rotation.set(90, 0, 0);
+    gCamera.transform.position.set(2.5, 0, 14.7);
+    gCamera.transform.rotation.set(-40, -30, 0);
     gCameraCtrl = new C_CameraController(gl, gCamera);
     // gl.fLoadTexture("tex001",document.getElementById("imgTex"));
     gl.fLoadCubeMap("skybox01", [
@@ -67,8 +68,6 @@ function main(VS, FS) {
     //Setup Test Shader, Modal, Meshes
     // gShader = new TestShader(gl,gCamera.projectionMatrix);
     // .setTexture(gl.mTextureCache["tex001"]);
-    gSkymap = new C_Modal(Primatives.Cube.createMesh(gl, "Skymap", 10, 10, 10, 0, 0, 0));
-    gSkyMapShader = new SkymapShader(gl, gCamera.projectionMatrix, gl.mTextureCache["skybox01"], gl.mTextureCache["skybox02"]);
     gRLoop = new C_RenderLoop(onRender, 30);
     C_Resources.setup(gl, onReady).loadTexture("atlas", gInputManager.atlasLink).start();
 }
@@ -76,10 +75,11 @@ function main(VS, FS) {
 //#region Load Objects
 function onReady() {
     var cubemesh = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
-    gCamera.transform.position.set(2.5, -2.5, 14.7);
     initShader();
     initFeld();
     Setfigure();
+    gSkymap = new C_Modal(Primatives.Cube.createMesh(gl, "Skymap", 100, 100, 100, 0, 0, 0));
+    gSkyMapShader = new SkymapShader(gl, gCamera.projectionMatrix, gl.mTextureCache["skybox01"], gl.mTextureCache["skybox02"]);
     gRLoop.start();
     function initFeld() {
         var i = 0;
@@ -102,14 +102,13 @@ function onReady() {
             IDs++;
             var model;
             if (i > 7 && i < 16) {
-                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_fileBauer", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_fileBauer", true)).setPosition((i % 8), 1.0, -Math.floor(i / 8));
                 model.SetID(IDs);
                 model.setScale(0.2, 0.2, 0.2);
-                model.setRotation(180.0, 0.0, 0.0);
                 model.SetState("BB");
             }
             else {
-                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), 1.0, -Math.floor(i / 8));
                 model.SetState("BtooDo");
                 model.SetID(IDs);
                 model.setScale(0.2, 0.2, 0.2);
@@ -124,14 +123,14 @@ function onReady() {
             IDs++;
             var model;
             if (i < 56) {
-                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_fileBauer", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_fileBauer", true)).setPosition((i % 8), 1.0, -Math.floor(i / 8));
                 model.SetState("WB");
                 model.SetID(IDs);
-                model.setRotation(180.0, 0.0, 0.0);
+                // model.setRotation(180.0,0.0,0.0);
                 model.setScale(0.2, 0.2, 0.2);
             }
             else {
-                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), -1.0, -Math.floor(i / 8));
+                model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), 1.0, -Math.floor(i / 8));
                 model.SetState("WtooDo");
                 model.setScale(0.2, 0.2, 0.2);
                 model.SetID(IDs);
