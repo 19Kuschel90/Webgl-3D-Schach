@@ -20,7 +20,7 @@
 
 			//...........................
 			//setup ambient light
-			float ambientStrength = 0.0;
+			float ambientStrength = 0.30;
 			vec3 cAmbient = ambientStrength * cLight;
 
 			//...........................
@@ -35,14 +35,14 @@
 
 			//So if the light source is 90 degrees above the pixel, then use the max light color or use a faction of the light;
 			//The idea is to use the angle to determine how strong the light color should be. 90 degrees is max, 0 uses no light leaving the pixel dark.
-			float diffuseStrength = 0.3;
+			float diffuseStrength = 0.2;
 			vec3 cDiffuse = diffAngle * cLight * diffuseStrength;	
 
 			//...........................
 			//setup specular 
 			//NOTE : Might be easier to switch vertexPos, light and camera to local space. Can remove inverse of camera matrix in the process. For prototyping keeping things in WorldSpace.
-			float specularStrength = 0.2f;	//0.15
-			float specularShininess = 1.0f; //256.0
+			float specularStrength = 0.02f;	//0.15
+			float specularShininess = 0.05f; //256.0
 			vec3 camDir = normalize(vCamPos - vPos);	//Get the camera direction from the fragment position.
 			vec3 reflectDir = reflect(-lightDir,vNorm);	//Using the normal as the 45 degree type of pivot, get the reflective direction from the light direction
 

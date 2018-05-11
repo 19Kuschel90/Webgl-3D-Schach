@@ -13,5 +13,5 @@
 			 finalColor =
 			//   vec4(0.0,1.0,0.3,1.0);
 			//   vec4(texture(uNightTex * texCoord),0.0);
-			 mix( texture(uNightTex, texCoord), texture(uDayTex, texCoord), abs(sin(uTime * 0.0005)) );
+			 mix( texture(uNightTex, texCoord), texture(uDayTex, texCoord), abs(sin(uTime * 0.0002)) );
 		}
