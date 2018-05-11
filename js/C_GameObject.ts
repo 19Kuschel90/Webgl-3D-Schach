@@ -3,7 +3,7 @@ class C_GameObject  extends C_Modal{
     private feldNumber:string = "";
     private myState:string = "";
     private ID:number = 0;
-    private selctionColor = 0.5;
+    private selctionColor = 4;
     private color = 0.0;
     private OrColor = 0.0;
     private wasFristMove:boolean = false;
