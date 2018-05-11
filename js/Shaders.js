@@ -287,29 +287,21 @@ var TestShader = /** @class */ (function (_super) {
         _this.uniformLoc.matNorm = gl.getUniformLocation(_this.program, "uNormMatrix");
         //Standrd Uniforms
         _this.setPerspective(pMatrix);
-        _this.mainTexture = -1; //Store Our Texture ID
+        _this.mainTexture = []; //Store Our Texture ID
         gl.useProgram(null); //Done setting up shader
         return _this;
     }
-    TestShader.prototype.setTexture = function (texID) { this.mainTexture = texID; return this; };
-    TestShader.prototype.setTexture2 = function (texID) { this.mainTexture2 = texID; return this; };
+    TestShader.prototype.setTexture = function (texID) { this.mainTexture.push(texID); return this; };
     TestShader.prototype.setLightPos = function (obj) { this.gl.uniform3fv(this.uniformLoc.lightpos, new Float32Array(obj.transform.position.getArray())); return this; };
     TestShader.prototype.setCameraPos = function (obj) { this.gl.uniform3fv(this.uniformLoc.campos, new Float32Array(obj.transform.position.getArray())); return this; };
     //Override
     TestShader.prototype.preRender = function (numberTexture) {
-        if (numberTexture === void 0) { numberTexture = 0; }
         //Setup Texture 
         //FS uniform sampler2D uMainTex
-        if (numberTexture == 0) {
-            this.gl.activeTexture(this.gl.TEXTURE0);
-            this.gl.bindTexture(this.gl.TEXTURE_2D, this.mainTexture);
-            this.gl.uniform1i(this.uniformLoc.mainTexture, 0); //Our predefined uniformLoc.mainTexture is uMainTex, Prev Lessons we made ShaderUtil.getStandardUniformLocations() function in Shaders.js to get its location.
-        }
-        else {
-            this.gl.activeTexture(this.gl.TEXTURE0);
-            this.gl.bindTexture(this.gl.TEXTURE_2D, this.mainTexture2);
-            this.gl.uniform1i(this.uniformLoc.mainTexture2, 0); //Our predefined uniformLoc.mainTexture is uMainTex, Prev Lessons we made ShaderUtil.getStandardUniformLocations() function in Shaders.js to get its location.
-        }
+        if (numberTexture === void 0) { numberTexture = 0; }
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.mainTexture[numberTexture]);
+        this.gl.uniform1i(this.uniformLoc.mainTexture[numberTexture], 0); //Our predefined uniformLoc.mainTexture is uMainTex, Prev Lessons we made ShaderUtil.getStandardUniformLocations() function in Shaders.js to get its location.
         return this;
     };
     TestShader.prototype.renderModal = function (modal) {
@@ -455,7 +447,7 @@ var Skymap = /** @class */ (function () {
             fShader += 'uniform samplerCube uNightTex; uniform float uTime;' +
                 'void main(void){ finalColor = mix( texture(uDayTex, texCoord), texture(uNightTex, texCoord), uTime ); }';
         //........................................
-        this.mShader = C_ShaderUtil.createProgramFromText(this.gl, vShader, fShader, true);
+        this.mShader = C_ShaderUtil.createProgramFromText(this.gl, skyShader[0], skyShader[1], true);
         this.mUniProj = this.gl.getUniformLocation(this.mShader, "uPMatrix");
         this.mUniCamera = this.gl.getUniformLocation(this.mShader, "uCameraMatrix");
         this.mUniDayTex = this.gl.getUniformLocation(this.mShader, "uDayTex");
@@ -465,7 +457,7 @@ var Skymap = /** @class */ (function () {
         }
     };
     Skymap.prototype.createMesh = function (width, height, depth) {
-        var w = width * 0.5, h = height * 0.5, d = depth * 0.5;
+        var w = width * 2.0, h = height * 2.0, d = depth * 2.0;
         //var x0 = x-w, x1 = x+w, y0 = y-h, y1 = y+h, z0 = z-d, z1 = z+d;
         var x0 = -w, x1 = w, y0 = -h, y1 = h, z0 = -d, z1 = d;
         var aVert = [
