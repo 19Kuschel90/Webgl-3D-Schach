@@ -279,62 +279,262 @@ var TestShader = /** @class */ (function (_super) {
     __extends(TestShader, _super);
     function TestShader(gl, pMatrix) {
         var _this = this;
-        var vertSrc = C_ShaderUtil.domShaderSrc("vertex_shader"), fragSrc = C_ShaderUtil.domShaderSrc("fragment_shader");
+        var vertSrc = gVertex_shader, fragSrc = gFragment_shader;
         _this = _super.call(this, gl, vertSrc, fragSrc) || this;
-        //Custom Uniforms
-        _this.uniformLoc.time = gl.getUniformLocation(_this.program, "uTime");
-        var uColor = gl.getUniformLocation(_this.program, "uColor");
-        gl.uniform3fv(uColor, new Float32Array(GlUtil.rgbArray("#FF0000", "00FF00", "0000FF", "909090", "C0C0C0", "404040")));
+        //custom uniforms
+        _this.uniformLoc.lightpos = gl.getUniformLocation(_this.program, "uLightPos");
+        _this.uniformLoc.campos = gl.getUniformLocation(_this.program, "uCamPos");
+        _this.uniformLoc.matNorm = gl.getUniformLocation(_this.program, "uNormMatrix");
         //Standrd Uniforms
         _this.setPerspective(pMatrix);
         _this.mainTexture = -1; //Store Our Texture ID
         gl.useProgram(null); //Done setting up shader
         return _this;
     }
-    TestShader.prototype.setTime = function (t) { this.gl.uniform1f(this.uniformLoc.time, t); return this; };
     TestShader.prototype.setTexture = function (texID) { this.mainTexture = texID; return this; };
+    TestShader.prototype.setTexture2 = function (texID) { this.mainTexture2 = texID; return this; };
+    TestShader.prototype.setLightPos = function (obj) { this.gl.uniform3fv(this.uniformLoc.lightpos, new Float32Array(obj.transform.position.getArray())); return this; };
+    TestShader.prototype.setCameraPos = function (obj) { this.gl.uniform3fv(this.uniformLoc.campos, new Float32Array(obj.transform.position.getArray())); return this; };
     //Override
-    TestShader.prototype.preRender = function () {
-        //Setup Texture
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.mainTexture);
-        this.gl.uniform1i(this.uniformLoc.mainTexture, 0); //Our predefined uniformLoc.mainTexture is uMainTex, Prev Lessons we made ShaderUtil.getStandardUniformLocations() function in Shaders.js to get its location.
+    TestShader.prototype.preRender = function (numberTexture) {
+        if (numberTexture === void 0) { numberTexture = 0; }
+        //Setup Texture 
+        //FS uniform sampler2D uMainTex
+        if (numberTexture == 0) {
+            this.gl.activeTexture(this.gl.TEXTURE0);
+            this.gl.bindTexture(this.gl.TEXTURE_2D, this.mainTexture);
+            this.gl.uniform1i(this.uniformLoc.mainTexture, 0); //Our predefined uniformLoc.mainTexture is uMainTex, Prev Lessons we made ShaderUtil.getStandardUniformLocations() function in Shaders.js to get its location.
+        }
+        else {
+            this.gl.activeTexture(this.gl.TEXTURE0);
+            this.gl.bindTexture(this.gl.TEXTURE_2D, this.mainTexture2);
+            this.gl.uniform1i(this.uniformLoc.mainTexture2, 0); //Our predefined uniformLoc.mainTexture is uMainTex, Prev Lessons we made ShaderUtil.getStandardUniformLocations() function in Shaders.js to get its location.
+        }
+        return this;
+    };
+    TestShader.prototype.renderModal = function (modal) {
+        this.gl.uniformMatrix3fv(this.uniformLoc.matNorm, false, modal.transform.getNormalMatrix());
+        _super.prototype.renderModal.call(this, modal);
         return this;
     };
     return TestShader;
 }(C_Shader));
-//////////////////////////////////////////////////////////////////////////////
-var SkymapShader = /** @class */ (function (_super) {
-    __extends(SkymapShader, _super);
-    function SkymapShader(gl, pMatrix, dayTex, nightTex) {
-        var _this = this;
-        var vertSrc = skyShader[0], fragSrc = skyShader[1];
-        _this = _super.call(this, gl, vertSrc, fragSrc) || this;
-        //Custom Uniforms
-        _this.uniformLoc.time = gl.getUniformLocation(_this.program, "uTime");
-        _this.uniformLoc.dayTex = gl.getUniformLocation(_this.program, "uDayTex");
-        _this.uniformLoc.nightTex = gl.getUniformLocation(_this.program, "uNightTex");
-        //Standrd Uniforms
-        _this.setPerspective(pMatrix);
-        _this.texDay = dayTex;
-        _this.texNight = nightTex;
-        gl.useProgram(null); //Done setting up shader
-        return _this;
+var Skymap = /** @class */ (function () {
+    function Skymap(gl, w, h, d) {
+        if (w === void 0) { w = 20; }
+        if (h === void 0) { h = 20; }
+        if (d === void 0) { d = 20; }
+        this.gl = gl;
+        this.mDayTex = -1;
+        this.mNightTex = -1;
+        this.mTime = 0.0;
+        this.createMesh(w, h, d);
     }
-    SkymapShader.prototype.setTime = function (t) { this.gl.uniform1f(this.uniformLoc.time, t); return this; };
-    //Override
-    SkymapShader.prototype.preRender = function () {
-        //Setup Texture
-        this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texDay);
-        this.gl.uniform1i(this.uniformLoc.dayTex, 0);
-        this.gl.activeTexture(this.gl.TEXTURE1);
-        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texNight);
-        this.gl.uniform1i(this.uniformLoc.nightTex, 1);
+    Skymap.prototype.mUniNightTex = function (arg0, arg1) {
+        throw new Error("Method not implemented.");
+    };
+    Skymap.prototype.mUniTime = function (arg0, arg1) {
+        throw new Error("Method not implemented.");
+    };
+    Skymap.prototype.mUniDayTex = function (arg0, arg1) {
+        throw new Error("Method not implemented.");
+    };
+    Skymap.prototype.mUniCamera = function (arg0, arg1, arg2) {
+        throw new Error("Method not implemented.");
+    };
+    Skymap.prototype.mUniProj = function (arg0, arg1, arg2) {
+        throw new Error("Method not implemented.");
+    };
+    Skymap.prototype.mShader = function (arg0) {
+        throw new Error("Method not implemented.");
+    };
+    //==================================================================
+    // Setters
+    //==================================================================
+    Skymap.prototype.setTime = function (t) { this.mTime = t; return this; };
+    Skymap.prototype.setDayTex = function () {
+        var myArguments = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            myArguments[_i] = arguments[_i];
+        }
+        if (myArguments.length == 6)
+            this.mDayTex = gl.fLoadCubeMap("Skymap_Day", myArguments);
         return this;
     };
-    return SkymapShader;
-}(C_Shader));
+    Skymap.prototype.setDayTexByDom = function () {
+        var myArguments = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            myArguments[_i] = arguments[_i];
+        }
+        if (myArguments.length != 6) {
+            console.log("Day Texture needs to be 6 images");
+            return this;
+        }
+        var ary = [];
+        for (var i = 0; i < 6; i++)
+            ary.push(document.getElementById(myArguments[i]));
+        this.mDayTex = gl.fLoadCubeMap("Skymap_Day", ary);
+        return this;
+    };
+    Skymap.prototype.setNightTex = function (ary) {
+        var myarguments = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            myarguments[_i - 1] = arguments[_i];
+        }
+        if (myarguments.length == 6)
+            this.mNightTex = gl.fLoadCubeMap("Skymap_Night", myarguments);
+        return this;
+    };
+    Skymap.prototype.setNightTexByDom = function () {
+        var myarguments = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            myarguments[_i] = arguments[_i];
+        }
+        if (myarguments.length != 6) {
+            console.log("Day Texture needs to be 6 images");
+            return this;
+        }
+        var ary = [];
+        for (var i = 0; i < 6; i++)
+            ary.push(document.getElementById(myarguments[i]));
+        this.mNightTex = gl.fLoadCubeMap("Skymap_Night", ary);
+        return this;
+    };
+    //==================================================================
+    // Methods
+    //==================================================================
+    Skymap.prototype.finalize = function () { this.createShader(); return this; };
+    Skymap.prototype.render = function (camera) {
+        //Prepare Shader
+        this.gl.useProgram(this.mShader);
+        this.gl.bindVertexArray(this.mesh.vao);
+        //Push Uniforms
+        this.gl.uniformMatrix4fv(this.mUniProj, false, camera.projectionMatrix);
+        this.gl.uniformMatrix4fv(this.mUniCamera, false, camera.viewMatrix);
+        //Setup Day Texture
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.mDayTex);
+        this.gl.uniform1i(this.mUniDayTex, 0);
+        //Setup Night Texture and Time value.
+        if (this.mNightTex != -1) {
+            this.gl.uniform1f(this.mUniTime, this.mTime);
+            this.gl.activeTexture(this.gl.TEXTURE1);
+            this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.mNightTex);
+            this.gl.uniform1i(this.mUniNightTex, 1);
+        }
+        //Draw Skymap
+        this.gl.drawElements(this.mesh.drawMode, this.mesh.indexCount, this.gl.UNSIGNED_SHORT, 0);
+        //Cleanup
+        this.gl.bindVertexArray(null);
+        this.gl.useProgram(null);
+    };
+    //==================================================================
+    // Shader and Mesh Generation.
+    //==================================================================
+    Skymap.prototype.createShader = function () {
+        //........................................
+        var vShader = '#version 300 es\n' +
+            'layout(location=0) in vec3 a_position;' +
+            'uniform mat4 uPMatrix;' +
+            'uniform mat4 uCameraMatrix;' +
+            'out highp vec3 texCoord;' +
+            'void main(void){' +
+            'texCoord = a_position.xyz;' +
+            'gl_Position = uPMatrix * uCameraMatrix * vec4(a_position.xyz, 1.0);' +
+            '}';
+        //........................................
+        //Build Fragment Shader Based on if there is a Night Texture.
+        var fShader = '#version 300 es\n' +
+            'precision mediump float;' +
+            'out vec4 finalColor;' +
+            'in highp vec3 texCoord;' +
+            'uniform samplerCube uDayTex;';
+        if (this.mNightTex == -1)
+            fShader += 'void main(void){ finalColor = texture(uDayTex, texCoord); }';
+        else
+            fShader += 'uniform samplerCube uNightTex; uniform float uTime;' +
+                'void main(void){ finalColor = mix( texture(uDayTex, texCoord), texture(uNightTex, texCoord), uTime ); }';
+        //........................................
+        this.mShader = C_ShaderUtil.createProgramFromText(this.gl, vShader, fShader, true);
+        this.mUniProj = this.gl.getUniformLocation(this.mShader, "uPMatrix");
+        this.mUniCamera = this.gl.getUniformLocation(this.mShader, "uCameraMatrix");
+        this.mUniDayTex = this.gl.getUniformLocation(this.mShader, "uDayTex");
+        if (this.mNightTex != -1) {
+            this.mUniNightTex = this.gl.getUniformLocation(this.mShader, "uNightTex");
+            this.mUniTime = this.gl.getUniformLocation(this.mShader, "uTime");
+        }
+    };
+    Skymap.prototype.createMesh = function (width, height, depth) {
+        var w = width * 0.5, h = height * 0.5, d = depth * 0.5;
+        //var x0 = x-w, x1 = x+w, y0 = y-h, y1 = y+h, z0 = z-d, z1 = z+d;
+        var x0 = -w, x1 = w, y0 = -h, y1 = h, z0 = -d, z1 = d;
+        var aVert = [
+            x0, y1, z1,
+            x0, y0, z1,
+            x1, y0, z1,
+            x1, y1, z1,
+            x1, y1, z0,
+            x1, y0, z0,
+            x0, y0, z0,
+            x0, y1, z0,
+            x0, y1, z0,
+            x0, y0, z0,
+            x0, y0, z1,
+            x0, y1, z1,
+            x0, y0, z1,
+            x0, y0, z0,
+            x1, y0, z0,
+            x1, y0, z1,
+            x1, y1, z1,
+            x1, y0, z1,
+            x1, y0, z0,
+            x1, y1, z0,
+            x0, y1, z0,
+            x0, y1, z1,
+            x1, y1, z1,
+            x1, y1, z0 //4
+        ];
+        //Build the index of each quad [0,1,2, 2,3,0]
+        var aIndex = [];
+        for (var i = 0; i < aVert.length / 3; i += 2)
+            aIndex.push((Math.floor(i / 4) * 4) + ((i + 2) % 4), i + 1, i); //Build in reverse order so the inside renders but not the outside
+        //Create VAO
+        this.mesh = this.gl.fCreateMeshVAO("SkymapCube", aIndex, aVert, null, null);
+    };
+    return Skymap;
+}());
+// //////////////////////////////////////////////////////////////////////////////
+// Old
+// class C_SkymapShader extends C_Shader{
+// 	texNight: any;
+// 	texDay: any;
+// 	constructor(gl:any,pMatrix:any,dayTex:any,nightTex:any){
+// 		var vertSrc = skyShader[0],
+// 			fragSrc = skyShader[1];
+// 		super(gl,vertSrc,fragSrc);
+// 		//Custom Uniforms
+// 		this.uniformLoc.time = gl.getUniformLocation(this.program,"uTime");
+// 		this.uniformLoc.dayTex = gl.getUniformLocation(this.program,"uDayTex");
+// 		this.uniformLoc.nightTex = gl.getUniformLocation(this.program,"uNightTex");
+// 		//Standrd Uniforms
+// 		this.setPerspective(pMatrix);
+// 		this.texDay = dayTex;
+// 		this.texNight = nightTex;
+// 		gl.useProgram(null); //Done setting up shader
+// 	}
+// 	setTime(t:any){ this.gl.uniform1f(this.uniformLoc.time,t); return this; }
+// 	//Override
+// 	preRender(){
+// 		//Setup Texture
+// 		this.gl.activeTexture(this.gl.TEXTURE0);
+// 		this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texDay);
+// 		this.gl.uniform1i(this.uniformLoc.dayTex,0);
+// 		this.gl.activeTexture(this.gl.TEXTURE1);
+// 		this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texNight);
+// 		this.gl.uniform1i(this.uniformLoc.nightTex,1);
+// 		return this;
+// 	}
+// }
 //Not use
 var C_GridAxisShader = /** @class */ (function (_super) {
     __extends(C_GridAxisShader, _super);
