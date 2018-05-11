@@ -61,7 +61,10 @@ function main(VS:string,FS:string):void
 	gCamera.transform.rotation.set(-40,-30,0);
 	gCameraCtrl = new C_CameraController(gl,gCamera);
 	gl.fLoadTexture("tex001",document.getElementById("imgTex"));
-	gl.fLoadTexture("tex002",document.getElementById("imgTexBlack"));
+	gl.fLoadTexture("tex002",document.getElementById("imgTex1"));
+	gl.fLoadTexture("tex003",document.getElementById("imgTex2"));
+	gl.fLoadTexture("tex004",document.getElementById("imgTex3"));
+	gl.fLoadTexture("tex005",document.getElementById("imgTex4"));
 
 	
 	// gl.fLoadCubeMap("skybox01",[
@@ -88,23 +91,17 @@ function main(VS:string,FS:string):void
 //#region Load Objects
 function onReady():void{
 	var cubemesh: any = Primatives.Cube.createMesh(gl, "Cube", 1, 1, 1, 0, 0, 0, false);
+
+	initDebugger();
 	initShader();
 	initFeld();
 	Setfigure();
 	// gSkymap = new C_Modal(Primatives.Cube.createMesh(gl,"Skymap",100,100,100,0,0,0));
-	gSkymap = new Skymap(gl)
-	.setDayTexByDom("cube01_right","cube01_left","cube01_top","cube01_bottom","cube01_back","cube01_front")
-	.setNightTexByDom("cube02_right","cube02_left","cube02_top","cube02_bottom","cube02_back","cube02_front")
-	.setTime(0.7).finalize();
-	gShader = new TestShader(gl,gCamera.projectionMatrix)
-	.setTexture2(gl.mTextureCache["tex002"])
-	.setTexture(gl.mTextureCache["tex001"]);
-	mDebug = new VertexDebugger(gl,10)
-	.addColor("#ff0000")
-	.addPoint(0,0,0,0)
-	.finalize();
+
 		gRLoop.start();	
 		
+	
+
 		function initFeld():void {
 			
 			var i =0;
@@ -115,7 +112,6 @@ function onReady():void{
 					model.setColor(i % 2);
 					model.SetFeld(X+1,Y+1);
 					model.SetState("feld");
-					console.log(model.GetColor());
 					gCubes[Y][X] = model;
 				}
 				
@@ -144,7 +140,7 @@ function onReady():void{
 				gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, Math.floor(i / 8 ));
 				model.SetFeld(i % 8+1, Math.floor(i / 8 ));
 				gInputManager.setOptionsInHtml(String(model.GetID()),model.GetState());
-				(<C_GameObject> model).setColor(1.0);
+				(<C_GameObject> model).setColor(2);
 				gFigure.push(model);
 			}
 			for (var i = 48; i < 64; i++) {
@@ -166,18 +162,29 @@ function onReady():void{
 				gRuls.SetOnfeld(model.GetState(),Number(model.GetID()),i % 8, Math.floor(i / 8 ));
 				gInputManager.setOptionsInHtml(String(model.GetID()),model.GetState());		
 				model.SetFeld(i % 8 +1, Math.floor(i / 8 ));		
-				(<C_GameObject> model).setColor(0.8);
+				(<C_GameObject> model).setColor(3);
 				gFigure.push(model);
 			}
-			// gModal2 = new C_Modal( ObjLoader.domToMesh("objCube","obj_file",true) )
-			// gModal2.setPosition(0,0,0).
 		}
 		
 		function initShader():void {
-			// gShader = new C_ShaderBuilder(gl, gVertex_shader, gFragment_shader)
-			// .prepareUniforms("uPMatrix", "mat4", "uMVMatrix", "mat4", "uCameraMatrix", "mat4", "uFaces", "2fv", "ublackWite", "fv")
-			// .prepareTextures("uAltas", "atlas")
-			// .setUniforms("uPMatrix", gCamera.projectionMatrix);
+			gSkymap = new Skymap(gl)
+			.setDayTexByDom("cube01_right","cube01_left","cube01_top","cube01_bottom","cube01_back","cube01_front")
+			.setNightTexByDom("cube02_right","cube02_left","cube02_top","cube02_bottom","cube02_back","cube02_front")
+			.setTime(0.7).finalize();
+			gShader = new TestShader(gl,gCamera.projectionMatrix)
+			.setTexture(gl.mTextureCache["tex001"])	
+			.setTexture(gl.mTextureCache["tex002"])
+			.setTexture(gl.mTextureCache["tex003"])
+			.setTexture(gl.mTextureCache["tex004"])
+			.setTexture(gl.mTextureCache["tex005"]);
+		}
+
+		function initDebugger() {
+			mDebug = new VertexDebugger(gl, 10)
+				.addColor("#ff0000")
+				.addPoint(0, 0, 0, 0)
+				.finalize();
 		}
 		
 	}
@@ -205,11 +212,13 @@ function onReady():void{
 
 				var x = radius * Math.cos(angle),
 					z = radius * Math.sin(angle),
-					y = C_MathUtil.Map(Math.sin(yPos),-1,1,5.1,2);
+					y = C_MathUtil.Map(Math.sin(yPos),0,1,5.1,2);
 				mDebug.transform.position.set(x,y,z);
 			//................................
 				//Draw Out models
-				gSkymap.render(gCamera);
+				gSkymap
+				.setTime(performance.now())
+				.render(gCamera);
 				gShader.activate().preRender()
 					.setCameraMatrix(gCamera.viewMatrix)
 					.setCameraPos(gCamera)
@@ -221,23 +230,17 @@ function onReady():void{
 		for(var i:number=0; i < gCubes.length; i++){	
 			for(var X:number=0; X < gCubes.length; X++){
 				gShader.preRender( (<C_GameObject>gCubes[X][i]).GetColor()).renderModal( gCubes[X][i].preRender() );
-				// .setUniforms("ublackWite", (<C_GameObject>gCubes[X][i]).GetColor() )
-				// .renderModel( gCubes[X][i].preRender() );
 			}
 		}
 		for(var i:number= 0; i < gFigure.length ; i++){
 			
-			gShader.renderModal( gFigure[i].preRender() );
-			// .setUniforms("ublackWite", gFigure[i].GetColor())
-			// .renderModel( gFigure[i].preRender() );		
+			gShader.preRender( (<C_GameObject>gFigure[i]).GetColor()).renderModal( gFigure[i].preRender() );
 		}
 
 		mDebug.render(gCamera);
 
 		}
 
-			// gShader.setUniforms("ublackWite", 0).renderModal( gFigure[0].preRender() );
-			//gShader.setUniforms("ublackWite", 0.5).renderModel( gModal2.preRender() );
 		
 //#endregion
 
