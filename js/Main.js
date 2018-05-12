@@ -2,14 +2,19 @@
 window.addEventListener("load", function () {
     G_LoadShader();
 });
+var gSelected;
 document.getElementById("PlayerSelect").addEventListener("change", function () {
-    var temp = document.getElementById("PlayerSelect").value;
+    gSelected = document.getElementById("PlayerSelect").value;
     gFigure[Number(oldSelection)].restColor();
-    console.log(temp);
-    oldSelection = temp;
-    gFigure[Number(temp)].SetSelctionColor();
-    gRuls.iCanMove(gFigure[Number(temp)]);
+    oldSelection = gSelected;
+    gFigure[Number(gSelected)].SetSelctionColor();
+    gRuls.iCanMove(gFigure[Number(gSelected)]);
 });
+function PlayerMove() {
+    gRuls.isMoveOK(gFigure[Number(gSelected)].GetFeldNumber(), gFigure[Number(gSelected)], document.getElementById("PlayerCanMove").value);
+    gInputManager.removeOldMoveOptions();
+    gFigure[Number(oldSelection)].restColor();
+}
 var oldSelection = "0"; // tooDo
 var gl = null;
 var gModal = null;
@@ -233,7 +238,7 @@ function StopRenderLoop() {
     gRLoop.stop();
 }
 function StartRenderLoop() {
-    gInputManager.yourCommand();
+    // gInputManager.yourCommand();
     // gRLoop.start();// too do
 }
 //# sourceMappingURL=Main.js.map

@@ -1,16 +1,25 @@
 window.addEventListener("load",function(){
 	G_LoadShader();
 });
-
+var gSelected:string;
 (<HTMLSelectElement>document.getElementById("PlayerSelect")).addEventListener("change", ()=>{
-	var temp =	(<HTMLSelectElement>document.getElementById("PlayerSelect")).value;
+	 gSelected =	(<HTMLSelectElement>document.getElementById("PlayerSelect")).value;
 	gFigure[Number(oldSelection)].restColor();
-	console.log(temp);
-	oldSelection = temp;
-	gFigure[Number(temp)].SetSelctionColor();
-	gRuls.iCanMove(gFigure[Number(temp)]);
+	oldSelection = gSelected;
+	gFigure[Number(gSelected)].SetSelctionColor();
+	gRuls.iCanMove(gFigure[Number(gSelected)]);
 	
 });
+
+function PlayerMove(){
+	gRuls.isMoveOK(gFigure[Number(gSelected)].GetFeldNumber() ,gFigure[Number(gSelected)],(<HTMLSelectElement>document.getElementById("PlayerCanMove")).value )
+	gInputManager.removeOldMoveOptions();
+	gFigure[Number(oldSelection)].restColor();
+}
+
+
+	
+	
 
 var oldSelection:string = "0";// tooDo
 var gl:any = null;
@@ -284,6 +293,6 @@ function StopRenderLoop()
 
 function StartRenderLoop()
 {
-	gInputManager.yourCommand();
+	// gInputManager.yourCommand();
 	// gRLoop.start();// too do
 }
