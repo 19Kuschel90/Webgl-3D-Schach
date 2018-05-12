@@ -85,28 +85,72 @@ var C_ruls = /** @class */ (function () {
         this.WorkPos[1] = Number(pos[1]);
     };
     C_ruls.prototype.SetWorkToString = function (pos) {
-        console.log(pos);
         var a = String(this.toNumber(pos[0]));
         var b = String(pos[1]);
         var temp = a + b;
         return temp;
     };
-    C_ruls.prototype.iCanBauerMove = function (feldNumber, fristmove, site) {
+    C_ruls.prototype.canMoveLeftRightTopBot = function (feldNumber) {
         this.restOldSelect();
+        // console.log(feldNumber);
         this.SetWorkPos(feldNumber);
-        if ("WB" == site) {
-            this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] - 1);
-            if (fristmove == false) {
-                this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] - 2);
+        for (var top = this.WorkPos[1] + 1; top <= 7; top++) {
+            if (this.feld[this.WorkPos[0]][top] == "") {
+                console.log(this.WorkPos[0], top);
+                this.SetSelectFeld(this.WorkPos[0], top);
+            }
+            else {
+                break;
             }
         }
-        else {
-            this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] + 1);
-            if (fristmove == false) {
-                this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] + 2);
+        for (var bot = this.WorkPos[1] - 1; bot <= 7; bot--) {
+            if (this.feld[this.WorkPos[0]][bot] == "") {
+                this.SetSelectFeld(this.WorkPos[0], bot);
+            }
+            else {
+                break;
+            }
+        }
+        for (var left = this.WorkPos[0] + 1; left <= 7; left++) {
+            if (this.feld[left][this.WorkPos[1]] == "") {
+                this.SetSelectFeld(left, this.WorkPos[1]);
+            }
+        }
+        for (var right = this.WorkPos[0] - 1; right <= 7; right--) {
+            if (this.feld[right][this.WorkPos[1]] == "") {
+                this.SetSelectFeld(right, this.WorkPos[1]);
             }
         }
     };
+    // Select
+    C_ruls.prototype.moveLeufer = function (feldNumber) {
+        this.restOldSelect();
+        this.SetWorkPos(feldNumber);
+        for (var top = this.WorkPos[1]; top <= 7; top++) {
+            this.SetSelectFeld(1 + top, 1 + top);
+            if (this.feld[this.WorkPos[0] + top][this.WorkPos[1] + top] == "") {
+                console.log(this.feld);
+            }
+        }
+    };
+    C_ruls.prototype.iCanBauerMove = function (feldNumber, fristmove, site) {
+        this.moveLeufer(feldNumber);
+        // this.restOldSelect();
+        // this.SetWorkPos(feldNumber);
+        // if("WB" == site)
+        // {
+        //   this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-1 );
+        //   if(fristmove == false){
+        //     this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-2 );
+        //   }
+        // }else{ 
+        //   this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+1 );
+        //   if(fristmove == false){
+        //     this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+2 );
+        //   }
+        // }
+    };
+    // rest All Select
     C_ruls.prototype.restOldSelect = function () {
         for (var X = 0; X < this.feld.length; X++) {
             for (var Y = 0; Y < this.feld.length; Y++) {
@@ -118,17 +162,20 @@ var C_ruls = /** @class */ (function () {
         }
         gInputManager.removeOldMoveOptions();
     };
+    // Select feld and Crate Move in html
     C_ruls.prototype.SetSelectFeld = function (A, B) {
         this.feld[A][B] = "X";
         gCubes[A][B].SetSelctionColor();
         gInputManager.CreateNewMoveOption(A, B);
+        console.log(this.feld);
     };
     C_ruls.prototype.MoveOK = function (pos, figure, target) {
-        console.log(pos[0] - 1);
+        figure.SetfristMove();
         var temp = this.feld[pos[0] - 1][pos[1]];
         this.feld[pos[0] - 1][pos[1]] = "";
         this.feld[target[0]][target[1]] = temp;
         figure.setPosition(target[0], 1.0, -target[1]);
+        figure.SetFeldNumber(String(this.toNumber(target[0] + 1)) + String(target[1]));
         gCubes[target[0]][target[1]].restColor();
         this.restOldSelect();
     };

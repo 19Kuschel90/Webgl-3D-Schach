@@ -87,6 +87,8 @@ public iCanMove(figure:C_GameObject) {
   }
 }
 
+
+
   // A1 to array number [1][1]
   private SetWorkPos(pos:string):void
   {
@@ -97,31 +99,90 @@ public iCanMove(figure:C_GameObject) {
 
   private SetWorkToString(pos:Number[]):string
   {
-    console.log(pos);
    var a = String(<String>this.toNumber((<number>pos[0])));
    var b = String(pos[1]);
    var temp = a + b;
    return  temp;
   }
 
-  private iCanBauerMove(feldNumber:string, fristmove:boolean, site:string) {
-
+  private canMoveLeftRightTopBot(feldNumber:string) {
     this.restOldSelect();
-    this.SetWorkPos(feldNumber);
-    if("WB" == site)
+        // console.log(feldNumber);
+        this.SetWorkPos(feldNumber);
+    for(var top = this.WorkPos[1] + 1; top<= 7; top++)
     {
-      this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-1 );
-      if(fristmove == false){
-        this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-2 );
+      if(this.feld[this.WorkPos[0]][top] == "")
+      {
+        console.log(this.WorkPos[0],top);
+        this.SetSelectFeld(this.WorkPos[0],top); 
+      } 
+      else{
+        break;
       }
-    }else{ 
-      this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+1 );
-      if(fristmove == false){
-        this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+2 );
+    }
+    for(var bot = this.WorkPos[1] - 1; bot<= 7; bot--)
+    {
+      if(this.feld[this.WorkPos[0]][bot] == "")
+      {
+        this.SetSelectFeld(this.WorkPos[0],bot); 
+      } 
+      else{
+        break;
+      }
+    }
+    for(var left = this.WorkPos[0] + 1; left<= 7; left++)
+    {
+      if(this.feld[left][this.WorkPos[1]] == "")
+      {
+        this.SetSelectFeld(left,this.WorkPos[1]); 
+      }
+    }
+    for(var right = this.WorkPos[0] - 1; right<= 7; right--)
+    {
+      if(this.feld[right][this.WorkPos[1]] == "")
+      {
+        this.SetSelectFeld(right,this.WorkPos[1]); 
       }
     }
   }
+
+  // Select
+  private moveLeufer(feldNumber:string) {
+    this.restOldSelect();
+    this.SetWorkPos(feldNumber);
+    for(var top = this.WorkPos[1] ; top<= 7; top++)
+    {
+     
+        this.SetSelectFeld(1+ top,1+ top); 
+
+        if(this.feld[this.WorkPos[0] + top][this.WorkPos[1]+top] == "")
+        {
+          console.log(this.feld);
+        }
+      
+    }    
+  }
+
+
+  private iCanBauerMove(feldNumber:string, fristmove:boolean, site:string) {
+    this.moveLeufer(feldNumber);
+    // this.restOldSelect();
+    // this.SetWorkPos(feldNumber);
+    // if("WB" == site)
+    // {
+    //   this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-1 );
+    //   if(fristmove == false){
+    //     this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-2 );
+    //   }
+    // }else{ 
+    //   this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+1 );
+    //   if(fristmove == false){
+    //     this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+2 );
+    //   }
+    // }
+  }
   
+  // rest All Select
   private restOldSelect():void {
     for(var X = 0; X < this.feld.length;X++ )
    { 
@@ -138,22 +199,24 @@ public iCanMove(figure:C_GameObject) {
   }
   
 
-  
+  // Select feld and Crate Move in html
   private SetSelectFeld(A:number,B:number):void {
     this.feld[A][B] = "X";
     gCubes[A][B].SetSelctionColor();
     gInputManager.CreateNewMoveOption(A,B);
+    console.log(this.feld);
 
   }
 
 
   private MoveOK(pos:number[],figure:C_GameObject, target:number[]) {
-    console.log( pos[0]-1 );
+    figure.SetfristMove();
     var temp = this.feld[pos[0]-1][pos[1]];
     
     this.feld[pos[0]-1][pos[1]] = "";
     this.feld[target[0]][target[1]] = temp;
     figure.setPosition( target[0], 1.0, -target[1]);
+    figure.SetFeldNumber(String(this.toNumber( target[0]+1)) + String(target[1] ) );
     gCubes[target[0]][target[1]].restColor();
     this.restOldSelect();
   }
