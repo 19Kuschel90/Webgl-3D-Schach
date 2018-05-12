@@ -126,10 +126,43 @@ var C_ruls = /** @class */ (function () {
     C_ruls.prototype.moveLeufer = function (feldNumber) {
         this.restOldSelect();
         this.SetWorkPos(feldNumber);
-        for (var top = this.WorkPos[1]; top <= 7; top++) {
-            this.SetSelectFeld(1 + top, 1 + top);
-            if (this.feld[this.WorkPos[0] + top][this.WorkPos[1] + top] == "") {
-                console.log(this.feld);
+        for (var top = 1; top <= 7; top++) {
+            try {
+                if (this.feld[this.WorkPos[0] + top][this.WorkPos[1] + top] == "") {
+                    this.SetSelectFeld(this.WorkPos[0] + top, this.WorkPos[1] + top);
+                }
+            }
+            catch (e) {
+            }
+        }
+        for (var top = 1; top <= 7; top++) {
+            try {
+                if (this.feld[this.WorkPos[0] - top][this.WorkPos[1] - top] == "") {
+                    this.SetSelectFeld(this.WorkPos[0] - top, this.WorkPos[1] - top);
+                }
+            }
+            catch (e) {
+                // break;
+            }
+        }
+        for (var top = 1; top <= 7; top++) {
+            try {
+                if (this.feld[this.WorkPos[0] + top][this.WorkPos[1] - top] == "") {
+                    this.SetSelectFeld(this.WorkPos[0] + top, this.WorkPos[1] - top);
+                }
+            }
+            catch (e) {
+                // break;
+            }
+        }
+        for (var top = 1; top <= 7; top++) {
+            try {
+                if (this.feld[this.WorkPos[0] - top][this.WorkPos[1] + top] == "") {
+                    this.SetSelectFeld(this.WorkPos[0] - top, this.WorkPos[1] + top);
+                }
+            }
+            catch (e) {
+                // break;
             }
         }
     };
