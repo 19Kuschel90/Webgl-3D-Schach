@@ -4,6 +4,7 @@ class  C_InputManager {
   public canvasSizeW:number = 600;
   public canvasSizeH:number = 600;
   private isYourTure:boolean = true;
+  private wasFisrtTure:boolean = false;
   constructor() {
   }
   update():void{
@@ -14,11 +15,11 @@ class  C_InputManager {
     this.canvasSizeH =  Number((<HTMLInputElement>document.getElementById("canvasSizeH")).value)
   }
   
-  yourCommand():void{
+  public  move():void{
     gRuls.isMoveOK("B1",gFigure[10], "B3");
   }
   
-  setOptionsInHtml(ID:string, state:string):void
+  public setOptionsInHtml(ID:string, state:string):void
   {
     var x = document.createElement("OPTION");
     x.setAttribute("value", String(Number(ID) -1));
@@ -26,34 +27,22 @@ class  C_InputManager {
     x.appendChild(t);
     (<HTMLSelectElement>document.getElementById("PlayerSelect")).appendChild(x);
   }
-public  setMoveOption():void
-  {
-    // for(var i in )
-    // {
-    //   // x.remove
-    // }
-    var tempfeld:string[][] = gRuls.getFeld();
-    for(var X = 0; X < tempfeld.length;X++ )
-    { 
-      for(var Y = 0; Y < tempfeld.length;Y++ )
-      {
-        if(tempfeld[X][Y] == "X" )
-        {
-    var x = document.createElement("OPTION");
-          
-          var t = document.createTextNode(String(X) + String(Y));
-          x.appendChild(t);
-          (<HTMLSelectElement>document.getElementById("PlayerCanMove")).appendChild(x);
-        }
-      }
+  
+  public CreateNewMoveOption(X: number, Y: number):void {
+  var x = document.createElement("OPTION");
+  x.setAttribute("value", String(String(X) + String(Y)));  
+  var t = document.createTextNode(String(X) + String(Y));
+  x.appendChild(t);
+  (<HTMLSelectElement>document.getElementById("PlayerCanMove")).appendChild(x);
+}
+
+public removeOldMoveOptions():void {
+  if (this.wasFisrtTure) {
+    while ((<HTMLSelectElement>document.getElementById("PlayerCanMove")).firstChild) {
+      (<Node>(<any>document.getElementById("PlayerCanMove")).removeChild((<HTMLSelectElement>document.getElementById("PlayerCanMove")).firstChild));
     }
-   console.log((<HTMLSelectElement>document.getElementById("PlayerCanMove")).childNodes);
-   // Too do
-  //  var toRemove:ChildNode = (<ChildNode>(<HTMLSelectElement>document.getElementById("PlayerCanMove")).children[0]);
-  //  for(var i in toRemove)
-   {
-    // toRemove.remove(this);
-   }
+  }
+      this.wasFisrtTure = true;
   }
 }
 
@@ -86,13 +75,9 @@ class C_ruls{
   }
 
   public isMoveOK(pos:string, figure:C_GameObject, target:string):boolean {
-    // feld to number z.b A1 to 11
-    // old
-    // this.WorkPosTarget[0] = Number(<number>this.toNumber(target[0]));
-    // this.WorkPosTarget[1] = Number(target[1]);
-
-    // this.MoveOK([posA,posB] , figure,[targetA,targetB]);
-    return false;
+  // toodo Fals
+    this.MoveOK([Number(this.toNumber(pos[0])), Number(pos[1])], figure,[Number( target[0]), Number(target[1])] );
+    return true;
   }
 public iCanMove(figure:C_GameObject) {
   
@@ -115,8 +100,7 @@ public iCanMove(figure:C_GameObject) {
     console.log(pos);
    var a = String(<String>this.toNumber((<number>pos[0])));
    var b = String(pos[1]);
-   var temp = a + b
-   console.log(temp);
+   var temp = a + b;
    return  temp;
   }
 
@@ -136,8 +120,6 @@ public iCanMove(figure:C_GameObject) {
         this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+2 );
       }
     }
-    gInputManager.setMoveOption();
-    
   }
   
   private restOldSelect():void {
@@ -148,10 +130,11 @@ public iCanMove(figure:C_GameObject) {
        if(this.feld[X][Y] == "X")
        {
          gCubes[X][Y].restColor();
+         this.feld[X][Y] = "";
       }
     }
   }
-  // this.oldSelect.
+  gInputManager.removeOldMoveOptions();
   }
   
 
@@ -159,15 +142,20 @@ public iCanMove(figure:C_GameObject) {
   private SetSelectFeld(A:number,B:number):void {
     this.feld[A][B] = "X";
     gCubes[A][B].SetSelctionColor();
+    gInputManager.CreateNewMoveOption(A,B);
 
   }
 
 
-  private MoveOK(move:number[],figure:C_GameObject, target:number[]) {
-    var temp = this.feld[move[0]][move[1]];
-    this.feld[move[0]][move[1]] = "";
+  private MoveOK(pos:number[],figure:C_GameObject, target:number[]) {
+    console.log( pos[0]-1 );
+    var temp = this.feld[pos[0]-1][pos[1]];
+    
+    this.feld[pos[0]-1][pos[1]] = "";
     this.feld[target[0]][target[1]] = temp;
-    figure.setPosition( target[0], -1.0, -target[1]);
+    figure.setPosition( target[0], 1.0, -target[1]);
+    gCubes[target[0]][target[1]].restColor();
+    this.restOldSelect();
   }
 
 
