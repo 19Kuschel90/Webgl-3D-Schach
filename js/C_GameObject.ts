@@ -1,6 +1,6 @@
 
 class C_GameObject  extends C_Modal{
-    private feldNumber:string = "";
+    private feldNumber:string = "";// z.b: B1 Oder A1
     private myState:string = "";
     private ID:number = 0;
     private selctionColor = 4;
@@ -18,11 +18,11 @@ class C_GameObject  extends C_Modal{
         this.wasFristMove;
     }
 
-    SetfristMove()
+    public   SetfristMove():void
     {
       this.wasFristMove = true;
     }
-    GetfristMove():boolean
+    public  GetfristMove():boolean
     {
       return this.wasFristMove;
     }
@@ -44,7 +44,7 @@ class C_GameObject  extends C_Modal{
       this.setColor(this.selctionColor);
     }
 
-    SetID(ID:number):void
+    public  SetID(ID:number):void
     {
       this.ID = ID;
     }
@@ -55,10 +55,19 @@ class C_GameObject  extends C_Modal{
 
 
     /**
-     * GetFeldNumber
+     * GetFeldNumber z.b: B1 Oder A1
      */
     public GetFeldNumber():string {
       return this.feldNumber;
+    }
+
+    /**
+     * SetFeldNumber
+      feldNumber:string :void   
+      z.b: B1 Oder A1
+      */
+    public SetFeldNumber(feldNumber:string):void {
+      this.feldNumber = feldNumber;
     }
 
     public SetFeld(X:number, Y:number):void

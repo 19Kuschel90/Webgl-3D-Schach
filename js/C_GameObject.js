@@ -14,7 +14,7 @@ var C_GameObject = /** @class */ (function (_super) {
     function C_GameObject(meshData, _myState) {
         if (_myState === void 0) { _myState = "feld"; }
         var _this = _super.call(this, meshData) || this;
-        _this.feldNumber = "";
+        _this.feldNumber = ""; // z.b: B1 Oder A1
         _this.myState = "";
         _this.ID = 0;
         _this.selctionColor = 4;
@@ -56,10 +56,18 @@ var C_GameObject = /** @class */ (function (_super) {
         return this.ID;
     };
     /**
-     * GetFeldNumber
+     * GetFeldNumber z.b: B1 Oder A1
      */
     C_GameObject.prototype.GetFeldNumber = function () {
         return this.feldNumber;
+    };
+    /**
+     * SetFeldNumber
+      feldNumber:string :void
+      z.b: B1 Oder A1
+      */
+    C_GameObject.prototype.SetFeldNumber = function (feldNumber) {
+        this.feldNumber = feldNumber;
     };
     C_GameObject.prototype.SetFeld = function (X, Y) {
         this.feldNumber = String(this.toNumber(X));
