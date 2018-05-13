@@ -199,7 +199,7 @@ function onReady():void{
 	}
 	//#endregion
 
-	var radius = 1.5,		//Radius from the center to rotate the light
+	var radius = 5.5,		//Radius from the center to rotate the light
 	angle = 0,			//Main Angle var for Light
 	angleInc = 1,		//How much to move per second
 	yPos = 0,			//Current Position of light
