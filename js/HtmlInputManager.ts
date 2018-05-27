@@ -80,10 +80,25 @@ class C_ruls{
     return true;
   }
 public iCanMove(figure:C_GameObject) {
-  
-  if(figure.GetState() ==  "WB" || "BB")
+  console.log(figure.GetState());
+  // Bauer
+  if((figure.GetState() ==  "WB") || ("BB"  == figure.GetState()) )
   {
-      this.iCanBauerMove(figure.GetFeldNumber(), figure.GetfristMove(),figure.GetState());
+  console.log("Bauer");        
+      this.iCanBauerMove(figure.GetFeldNumber(), figure.GetfristMove(),figure.GetState());// too do Kurzen
+  }
+  // Laufer
+  else if((figure.GetState() == "WL") || ("BL"  == figure.GetState()) )
+  {
+  console.log("Laufer");    
+    this.moveLeufer(figure.GetFeldNumber());
+  }
+  // Tower
+  else if((figure.GetState() ==  "WT") || ("BT"  == figure.GetState()) )
+  {
+  console.log("Tower");
+    
+    this.canMoveLeftRightTopBot(figure.GetFeldNumber());
   }
 }
 
@@ -143,6 +158,7 @@ public iCanMove(figure:C_GameObject) {
       {
         this.SetSelectFeld(right,this.WorkPos[1]); 
       }
+      
     }
   }
 
@@ -208,21 +224,20 @@ public iCanMove(figure:C_GameObject) {
 
 
   private iCanBauerMove(feldNumber:string, fristmove:boolean, site:string) {
-    this.moveLeufer(feldNumber);
-    // this.restOldSelect();
-    // this.SetWorkPos(feldNumber);
-    // if("WB" == site)
-    // {
-    //   this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-1 );
-    //   if(fristmove == false){
-    //     this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-2 );
-    //   }
-    // }else{ 
-    //   this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+1 );
-    //   if(fristmove == false){
-    //     this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+2 );
-    //   }
-    // }
+    this.restOldSelect();
+    this.SetWorkPos(feldNumber);
+    if("WB" == site)
+    {
+      this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-1 );
+      if(fristmove == false){
+        this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-2 );
+      }
+    }else{ 
+      this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+1 );
+      if(fristmove == false){
+        this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+2 );
+      }
+    }
   }
   
   // rest All Select
