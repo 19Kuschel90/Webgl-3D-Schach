@@ -142,7 +142,24 @@ function onReady():void{
 				}
 				else{
 					model	 = new C_GameObject( ObjLoader.domToMesh("objCube","obj_file",true)  ).setPosition((i % 8), 1.0, -Math.floor(i / 8));
-					model.SetState("BtooDo");				
+					switch(i)
+					{
+						case 0:
+						model.SetState("BT");										
+						break;						
+						case 2:
+						model.SetState("BL");										
+						break;
+						case 5:
+						model.SetState("BL");										
+						break;
+						case 7:
+						model.SetState("BT");																
+						break;
+						default:
+						model.SetState("BtooDo");				
+						break;
+					}
 					model.SetID(IDs);				
 					model.setScale(0.2,0.2,0.2);
 				}
@@ -164,7 +181,24 @@ function onReady():void{
 					model.setScale(0.2,0.2,0.2);
 				}else{
 					model = new C_GameObject( ObjLoader.domToMesh("objCube","obj_file",true)  ).setPosition((i % 8), 1.0, -Math.floor(i / 8));
-					model.SetState("WtooDo");				
+					switch(i)
+					{
+						case 56:
+						model.SetState("BT");										
+						break;						
+						case 58:
+						model.SetState("BL");										
+						break;
+						case 61:
+						model.SetState("BL");										
+						break;
+						case 63:
+						model.SetState("BT");																
+						break;
+						default:
+						model.SetState("BtooDo");				
+						break;
+					}		
 					model.setScale(0.2,0.2,0.2);
 					model.SetID(IDs);				
 				}
