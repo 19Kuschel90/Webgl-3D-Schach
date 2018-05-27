@@ -1,86 +1,73 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var C_GameObject = /** @class */ (function (_super) {
-    __extends(C_GameObject, _super);
-    function C_GameObject(meshData, _myState) {
-        if (_myState === void 0) { _myState = "feld"; }
-        var _this = _super.call(this, meshData) || this;
-        _this.feldNumber = ""; // z.b: B1 Oder A1
-        _this.myState = "";
-        _this.ID = 0;
-        _this.selctionColor = 4;
-        _this.color = 0.0;
-        _this.OrColor = 0.0;
-        _this.wasFristMove = false;
-        _this.feldNumber;
-        _this.ID;
-        _this.myState = _myState;
-        _this.color;
-        _this.selctionColor;
-        _this.OrColor;
-        _this.wasFristMove;
-        return _this;
+class C_GameObject extends C_Modal {
+    constructor(meshData, _myState = "feld") {
+        super(meshData);
+        this.feldNumber = ""; // z.b: B1 Oder A1
+        this.myState = "";
+        this.ID = 0;
+        this.selctionColor = 4;
+        this.color = 0.0;
+        this.OrColor = 0.0;
+        this.wasFristMove = false;
+        this.feldNumber;
+        this.ID;
+        this.myState = _myState;
+        this.color;
+        this.selctionColor;
+        this.OrColor;
+        this.wasFristMove;
     }
-    C_GameObject.prototype.SetfristMove = function () {
+    SetfristMove() {
         this.wasFristMove = true;
-    };
-    C_GameObject.prototype.GetfristMove = function () {
+    }
+    GetfristMove() {
         return this.wasFristMove;
-    };
-    C_GameObject.prototype.GetColor = function () {
+    }
+    GetColor() {
         return this.color;
-    };
-    C_GameObject.prototype.setColor = function (color) {
+    }
+    setColor(color) {
         this.OrColor = this.color;
         this.color = color;
-    };
-    C_GameObject.prototype.restColor = function () {
+    }
+    restColor() {
         this.color = this.OrColor;
-    };
-    C_GameObject.prototype.SetSelctionColor = function () {
+    }
+    SetSelctionColor() {
         this.setColor(this.selctionColor);
-    };
-    C_GameObject.prototype.SetID = function (ID) {
+    }
+    SetID(ID) {
         this.ID = ID;
-    };
-    C_GameObject.prototype.GetID = function () {
+    }
+    GetID() {
         return this.ID;
-    };
+    }
     /**
      * GetFeldNumber z.b: B1 Oder A1
      */
-    C_GameObject.prototype.GetFeldNumber = function () {
+    GetFeldNumber() {
         return this.feldNumber;
-    };
+    }
     /**
      * SetFeldNumber
       feldNumber:string :void
       z.b: B1 Oder A1
       */
-    C_GameObject.prototype.SetFeldNumber = function (feldNumber) {
+    SetFeldNumber(feldNumber) {
         this.feldNumber = feldNumber;
-    };
-    C_GameObject.prototype.SetFeld = function (X, Y) {
+    }
+    SetFeld(X, Y) {
         this.feldNumber = String(this.toNumber(X));
         this.feldNumber += String(Y);
         this.color = (this.toNumber(this.feldNumber[0]) + Number(this.feldNumber[1])) % 2;
-    };
-    C_GameObject.prototype.SetState = function (state) {
+    }
+    SetState(state) {
         this.myState = state;
-    };
-    C_GameObject.prototype.GetState = function () {
+    }
+    GetState() {
         return this.myState;
-    };
-    C_GameObject.prototype.toNumber = function (char) {
+    }
+    toNumber(char) {
         if (typeof char === 'string') {
             switch (char) {
                 case "A":
@@ -123,7 +110,6 @@ var C_GameObject = /** @class */ (function (_super) {
             }
         }
         return -666; // only by error
-    };
-    return C_GameObject;
-}(C_Modal));
+    }
+}
 //# sourceMappingURL=C_GameObject.js.map

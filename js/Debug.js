@@ -1,6 +1,6 @@
 "use strict";
-var VertexDebugger = /** @class */ (function () {
-    function VertexDebugger(gl, pntSize) {
+class VertexDebugger {
+    constructor(gl, pntSize) {
         this.transform = new C_Transform();
         this.gl = gl;
         this.mColor = [];
@@ -10,11 +10,7 @@ var VertexDebugger = /** @class */ (function () {
         this.mVertexComponentLen = 4;
         this.mPointSize = pntSize;
     }
-    VertexDebugger.prototype.addColor = function () {
-        var myarguments = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            myarguments[_i] = arguments[_i];
-        }
+    addColor(...myarguments) {
         if (myarguments.length == 0)
             return this;
         for (var i = 0, c, p; i < myarguments.length; i++) {
@@ -28,13 +24,13 @@ var VertexDebugger = /** @class */ (function () {
             this.mColor.push();
         }
         return this;
-    };
-    VertexDebugger.prototype.addPoint = function (x1, y1, z1, cIndex) {
+    }
+    addPoint(x1, y1, z1, cIndex) {
         this.mVerts.push(x1, y1, z1, cIndex || 0);
         this.mVertCount = this.mVerts.length / this.mVertexComponentLen;
         return this;
-    };
-    VertexDebugger.prototype.addMeshPoints = function (cIndex, mesh) {
+    }
+    addMeshPoints(cIndex, mesh) {
         if (mesh.aVert === undefined)
             return this;
         var len = mesh.aVert.length;
@@ -48,8 +44,8 @@ var VertexDebugger = /** @class */ (function () {
         }
         this.mVertCount = this.mVerts.length / this.mVertexComponentLen;
         return this;
-    };
-    VertexDebugger.prototype.createShader = function () {
+    }
+    createShader() {
         var vShader = '#version 300 es\n' +
             'layout(location=0) in vec4 a_position;' +
             'uniform mat4 uPMatrix;' +
@@ -84,13 +80,13 @@ var VertexDebugger = /** @class */ (function () {
         this.gl.uniform3fv(this.mUniformColor, new Float32Array(this.mColor));
         this.gl.uniform1f(this.mUniformPointSize, this.mPointSize);
         this.gl.useProgram(null);
-    };
-    VertexDebugger.prototype.finalize = function () {
+    }
+    finalize() {
         this.mVertBuffer = this.gl.fCreateArrayBuffer(new Float32Array(this.mVerts), true);
         this.createShader();
         return this;
-    };
-    VertexDebugger.prototype.render = function (camera) {
+    }
+    render(camera) {
         //Update Transform Matrix (Modal View)
         this.transform.updateMatrix();
         //Start up the Shader
@@ -110,7 +106,6 @@ var VertexDebugger = /** @class */ (function () {
         this.gl.disableVertexAttribArray(0);
         this.gl.useProgram(null);
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
-    };
-    return VertexDebugger;
-}());
+    }
+}
 //# sourceMappingURL=Debug.js.map

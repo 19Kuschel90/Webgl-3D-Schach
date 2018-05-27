@@ -3,7 +3,7 @@ window.addEventListener("load", function () {
     G_LoadShader();
 });
 var gSelected;
-document.getElementById("PlayerSelect").addEventListener("change", function () {
+document.getElementById("PlayerSelect").addEventListener("change", () => {
     gSelected = document.getElementById("PlayerSelect").value;
     gFigure[Number(oldSelection)].restColor();
     oldSelection = gSelected;
@@ -38,7 +38,7 @@ var gCubes = [
 var gFigure = [];
 var gInputManager = new C_InputManager();
 var skyShader = [];
-var _a = gShaderFunction(), gShader = _a.gShader, gVertex_shader = _a.gVertex_shader, gFragment_shader = _a.gFragment_shader;
+var { gShader, gVertex_shader, gFragment_shader } = gShaderFunction();
 var gRuls = new C_ruls();
 // var gSkymap:C_Modal;
 var gSkymap;
@@ -47,7 +47,7 @@ function gShaderFunction() {
     var gShader = null;
     var gVertex_shader = "";
     var gFragment_shader = "";
-    return { gShader: gShader, gVertex_shader: gVertex_shader, gFragment_shader: gFragment_shader };
+    return { gShader, gVertex_shader, gFragment_shader };
 }
 //#region init webgl
 function main(VS, FS) {
@@ -117,7 +117,23 @@ function onReady() {
             }
             else {
                 model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), 1.0, -Math.floor(i / 8));
-                model.SetState("BtooDo");
+                switch (i) {
+                    case 0:
+                        model.SetState("BT");
+                        break;
+                    case 2:
+                        model.SetState("BL");
+                        break;
+                    case 5:
+                        model.SetState("BL");
+                        break;
+                    case 7:
+                        model.SetState("BT");
+                        break;
+                    default:
+                        model.SetState("BtooDo");
+                        break;
+                }
                 model.SetID(IDs);
                 model.setScale(0.2, 0.2, 0.2);
             }
@@ -139,7 +155,23 @@ function onReady() {
             }
             else {
                 model = new C_GameObject(ObjLoader.domToMesh("objCube", "obj_file", true)).setPosition((i % 8), 1.0, -Math.floor(i / 8));
-                model.SetState("WtooDo");
+                switch (i) {
+                    case 56:
+                        model.SetState("BT");
+                        break;
+                    case 58:
+                        model.SetState("BL");
+                        break;
+                    case 61:
+                        model.SetState("BL");
+                        break;
+                    case 63:
+                        model.SetState("BT");
+                        break;
+                    default:
+                        model.SetState("BtooDo");
+                        break;
+                }
                 model.setScale(0.2, 0.2, 0.2);
                 model.SetID(IDs);
             }

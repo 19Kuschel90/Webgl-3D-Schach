@@ -1,13 +1,11 @@
 "use strict";
-var ObjLoader = /** @class */ (function () {
-    function ObjLoader() {
-    }
-    ObjLoader.domToMesh = function (meshName, elmID, flipYUV) {
+class ObjLoader {
+    static domToMesh(meshName, elmID, flipYUV) {
         var d = ObjLoader.parseFromDom(elmID, flipYUV);
         return gl.fCreateMeshVAO(meshName, d[0], d[1], d[2], d[3], 3);
-    };
-    ObjLoader.parseFromDom = function (elmID, flipYUV) { return ObjLoader.parseObjText(document.getElementById(elmID).innerHTML, flipYUV); };
-    ObjLoader.parseObjText = function (txt, flipYUV) {
+    }
+    static parseFromDom(elmID, flipYUV) { return ObjLoader.parseObjText(document.getElementById(elmID).innerHTML, flipYUV); }
+    static parseObjText(txt, flipYUV) {
         txt = txt.trim() + "\n"; //add newline to be able to access last line in the for loop
         var line, //Line text from obj file
         itm, //Line split into an array
@@ -104,7 +102,6 @@ var ObjLoader = /** @class */ (function () {
             posB = txt.indexOf("\n", posA);
         }
         return [fIndex, fVert, fNorm, fUV];
-    };
-    return ObjLoader;
-}()); //cls
+    }
+} //cls
 //# sourceMappingURL=ObjLoader.js.map

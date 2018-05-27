@@ -1,6 +1,6 @@
 "use strict";
-var C_InputManager = /** @class */ (function () {
-    function C_InputManager() {
+class C_InputManager {
+    constructor() {
         this.atlasLink = "../image/c62bb9b27329447cb2b937fe6213889a.jpg";
         this.startPos = new C_Vector3(8, 15, -20);
         this.canvasSizeW = 600;
@@ -8,42 +8,41 @@ var C_InputManager = /** @class */ (function () {
         this.isYourTure = true;
         this.wasFisrtTure = false;
     }
-    C_InputManager.prototype.update = function () {
+    update() {
         this.startPos.x = Number(document.getElementById("SX").value);
         this.startPos.y = Number(document.getElementById("SY").value);
         this.startPos.z = Number(document.getElementById("SZ").value);
         this.canvasSizeW = Number(document.getElementById("canvasSizeW").value);
         this.canvasSizeH = Number(document.getElementById("canvasSizeH").value);
-    };
-    C_InputManager.prototype.move = function () {
+    }
+    move() {
         gRuls.isMoveOK("B1", gFigure[10], "B3");
-    };
-    C_InputManager.prototype.setOptionsInHtml = function (ID, state) {
+    }
+    setOptionsInHtml(ID, state) {
         var x = document.createElement("OPTION");
         x.setAttribute("value", String(Number(ID) - 1));
         var t = document.createTextNode(state + ID);
         x.appendChild(t);
         document.getElementById("PlayerSelect").appendChild(x);
-    };
-    C_InputManager.prototype.CreateNewMoveOption = function (X, Y) {
+    }
+    CreateNewMoveOption(X, Y) {
         var x = document.createElement("OPTION");
         x.setAttribute("value", String(String(X) + String(Y)));
         var t = document.createTextNode(String(X) + String(Y));
         x.appendChild(t);
         document.getElementById("PlayerCanMove").appendChild(x);
-    };
-    C_InputManager.prototype.removeOldMoveOptions = function () {
+    }
+    removeOldMoveOptions() {
         if (this.wasFisrtTure) {
             while (document.getElementById("PlayerCanMove").firstChild) {
                 document.getElementById("PlayerCanMove").removeChild(document.getElementById("PlayerCanMove").firstChild);
             }
         }
         this.wasFisrtTure = true;
-    };
-    return C_InputManager;
-}());
-var C_ruls = /** @class */ (function () {
-    function C_ruls() {
+    }
+}
+class C_ruls {
+    constructor() {
         this.feld = [
             ["", "", "", "", "", "", "", ""],
             ["", "", "", "", "", "", "", ""],
@@ -62,35 +61,46 @@ var C_ruls = /** @class */ (function () {
     /**
      * SetOnfeld
      */
-    C_ruls.prototype.SetOnfeld = function (state, ID, targetA, targetB) {
+    SetOnfeld(state, ID, targetA, targetB) {
         this.feld[targetA][targetB] = state + String(ID);
-    };
-    C_ruls.prototype.getFeld = function () {
+    }
+    getFeld() {
         return this.feld;
-    };
-    C_ruls.prototype.isMoveOK = function (pos, figure, target) {
+    }
+    isMoveOK(pos, figure, target) {
         // toodo Fals
         this.MoveOK([Number(this.toNumber(pos[0])), Number(pos[1])], figure, [Number(target[0]), Number(target[1])]);
         return true;
-    };
-    C_ruls.prototype.iCanMove = function (figure) {
-        if (figure.GetState() == "WB" || "BB") {
-            this.iCanBauerMove(figure.GetFeldNumber(), figure.GetfristMove(), figure.GetState());
+    }
+    iCanMove(figure) {
+        console.log(figure.GetState());
+        // Bauer
+        if ((figure.GetState() == "WB") || ("BB" == figure.GetState())) {
+            console.log("Bauer");
+            this.iCanBauerMove(figure.GetFeldNumber(), figure.GetfristMove(), figure.GetState()); // too do Kurzen
         }
-    };
+        else if ((figure.GetState() == "WL") || ("BL" == figure.GetState())) {
+            console.log("Laufer");
+            this.moveLeufer(figure.GetFeldNumber());
+        }
+        else if ((figure.GetState() == "WT") || ("BT" == figure.GetState())) {
+            console.log("Tower");
+            this.canMoveLeftRightTopBot(figure.GetFeldNumber());
+        }
+    }
     // A1 to array number [1][1]
-    C_ruls.prototype.SetWorkPos = function (pos) {
+    SetWorkPos(pos) {
         console.log(pos);
         this.WorkPos[0] = Number(this.toNumber(pos[0])) - 1;
         this.WorkPos[1] = Number(pos[1]);
-    };
-    C_ruls.prototype.SetWorkToString = function (pos) {
+    }
+    SetWorkToString(pos) {
         var a = String(this.toNumber(pos[0]));
         var b = String(pos[1]);
         var temp = a + b;
         return temp;
-    };
-    C_ruls.prototype.canMoveLeftRightTopBot = function (feldNumber) {
+    }
+    canMoveLeftRightTopBot(feldNumber) {
         this.restOldSelect();
         // console.log(feldNumber);
         this.SetWorkPos(feldNumber);
@@ -121,9 +131,9 @@ var C_ruls = /** @class */ (function () {
                 this.SetSelectFeld(right, this.WorkPos[1]);
             }
         }
-    };
+    }
     // Select
-    C_ruls.prototype.moveLeufer = function (feldNumber) {
+    moveLeufer(feldNumber) {
         this.restOldSelect();
         this.SetWorkPos(feldNumber);
         for (var top = 1; top <= 7; top++) {
@@ -165,26 +175,25 @@ var C_ruls = /** @class */ (function () {
                 // break;
             }
         }
-    };
-    C_ruls.prototype.iCanBauerMove = function (feldNumber, fristmove, site) {
-        this.moveLeufer(feldNumber);
-        // this.restOldSelect();
-        // this.SetWorkPos(feldNumber);
-        // if("WB" == site)
-        // {
-        //   this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-1 );
-        //   if(fristmove == false){
-        //     this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]-2 );
-        //   }
-        // }else{ 
-        //   this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+1 );
-        //   if(fristmove == false){
-        //     this.SetSelectFeld(this.WorkPos[0],this.WorkPos[1]+2 );
-        //   }
-        // }
-    };
+    }
+    iCanBauerMove(feldNumber, fristmove, site) {
+        this.restOldSelect();
+        this.SetWorkPos(feldNumber);
+        if ("WB" == site) {
+            this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] - 1);
+            if (fristmove == false) {
+                this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] - 2);
+            }
+        }
+        else {
+            this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] + 1);
+            if (fristmove == false) {
+                this.SetSelectFeld(this.WorkPos[0], this.WorkPos[1] + 2);
+            }
+        }
+    }
     // rest All Select
-    C_ruls.prototype.restOldSelect = function () {
+    restOldSelect() {
         for (var X = 0; X < this.feld.length; X++) {
             for (var Y = 0; Y < this.feld.length; Y++) {
                 if (this.feld[X][Y] == "X") {
@@ -194,15 +203,15 @@ var C_ruls = /** @class */ (function () {
             }
         }
         gInputManager.removeOldMoveOptions();
-    };
+    }
     // Select feld and Crate Move in html
-    C_ruls.prototype.SetSelectFeld = function (A, B) {
+    SetSelectFeld(A, B) {
         this.feld[A][B] = "X";
         gCubes[A][B].SetSelctionColor();
         gInputManager.CreateNewMoveOption(A, B);
         console.log(this.feld);
-    };
-    C_ruls.prototype.MoveOK = function (pos, figure, target) {
+    }
+    MoveOK(pos, figure, target) {
         figure.SetfristMove();
         var temp = this.feld[pos[0] - 1][pos[1]];
         this.feld[pos[0] - 1][pos[1]] = "";
@@ -211,8 +220,8 @@ var C_ruls = /** @class */ (function () {
         figure.SetFeldNumber(String(this.toNumber(target[0] + 1)) + String(target[1]));
         gCubes[target[0]][target[1]].restColor();
         this.restOldSelect();
-    };
-    C_ruls.prototype.toNumber = function (char) {
+    }
+    toNumber(char) {
         if (typeof char === 'string') {
             switch (char) {
                 case "A":
@@ -255,7 +264,6 @@ var C_ruls = /** @class */ (function () {
             }
         }
         return -666; // only by error
-    };
-    return C_ruls;
-}());
+    }
+}
 //# sourceMappingURL=HtmlInputManager.js.map
