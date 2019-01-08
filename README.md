@@ -1,4 +1,3 @@
-WebGl 
-Is 3D test
+Ist ein test
 
 Heiko Kuschel
