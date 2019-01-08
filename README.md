@@ -1,4 +1,4 @@
 WebGl 
-first Github test 
+Is 3D test
 
 Heiko Kuschel
